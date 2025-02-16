@@ -1,12 +1,11 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, ChevronUp, Mail, Github, FileText, Linkedin } from 'lucide-react';
 import SpotifySection from './spotify-section';
 import StravaWidget from './strava-widget';
 import { Card, CardContent } from "@/components/ui/card";
 import Link from 'next/link';
 
-// Dark theme color palette
 const colors = {
   primary: "bg-black",
   secondary: "bg-zinc-900",
@@ -18,21 +17,89 @@ const colors = {
   hover: "hover:bg-zinc-800",
 };
 
+const welcomeMessages = [
+  "Welcome to my corner of the web",
+  "Hello, I'm Caleb Seely",
+  "Explorer. Developer. Runner.",
+  "Building the future, one line at a time",
+  "Where code meets creativity"
+];
+
+const TypeWriter = ({ message, onComplete }) => {
+  const [displayText, setDisplayText] = useState('');
+  const [isTyping, setIsTyping] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    let timeout;
+    
+    if (isTyping && displayText.length < message.length) {
+      timeout = setTimeout(() => {
+        setDisplayText(message.substring(0, displayText.length + 1));
+      }, 100);
+    } else if (isTyping && displayText.length === message.length) {
+      timeout = setTimeout(() => {
+        setIsTyping(false);
+      }, 2000);
+    } else if (!isTyping && displayText.length > 0) {
+      timeout = setTimeout(() => {
+        setDisplayText(message.substring(0, displayText.length - 1));
+      }, 50);
+    } else if (!isTyping && displayText.length === 0) {
+      timeout = setTimeout(() => {
+        setIsVisible(false);
+        if (onComplete) onComplete();
+      }, 500);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [displayText, isTyping, message, onComplete]);
+
+  if (!isVisible) return null;
+
+  return (
+    <div className="relative px-6 py-3 rounded-lg">
+      <div className="text-4xl md:text-6xl font-bold text-black mb-4 font-serif min-h-[80px]">
+        {displayText}
+        <span className="inline-block w-[3px] h-8 bg-black ml-1 animate-[blink_1s_ease-in-out_infinite]">
+        </span>
+      </div>
+    </div>
+  );
+};
+
 const HeroLayout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isForestFireExpanded, setIsForestFireExpanded] = useState(false);
+  const [welcomeMessage, setWelcomeMessage] = useState("");
+  const [showWelcome, setShowWelcome] = useState(true);
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * welcomeMessages.length);
+    setWelcomeMessage(welcomeMessages[randomIndex]);
+  }, []);
 
   return (
     <div className={`relative min-h-screen ${colors.primary} ${colors.text}`}>
       {/* Hero Image Section */}
       <div className="relative h-screen">
-        <div className="absolute inset-0  z-10" /> {/* Dark overlay */}
+        <div className="absolute inset-0 z-10" /> {/* Reduced overlay opacity */}
         <img 
           src="/img/hero.jpg" 
           alt="Landscape Hero" 
           className="w-full h-full object-cover"
         />
         
+        {/* Welcome Text */}
+        <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 text-center w-full px-4">
+          {showWelcome && (
+            <TypeWriter 
+              message={welcomeMessage} 
+              onComplete={() => setShowWelcome(false)}
+            />
+          )}
+        </div>
+
         {/* Navigation */}
         <div className="absolute top-0 w-full p-4 flex justify-between items-center z-20">
           <div className={`text-2xl font-bold ${colors.text}`}>CS</div>
@@ -44,67 +111,79 @@ const HeroLayout = () => {
           </button>
         </div>
 
-        {/* Small Top-Right Menu */}
+        {/* Menu Items */}
         {isMenuOpen && (
-          <div className="fixed top-10 right-4 bg-black bg-opacity-95 z-40 rounded-lg shadow-lg p-4">
+          <div className="absolute top-16 right-4 bg-black bg-opacity-95 z-40 rounded-lg shadow-lg p-4">
             <nav className="text-white text-l space-y-1">
-              {['Home', 'About', 'Projects', 'Resume'].map((item) => (
-                <a 
-                  key={item}
-                  href={`#${item.toLowerCase().replace(' ', '-')}`} 
-                  className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}
-                >
-                  {item}
-                </a>
-              ))}
+              <Link href="/running-times-display" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
+                Pacing
+              </Link>
+              <Link href="/projects" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
+                Projects
+              </Link>
+              <Link href="/places" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
+                Places
+              </Link>
+              <a
+                href="/misc/Caleb_Seely_Resume.pdf"
+                className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Resume
+              </a>
             </nav>
           </div>
         )}
       </div>
 
       {/* About Section */}
-        <section id="about" className={`py-16 ${colors.secondary}`}>
+      <section id="about" className={`py-16 ${colors.secondary}`}>
         <div className="container mx-auto px-8 max-w-7xl">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Headshot Card */}
             <Card className={`h-full ${colors.primary}`}>
-                <CardContent className="p-4 h-full flex flex-col">
-                {/* Image Container */}
-                <div className="aspect-square w-full overflow-hidden rounded-lg">
-                    <img 
+              <CardContent className="p-4 flex flex-col h-full">
+                <div className="relative h-80 mb-4 rounded-lg overflow-hidden">
+                  <img 
                     src="/img/headshot1.jpg" 
                     alt="Headshot" 
-                    className="w-full h-full object-cover"
-                    />
+                    className="absolute top-0 left-0 w-full h-full object-cover object-top"
+                  />
                 </div>
-
-                {/* Text Container */}
-                <div className="mt-4 text-center">
-                    <h3 className="text-xl md:text-2xl font-bold text-white">Caleb Seely</h3>
-                    <p className="text-gray-400 text-sm md:text-base">Software Developer</p> {/* Optional subtitle */}
+                <div className="text-center ">
+                  <h3 className="text-xl md:text-2xl font-bold text-white">Caleb Seely</h3>
+                  <p className="text-gray-400 text-sm md:text-base">Software Developer</p>
                 </div>
-                </CardContent>
+              </CardContent>
             </Card>
 
             {/* Bio Card */}
             <Card className={`h-full ${colors.primary}`}>
-                <CardContent className="p-6 h-full flex flex-col ">
-                <h2 className={`text-2xl font-bold mb-1 ${colors.accent}`}>Rooted in Portland</h2>
-                <p className={`mb-3 ${colors.text}`}>Born and raised in PNW, for college I ventured to the University of Idaho, where I earned a degree in Computer Science and a minor in Mathematics, and a lifetime of memories.</p>
-                <h2 className={`text-2xl font-bold mb-1 ${colors.accent}`}>Chasing the next adventure, always</h2>
-                <p className={`mb-3 ${colors.text}`}>The best stories don't come from staying inside. That's why I spent a month training in Flagstaff, skied through a Bend winter, and solo-traveled across Thailand. Just out here collecting as many experience tokens as I can. \n Thanks for stopping by!</p>
-                </CardContent>
+              <CardContent className="p-6 h-full flex flex-col justify-between">
+                <div className="space-y-4">
+                  <h2 className={`text-2xl font-bold font-serif ${colors.accent2}`}>Rooted in Portland</h2>
+                  <p className={`text-sm leading-relaxed ${colors.text}`}>
+                    Born and raised in PNW, for college I ventured to the University of Idaho, where I earned a degree in Computer Science and a minor in Mathematics, and a lifetime of memories.
+                  </p>
+                  <h2 className={`text-2xl font-bold font-serif ${colors.accent}`}>Chasing the next adventure. Always</h2>
+                  <p className={`text-sm leading-relaxed ${colors.text}`}>
+                    The best stories don't come from staying inside. That's why I spent a month training in Flagstaff, skied through a Bend winter, and solo-traveled across Thailand. Just out here collecting as many experience tokens as I can.
+                    Thanks for stopping by!
+                  </p>
+                </div>
+              </CardContent>
             </Card>
 
             {/* Strava Widget Card */}
             <Card className={`h-full ${colors.primary}`}>
-                <CardContent className="p-4 h-full">
+              <CardContent className="p-4 ">
                 <StravaWidget />
-                </CardContent>
+              </CardContent>
             </Card>
-            </div>
+          </div>
         </div>
-        </section>
+      </section>
 
       {/* Spotify Section */}
       <SpotifySection />
@@ -113,11 +192,11 @@ const HeroLayout = () => {
       <section id="projects" className={`py-16 ${colors.primary}`}>
         <div className="container mx-auto px-8 max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {['running', 'projects', 'travel'].map((type) => (
+            {['Pacing', 'Projects', 'Places'].map((type) => (
               <Link 
                 key={type} 
-                href={type === 'running' ? '/running-times-display' : type === 'projects' 
-                    ? '/projects': type === 'travel' 
+                href={type === 'Pacing' ? '/running-times-display' : type === 'Projects' 
+                    ? '/projects': type === 'Places' 
                     ? '/places' : '#'}
                 className="block h-full"
               >
@@ -125,7 +204,7 @@ const HeroLayout = () => {
                 <Card className={`group relative cursor-pointer hover:shadow-xl transition-all duration-300 h-64 ${colors.secondary}`}>
                   <CardContent className="p-0 h-full">
                     <img 
-                      src={`/img/${type === 'travel' ? 'steens' : type}.jpg`}
+                      src={`/img/${type}.jpg`}
                       alt={type.charAt(0).toUpperCase() + type.slice(1)}
                       className="w-full h-full object-cover rounded-lg"
                     />

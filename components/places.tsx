@@ -1,6 +1,19 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+
+// Dark theme color palette
+const colors = {
+    primary: "bg-black",
+    secondary: "bg-zinc-900",
+    accent: "text-[#8DB7F5]",
+    accentBg: "bg-[#8DB7F5]",
+    accent2: "text-[#10B981]",
+    text: "text-white",
+    textMuted: "text-zinc-400",
+    hover: "hover:bg-zinc-800",
+  };
 
 const PlacesPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -123,30 +136,41 @@ const PlacesPage = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-between items-center">
-        <div className="text-2xl font-bold text-[#8DB7F5] rounded-lg px-3 py-1 hover:bg-[#8DB7F5]/10 transition-colors">
-          CS
+    {/* Navigation */}
+        <div className="absolute top-0 w-full p-4 flex justify-between items-center z-20">
+            <div className={`text-2xl font-bold ${colors.text}`}>CS</div>
+            <button 
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className={`z-50 ${colors.text} ${colors.hover} transition-colors`}
+                >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
         </div>
-        <div className="relative">
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-[#10B981] hover:text-[#8DB7F5] transition-colors rounded-full p-2 hover:bg-[#10B981]/10"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-          
-          {/* Menu Dropdown */}
-          <div className={`absolute right-0 mt-2 w-48 bg-black/95 rounded-lg border border-[#8DB7F5]/20 transition-all duration-300 ${
-            isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-          }`}>
-            <a href="/" className="block px-4 py-2 hover:bg-[#10B981]/20 text-white rounded-t-lg">Home</a>
-            <a href="/running" className="block px-4 py-2 hover:bg-[#10B981]/20 text-white">Running</a>
-            <a href="/projects" className="block px-4 py-2 hover:bg-[#10B981]/20 text-white">Projects</a>
-            <a href="/resume" className="block px-4 py-2 hover:bg-[#10B981]/20 text-white rounded-b-lg">Resume</a>
+
+        {/* Menu Items */}
+        {isMenuOpen && (
+          <div className="absolute top-16 right-4 bg-black bg-opacity-95 z-40 rounded-lg shadow-lg p-4">
+            <nav className="text-white text-l space-y-1">
+              <Link href="/" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
+                Home
+              </Link>
+              <Link href="/projects" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
+                Projects
+              </Link>
+              <Link href="/places" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
+                Places
+              </Link>
+              <a
+                href="/misc/Caleb_Seely_Resume.pdf"
+                className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Resume
+              </a>
+            </nav>
           </div>
-        </div>
-      </div>
+        )}
 
       {/* Main content */}
       <div className="container mx-auto px-4 pt-20">

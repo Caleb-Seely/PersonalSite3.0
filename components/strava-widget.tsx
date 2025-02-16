@@ -4,6 +4,18 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { MapPin, Clock, ArrowUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
+// Dark theme color palette
+const colors = {
+    primary: "bg-black",
+    secondary: "bg-zinc-900",
+    accent: "text-[#8DB7F5]",
+    accentBg: "bg-[#8DB7F5]",
+    accent2: "text-[#10B981]",
+    text: "text-white",
+    textMuted: "text-zinc-400",
+    hover: "hover:bg-zinc-800",
+};
+
 interface Activity {
   name: string;
   distance: number;
@@ -16,16 +28,15 @@ const StravaWidget = () => {
   const [activity, setActivity] = useState<Activity | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter(); // Use the Next.js router
+  const router = useRouter();
 
   useEffect(() => {
     const fetchLatestActivity = async () => {
       try {
         const response = await fetch('/api/strava/latest-activity');
         
-        // Handle 401 Unauthorized
         if (response.status === 401) {
-          router.push('/api/strava/login'); // Redirect to Strava login
+          router.push('/api/strava/login');
           return;
         }
 
@@ -43,7 +54,7 @@ const StravaWidget = () => {
     };
 
     fetchLatestActivity();
-  }, [router]); // Add router to dependency array
+  }, [router]);
 
   const formatDistance = (meters: number) => {
     const miles = meters / 1609.34;
@@ -87,12 +98,32 @@ const StravaWidget = () => {
     );
   }
 
+  const MetricDisplay = ({ 
+    Icon, 
+    value, 
+    label 
+  }: { 
+    Icon: typeof MapPin; 
+    value: string; 
+    label: string; 
+  }) => (
+    <div className="flex flex-col items-center group">
+      <Icon className="h-5 w-5 mb-1 text-sage transition-all duration-200 ease-in-out group-hover:text-emerald-500 group-hover:scale-110" />
+      <span className="font-medium transition-all duration-200 ease-in-out group-hover:text-emerald-500 group-hover:scale-110">
+        {value}
+      </span>
+      <span className="text-xs text-gray-500 transition-all duration-200 ease-in-out">
+        {label}
+      </span>
+    </div>
+  );
+
   return (
     <Card className="h-full">
-      <CardHeader className="p-4">
+      <CardHeader className="p-4 pb-2">
         <h3 className="text-lg font-semibold">{activity.name}</h3>
       </CardHeader>
-      <CardContent className="p-4 space-y-4">
+      <CardContent className="p-4 pt-0 space-y-4">
         {activity.map && (
           <div className="relative w-full h-48 md:h-64 rounded-lg overflow-hidden">
             <img 
@@ -104,23 +135,21 @@ const StravaWidget = () => {
         )}
         
         <div className="grid grid-cols-3 gap-4 text-sm">
-          <div className="flex flex-col items-center">
-            <MapPin className="h-5 w-5 mb-1 text-sage" />
-            <span className="font-medium">{formatDistance(activity.distance)}</span>
-            <span className="text-xs text-gray-500">Distance</span>
-          </div>
-          
-          <div className="flex flex-col items-center">
-            <Clock className="h-5 w-5 mb-1 text-sage" />
-            <span className="font-medium">{formatTime(activity.moving_time)}</span>
-            <span className="text-xs text-gray-500">Time</span>
-          </div>
-          
-          <div className="flex flex-col items-center">
-            <ArrowUp className="h-5 w-5 mb-1 text-sage" />
-            <span className="font-medium">{formatElevation(activity.total_elevation_gain)}</span>
-            <span className="text-xs text-gray-500">Elevation</span>
-          </div>
+          <MetricDisplay 
+            Icon={MapPin} 
+            value={formatDistance(activity.distance)} 
+            label="Distance" 
+          />
+          <MetricDisplay 
+            Icon={Clock} 
+            value={formatTime(activity.moving_time)} 
+            label="Time" 
+          />
+          <MetricDisplay 
+            Icon={ArrowUp} 
+            value={formatElevation(activity.total_elevation_gain)} 
+            label="Elevation" 
+          />
         </div>
       </CardContent>
     </Card>

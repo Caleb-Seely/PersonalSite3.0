@@ -1,10 +1,11 @@
 "use client";
 import React, { useState } from 'react';
 import { ChevronRight, Github, ExternalLink, Menu, X } from 'lucide-react';
+import Link from 'next/link';
 
 const ProjectsPage = () => {
   const [selectedProject, setSelectedProject] = useState(null);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedTech, setSelectedTech] = useState(null);
 
   const projects = [
@@ -39,52 +40,60 @@ const ProjectsPage = () => {
     }
   ];
 
-  // Get unique technologies from all projects
   const allTechnologies = [...new Set(projects.flatMap(project => project.tools))].sort();
-
-  // Filter projects based on selected technology
   const filteredProjects = selectedTech
     ? projects.filter(project => project.tools.includes(selectedTech))
     : projects;
 
   return (
-    <div className="min-h-screen bg-black text-white p-8">
-      {/* Navigation Menu */}
-      <div className="fixed top-0 right-0 p-4 z-50">
-        <button 
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="p-2 rounded-full bg-gray-900 hover:bg-gray-800 transition-colors"
+    <div className="min-h-screen bg-black text-white">
+      {/* Navigation */}
+      <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center bg-black z-50">
+        <div className="text-white text-2xl font-bold">CS</div>
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="z-50 text-white"
         >
-          {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
-        
-        {menuOpen && (
-          <div className="absolute top-16 right-0 bg-gray-900 rounded-lg shadow-lg p-4 min-w-[200px]">
-            <nav className="flex flex-col gap-2">
-              <a 
-                href="/"
-                className="px-4 py-2 hover:bg-gray-800 rounded-lg transition-colors"
-              >
-                Home
-              </a>
-              <a 
-                href='/running-times-display'
-                className="px-4 py-2 hover:bg-gray-800 rounded-lg transition-colors"
-              >
-                Running Time Display
-              </a>
-              <a 
-                href="/resume.pdf"
-                className="px-4 py-2 hover:bg-gray-800 rounded-lg transition-colors"
-              >
-                Resume
-              </a>
-            </nav>
-          </div>
-        )}
       </div>
 
-      <div className="max-w-6xl mx-auto">
+      {/* Menu Items */}
+      {isMenuOpen && (
+        <div className="absolute top-16 right-4 bg-black bg-opacity-95 z-40 rounded-lg shadow-lg p-4">
+          <nav className="text-white text-l space-y-1">
+            <Link 
+              href="/" 
+              className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors"
+            >
+              Home
+            </Link>
+            <Link 
+              href="/running-times-display" 
+              className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors"
+            >
+              Pacing
+            </Link>
+            <Link 
+              href="/places" 
+              className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors"
+            >
+              Places
+            </Link>
+            <a
+              href="/misc/Caleb_Seely_Resume.pdf"
+              className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Resume
+            </a>
+          </nav>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-4 pt-24">
         <h1 className="text-4xl font-bold mb-8">My Projects</h1>
         
         {/* Filters Section */}
@@ -152,7 +161,6 @@ const ProjectsPage = () => {
           <div 
             className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50"
             onClick={(e) => {
-              // Close modal if clicking the backdrop (not the content)
               if (e.target === e.currentTarget) {
                 setSelectedProject(null);
               }
@@ -161,7 +169,6 @@ const ProjectsPage = () => {
             <div className="bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-8">
               <h2 className="text-3xl font-bold mb-6">{selectedProject.title}</h2>
               
-              {/* Project Images */}
               <div className="flex gap-4 mb-6 overflow-x-auto">
                 {selectedProject.images.map((img, index) => (
                   <img
@@ -175,7 +182,6 @@ const ProjectsPage = () => {
 
               <p className="text-gray-300 mb-6">{selectedProject.longDescription}</p>
               
-              {/* Tools Used */}
               <div className="mb-6">
                 <h3 className="text-xl font-bold mb-3 text-[#8DB7F5]">Tools & Technologies</h3>
                 <div className="flex flex-wrap gap-2">
@@ -190,7 +196,6 @@ const ProjectsPage = () => {
                 </div>
               </div>
 
-              {/* Links */}
               <div className="flex gap-4">
                 {selectedProject.github && (
                   <a
@@ -212,7 +217,6 @@ const ProjectsPage = () => {
                 )}
               </div>
 
-              {/* Close Button */}
               <button
                 onClick={() => setSelectedProject(null)}
                 className="absolute top-4 right-4 text-gray-400 hover:text-white"

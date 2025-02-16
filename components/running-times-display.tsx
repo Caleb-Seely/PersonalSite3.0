@@ -4,6 +4,19 @@ import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Menu, X, ChevronDown, ChevronUp, Mail, Github, FileText, Linkedin } from 'lucide-react';
+import Link from 'next/link';
+
+// Dark theme color palette
+const colors = {
+    primary: "bg-black",
+    secondary: "bg-zinc-900",
+    accent: "text-[#8DB7F5]",
+    accentBg: "bg-[#8DB7F5]",
+    accent2: "text-[#10B981]",
+    text: "text-white",
+    textMuted: "text-zinc-400",
+    hover: "hover:bg-zinc-800",
+  };
 
 const RunningTimesDisplay = () => {
   const runningData = [
@@ -147,18 +160,30 @@ const RunningTimesDisplay = () => {
             </button>
         </div>
 
-      {/* Small Top-Right Menu */}
-      {isMenuOpen && (
-        <div className="fixed top-10 right-4 bg-gray-900 bg-opacity-95 z-40 rounded-lg shadow-lg p-4">
-          <nav className="text-cream text-l space-y-1">
-            <a href="/" className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors">Home</a>
-            <a href="#about" className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors">About</a>
-            <a href="#spotify" className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors">Music</a>
-            <a href="#projects" className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors">Projects</a>
-            <a href="#forest-fires" className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors">Forest Fires</a>
-          </nav>
-        </div>
-      )}
+        {/* Menu Items */}
+        {isMenuOpen && (
+          <div className="absolute top-16 right-4 bg-black bg-opacity-95 z-40 rounded-lg shadow-lg p-4">
+            <nav className="text-white text-l space-y-1">
+              <Link href="/" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
+                Home
+              </Link>
+              <Link href="/projects" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
+                Projects
+              </Link>
+              <Link href="/places" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
+                Places
+              </Link>
+              <a
+                href="/misc/Caleb_Seely_Resume.pdf"
+                className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Resume
+              </a>
+            </nav>
+          </div>
+        )}
 
       {/* Banner Image */}
       <div className="relative h-48 w-full overflow-hidden">
