@@ -8,7 +8,7 @@ export async function GET(request: Request) {
   const state = searchParams.get('state');
 
   console.log('Callback received. Code:', code, 'State:', state); // Debugging
-
+  console.log('Strava/callback/route doing its thing');
   // Retrieve the stored state from cookies
   const cookieStore = await cookies();
   const storedState = cookieStore.get('strava_auth_state')?.value;

@@ -11,6 +11,7 @@ const STORED_REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
 
 // Helper to get new access token using refresh token
 async function getAccessToken() {
+    console.log('Spotify/auth/route getAcessToken');
   const basic = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64');
   
   const response = await fetch('https://accounts.spotify.com/api/token', {
@@ -32,7 +33,7 @@ async function getAccessToken() {
 export default async function handler(req, res) {
   try {
     const { access_token } = await getAccessToken();
-    
+    console.log('Spotify/auth/route is being called!');
     // Set access token in an HTTP-only cookie
     res.setHeader('Set-Cookie', serialize('spotify_access_token', access_token, {
       httpOnly: true,

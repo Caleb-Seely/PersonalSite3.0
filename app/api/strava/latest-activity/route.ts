@@ -8,6 +8,7 @@ const REFRESH_TOKEN = process.env.STRAVA_REFRESH_TOKEN;
 
 async function getAccessToken() {
   try {
+    console.log('Strava/latests-activity/route using refresh_token for n access_token');
     const response = await fetch('https://www.strava.com/oauth/token', {
       method: 'POST',
       headers: {

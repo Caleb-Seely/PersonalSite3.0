@@ -9,7 +9,7 @@ export async function GET() {
   
   const state = Math.random().toString(36).substring(7);
   cookies().set('spotify_auth_state', state);
-
+  console.log('Spotify/route makigng a request? Maybe?O');
   const authUrl = new URL('https://accounts.spotify.com/authorize')
   const params = {
     response_type: 'code',

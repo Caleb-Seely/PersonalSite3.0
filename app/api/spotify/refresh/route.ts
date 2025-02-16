@@ -15,6 +15,7 @@ export async function GET() {
   }
 
   try {
+    console.log('Spotify/refrsh/route Getting and setting a new access_token');
     const basic = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64');
 
     const response = await fetch('https://accounts.spotify.com/api/token', {
@@ -36,7 +37,7 @@ export async function GET() {
     }
 
     // Set the access token in an HTTP-only cookie
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     cookieStore.set('spotify_access_token', data.access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

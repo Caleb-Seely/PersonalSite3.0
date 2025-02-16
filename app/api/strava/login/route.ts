@@ -6,7 +6,7 @@ export async function GET() {
   try {
     // Generate a random state value
     const state = Math.random().toString(36).substring(7);
-
+    console.log('Strava/login/route attempting to login');
     // Store the state in a cookie
     const cookieStore = await cookies();
     cookieStore.set('strava_auth_state', state, {
