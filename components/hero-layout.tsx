@@ -117,7 +117,8 @@ const HeroLayout = () => {
               <Link 
                 key={type} 
                 href={type === 'running' ? '/running-times-display' : type === 'projects' 
-                    ? '/projects':'#'}
+                    ? '/projects': type === 'travel' 
+                    ? '/places' : '#'}
                 className="block h-full"
               >
                 
