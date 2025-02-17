@@ -135,11 +135,11 @@ const PlacesPage = () => {
             <Link href="/" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
               Home
             </Link>
+            <Link href="/running-times-display" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
+              Pacing
+            </Link>
             <Link href="/projects" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
               Projects
-            </Link>
-            <Link href="/places" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
-              Places
             </Link>
             <a
               href="/misc/Caleb_Seely_Resume.pdf"

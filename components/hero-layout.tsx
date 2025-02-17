@@ -19,10 +19,17 @@ const colors = {
 
 const welcomeMessages = [
   "Welcome to my corner of the web",
-  "Hello, I'm Caleb Seely",
+  "Hello, I'm Caleb",
   "Explorer. Developer. Runner.",
   "Building the future, one line at a time",
-  "Where code meets creativity"
+  "Where code meets creativity",
+  "Hey You",
+  "This site was built with love",
+  "This site was built with love, not sleep",
+  "RUN",
+  "Welcome to the Internet",
+  "Let me out!",
+  "Hà Giang, Vietnam"
 ];
 
 const TypeWriter = ({ message, onComplete }) => {
@@ -105,7 +112,7 @@ const HeroLayout = () => {
           <div className={`text-2xl font-bold ${colors.text}`}>CS</div>
           <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`z-50 ${colors.text} ${colors.hover} transition-colors`}
+            className={`z-50 ${colors.text} transition-colors`}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -113,7 +120,7 @@ const HeroLayout = () => {
 
         {/* Menu Items */}
         {isMenuOpen && (
-          <div className="absolute top-16 right-4 bg-black bg-opacity-95 z-40 rounded-lg shadow-lg p-4">
+          <div className="absolute top-16 right-4 bg-black bg-opacity-70 z-40 rounded-lg shadow-lg p-4">
             <nav className="text-white text-l space-y-1">
               <Link href="/running-times-display" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
                 Pacing
