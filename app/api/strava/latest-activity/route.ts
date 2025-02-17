@@ -1,4 +1,5 @@
 // app/api/strava/latest-activity/route.ts
+// This is what we need to reverify Strava access 
 import { NextResponse } from 'next/server';
 
 const STRAVA_API_URL = 'https://www.strava.com/api/v3';
@@ -8,7 +9,7 @@ const REFRESH_TOKEN = process.env.STRAVA_REFRESH_TOKEN;
 
 async function getAccessToken() {
   try {
-    console.log('Strava/latests-activity/route using refresh_token for n access_token');
+    console.log('Strava/latests-activity/route using refresh_token for an access_token');
     const response = await fetch('https://www.strava.com/oauth/token', {
       method: 'POST',
       headers: {
@@ -81,7 +82,7 @@ async function getLatestActivity(accessToken: string) {
 
     const activities = await response.json();
     
-    console.log('Successfully fetched activities:', {
+    console.log('Successfully fetched Strava activities:', {
       count: activities.length,
       hasData: Boolean(activities[0]),
     });
@@ -132,7 +133,7 @@ export async function GET() {
       );
     }
 
-    console.log('Successfully transformed activity data');
+    console.log('Successfully transformed Strava activity data');
     return NextResponse.json(activity);
   } catch (error) {
     console.error('Error in API route:', error);

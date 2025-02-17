@@ -1,4 +1,5 @@
 // app/api/spotify/refresh/route.ts
+// This is what we use to re-verify Spotify access
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 

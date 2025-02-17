@@ -28,7 +28,7 @@ export async function GET() {
     }
 
     const data = JSON.parse(text);
-
+    console.log('Successfully fetched Sptify data');
     return NextResponse.json({
       isPlaying: data.is_playing,
       songName: data.item?.name || 'Unknown',
