@@ -127,38 +127,7 @@ const PlacesPage = () => {
     return title === "Steens Mountain" ? colors.steensAccent : colors.accent2;
   };
 
-    // Preload images
-    useEffect(() => {
-        IMAGE_URLS.forEach((url) => {
-          const img = new Image();
-          img.src = url;
-        });
-      }, []);
-
-      // Image loading state
-  const [imagesLoaded, setImagesLoaded] = useState<Record<string, boolean>>({});
-
-  // Modify your image components to use blur placeholder and loading states
-  const ImageWithLoading = ({ src, alt, priority = false }) => {
-    return (
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className={`object-cover transition-transform duration-500 hover:scale-105 ${
-          imagesLoaded[src] ? 'opacity-100' : 'opacity-0'
-        }`}
-        quality={85} // Slightly reduced quality for better performance
-        priority={priority}
-        placeholder="blur"
-        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQtJyEkMj4xLy4wMy4qLjI6PiQ+RDktPkQ2R0dISks1UFFQVEBOSEtIWEj/2wBDAR"
-        onLoadingComplete={() => {
-          setImagesLoaded(prev => ({ ...prev, [src]: true }));
-        }}
-      />
-    );
-  };
-
+  
   return (
     <div className="min-h-screen bg-black text-white ">
       {/* Navigation remains the same */}
@@ -199,13 +168,16 @@ const PlacesPage = () => {
 
       {/* Main content */}
       <div className="container mx-auto px-4 pt-12">
-    {/* Featured Image */}
+        {/* Featured Image */}
         <div className="max-w-4xl mx-auto mb-4">
-            <div className="relative h-[400px] w-full overflow-hidden rounded-lg">
-            <ImageWithLoading
-                src={currentPlace.image}
-                alt={currentPlace.title}
-                priority={true} // Priority loading for the main image
+          <div className="relative h-[400px] w-full overflow-hidden rounded-lg" ref={imageRef}>
+          <Image
+            src={currentPlace.image}
+            alt={currentPlace.title}
+            fill
+            className="object-cover transition-transform duration-500 hover:scale-105"
+            quality={100}
+            priority
             />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black p-6">
               <h1 className={`text-3xl font-bold ${getTitleColor(currentPlace.title)}`}>
