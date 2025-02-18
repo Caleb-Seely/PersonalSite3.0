@@ -7,14 +7,14 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import Image from "next/image";
 
-// Preload images constant
-const IMAGE_URLS = [
-  "/img/steens.jpg",
-  "/img/Bend.jpg",
-  "/img/Moscow.jpg",
-  "/img/Ha_Giang.jpg",
-  "/img/Flagstaff.jpg"
-];
+// // Preload images constant
+// const IMAGE_URLS = [
+//   "/img/steens.jpg",
+//   "/img/Bend.jpg",
+//   "/img/Moscow.jpg",
+//   "/img/Ha_Giang.jpg",
+//   "/img/Flagstaff.jpg"
+// ];
 
 const colors = {
     primary: "bg-black",
