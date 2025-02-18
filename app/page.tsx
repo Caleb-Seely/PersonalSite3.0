@@ -3,24 +3,22 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <main className="min-h-screen relative">
-      {/* Hero Image Section */}
-      <div className="fixed inset-0">
-        <Image 
-          src="/img/hero.webp" 
-          alt="Landscape Hero" 
-          fill
-          className="object-cover"
-          priority
-          quality={75}
-          sizes="100vw"
+    <div className=" min-h-screen w-fill  ">
+            {/* Hero Image Section */}
+      <div className="absolute inset-0 w-full h-screen z-10">
+      <Image
+        src="/img/hero-1920.webp" // Default large image
+        alt="Landscape Hero"
+        fill
+        className="object-cover"
+        priority
+        unoptimized={true} // Ensures Next.js optimizes the image
+        sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 1920px"
         />
       </div>
 
       {/* Rest of the Page Content */}
-      <div className="relative">
-        <HeroLayout />
-      </div>
-    </main>
+      <HeroLayout />
+    </div>
   );
 }

@@ -182,6 +182,7 @@ const RunningTimesDisplay = () => {
             objectFit="cover"
             unoptimized
             className="w-full h-full"
+            priority
             />
       </div>
 

@@ -96,15 +96,6 @@ const HeroLayout = () => {
     <div className={`relative min-h-screen ${colors.primary} ${colors.text}`}>
       {/* Hero Image Section */}
       <div className="relative h-screen">
-        <div className="absolute inset-0 z-10" /> {/* Reduced overlay opacity */}
-        <Image 
-          src="/img/hero.webp" 
-          alt="Landscape Hero" 
-          layout="fill" 
-          objectFit="cover"
-          priority 
-          unoptimized         
-        />
         
         {/* Welcome Text */}
         <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 text-center w-full px-4">
@@ -121,7 +112,7 @@ const HeroLayout = () => {
           <div className={`text-2xl font-bold ${colors.text}`}>CS</div>
           <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`z-50 ${colors.text} transition-colors`}
+            className={`z-auto ${colors.text} transition-colors`}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -228,8 +219,8 @@ const HeroLayout = () => {
                     alt={type.charAt(0).toUpperCase() + type.slice(1)}
                     fill
                     className="w-full h-full object-cover rounded-lg"
-                    quality={100}
-                    priority
+                    quality={75}
+                    
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 rounded-lg transition-all duration-300 flex items-center justify-center">
                       <span className={`text-2xl font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${colors.accent}`}>
