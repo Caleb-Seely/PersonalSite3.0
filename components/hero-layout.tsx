@@ -98,7 +98,7 @@ const HeroLayout = () => {
       <div className="relative h-screen">
         <div className="absolute inset-0 z-10" /> {/* Reduced overlay opacity */}
         <Image 
-          src="/img/hero.webp" 
+          src="https://calebseely503.netlify.app/img/hero.webp?w=1920&auto=compress" 
           alt="Landscape Hero" 
           layout="fill" 
           objectFit="cover"
