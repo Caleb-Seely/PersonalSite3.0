@@ -1,12 +1,25 @@
 "use client";
 import React, { useState } from 'react';
-import { ChevronRight, Github, ExternalLink, Menu, X } from 'lucide-react';
+import { Menu, X, ChevronRight, Mail, Github, FileText, Linkedin } from 'lucide-react';
 import Link from 'next/link';
+import Image from "next/image";
+
+// Dark theme color palette
+// const colors = {
+//     primary: "bg-black",
+//     secondary: "bg-zinc-900",
+//     accent: "text-[#8DB7F5]",
+//     accentBg: "bg-[#8DB7F5]",
+//     accent2: "text-[#10B981]",
+//     text: "text-white",
+//     textMuted: "text-zinc-400",
+//     hover: "hover:bg-zinc-800",
+//   };
 
 const ProjectsPage = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedTech, setSelectedTech] = useState(null);
+  const [selectedTech, setSelectedTech] = useState<string | null>(null);
 
   const projects = [
     {
@@ -171,12 +184,14 @@ const ProjectsPage = () => {
               
               <div className="flex gap-4 mb-6 overflow-x-auto">
                 {selectedProject.images.map((img, index) => (
-                  <img
-                    key={index}
-                    src={img}
-                    alt={`${selectedProject.title} screenshot ${index + 1}`}
-                    className="rounded-lg w-96 object-cover"
-                  />
+                  <Image
+                  key={index}
+                  src={img}
+                  alt={`${selectedProject.title} screenshot ${index + 1}`}
+                  width={384} // Set a default width (adjust as necessary)
+                  height={256} // Set a default height (adjust as necessary)
+                  className="rounded-lg w-full md:w-96 object-contain md:object-cover" // Adjust for mobile and larger screens
+                />
                 ))}
               </div>
 
@@ -211,8 +226,8 @@ const ProjectsPage = () => {
                     href={selectedProject.live}
                     className="flex items-center gap-2 text-[#8DB7F5] hover:text-[#10B981]"
                   >
-                    <ExternalLink size={20} />
-                    <span>Live Demo</span>
+                    {/* <ExternalLink size={20} />
+                    <span>Live Demo</span> */}
                   </a>
                 )}
               </div>
@@ -227,6 +242,27 @@ const ProjectsPage = () => {
           </div>
         )}
       </div>
+
+
+      {/* Footer */}
+      <footer className={` text-cream py-12`}>
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center space-x-12">
+            <a href="mailto:calebseely@gmail.com" className="hover:text-emerald-500 transition-colors" target="_blank">
+              <Mail size={28} />
+            </a>
+            <a href="https://www.linkedin.com/in/caleb-seely" className="hover:text-emerald-500 transition-colors" target="_blank">
+              <Linkedin size={28} />
+            </a>
+            <a href="misc/Caleb_Seely_Resume.pdf" className="hover:text-emerald-500 transition-colors" target="_blank">
+              <FileText size={28} />
+            </a>
+            <a href="https://github.com/Caleb-Seely" className="hover:text-emerald-500 transition-colors" target="_blank">
+              <Github size={28} />
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

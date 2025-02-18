@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Music, Send } from 'lucide-react';
+import Image from "next/image";
 
 const SpotifySection = () => {
   const [songInput, setSongInput] = useState('');
@@ -57,6 +58,7 @@ const SpotifySection = () => {
         setSubmitMessage('Failed to add song. Please try again.');
       }
     } catch (error) {
+      console.error('Error submitting song:', error);
       setSubmitMessage('Error submitting song. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -76,11 +78,13 @@ const SpotifySection = () => {
               </h3>
               <div className="flex items-center gap-4">
                 {currentlyPlaying.albumArt && (
-                  <img 
-                    src={currentlyPlaying.albumArt} 
-                    alt="Album Art" 
-                    className="w-16 h-16 rounded-md shadow-sm"
-                  />
+                  <Image
+                  src={currentlyPlaying.albumArt}
+                  alt="Album Art"
+                  width={64}  // Set the width (16 * 4 for pixel scaling)
+                  height={64} // Set the height (16 * 4 for pixel scaling)
+                  className="rounded-md shadow-sm" // Your custom classes for styling
+                />
                 )}
                 <div>
                   <p className="font-medium text-white">{currentlyPlaying.songName}</p>

@@ -1,3 +1,4 @@
+//Spotify/now-playing/route
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
@@ -36,6 +37,7 @@ export async function GET() {
       albumArt: data.item?.album?.images?.[0]?.url || ''
     });
   } catch (error) {
+    console.error('Error:', error);
     return NextResponse.json({ error: 'Failed to fetch from Spotify' }, { status: 500 });
   }
 }

@@ -5,6 +5,7 @@ import SpotifySection from './spotify-section';
 import StravaWidget from './strava-widget';
 import { Card, CardContent } from "@/components/ui/card";
 import Link from 'next/link';
+import Image from 'next/image';
 
 const colors = {
   primary: "bg-black",
@@ -32,13 +33,18 @@ const welcomeMessages = [
   "Hà Giang, Vietnam"
 ];
 
-const TypeWriter = ({ message, onComplete }) => {
+interface TypeWriterProps {
+    message: string; // Assuming message is a string
+    onComplete: () => void; // Assuming onComplete is a function that takes no arguments and returns nothing
+  }
+
+const TypeWriter: React.FC<TypeWriterProps> = ({ message, onComplete }) => {
   const [displayText, setDisplayText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    let timeout;
+    let timeout: NodeJS.Timeout;
     
     if (isTyping && displayText.length < message.length) {
       timeout = setTimeout(() => {
@@ -91,10 +97,13 @@ const HeroLayout = () => {
       {/* Hero Image Section */}
       <div className="relative h-screen">
         <div className="absolute inset-0 z-10" /> {/* Reduced overlay opacity */}
-        <img 
+        <Image 
           src="/img/hero.jpg" 
           alt="Landscape Hero" 
-          className="w-full h-full object-cover"
+          layout="fill" 
+          objectFit="cover"
+          priority 
+          unoptimized         
         />
         
         {/* Welcome Text */}
@@ -152,10 +161,12 @@ const HeroLayout = () => {
             <Card className={`h-full ${colors.primary}`}>
               <CardContent className="p-4 flex flex-col h-full">
                 <div className="relative h-80 mb-4 rounded-lg overflow-hidden">
-                  <img 
+                <Image 
                     src="/img/headshot1.jpg" 
                     alt="Headshot" 
-                    className="absolute top-0 left-0 w-full h-full object-cover object-top"
+                    layout="fill" 
+                    objectFit="cover" 
+                    objectPosition="top"
                   />
                 </div>
                 <div className="text-center ">
@@ -167,19 +178,21 @@ const HeroLayout = () => {
 
             {/* Bio Card */}
             <Card className={`h-full ${colors.primary}`}>
-              <CardContent className="p-6 h-full flex flex-col justify-between">
+            <CardContent className="p-6 h-full flex flex-col justify-between">
                 <div className="space-y-4">
-                  <h2 className={`text-2xl font-bold font-serif ${colors.accent2}`}>Rooted in Portland</h2>
-                  <p className={`text-sm leading-relaxed ${colors.text}`}>
+                    <h2 className={`text-2xl font-bold font-serif ${colors.accent2}`}>Rooted in Portland</h2>
+                    <p className={`text-sm leading-relaxed ${colors.text}`}>
                     Born and raised in PNW, for college I ventured to the University of Idaho, where I earned a degree in Computer Science and a minor in Mathematics, and a lifetime of memories.
-                  </p>
-                  <h2 className={`text-2xl font-bold font-serif ${colors.accent}`}>Chasing the next adventure. Always</h2>
-                  <p className={`text-sm leading-relaxed ${colors.text}`}>
-                    The best stories don't come from staying inside. That's why I spent a month training in Flagstaff, skied through a Bend winter, and solo-traveled across Thailand. Just out here collecting as many experience tokens as I can.
+                    </p>
+                    <h2 className={`text-2xl font-bold font-serif ${colors.accent}`}>
+                    Chasing the next adventure. Always
+                    </h2>
+                    <p className={`text-sm leading-relaxed ${colors.text}`}>
+                    The best stories don&apos;t come from staying inside. That&apos;s why I spent a month training in Flagstaff, skied through a Bend winter, and solo-traveled across Thailand. Just out here collecting as many experience tokens as I can.
                     Thanks for stopping by!
-                  </p>
+                    </p>
                 </div>
-              </CardContent>
+            </CardContent>
             </Card>
 
             {/* Strava Widget Card */}
@@ -210,10 +223,13 @@ const HeroLayout = () => {
                 
                 <Card className={`group relative cursor-pointer hover:shadow-xl transition-all duration-300 h-64 ${colors.secondary}`}>
                   <CardContent className="p-0 h-full">
-                    <img 
-                      src={`/img/${type}.jpg`}
-                      alt={type.charAt(0).toUpperCase() + type.slice(1)}
-                      className="w-full h-full object-cover rounded-lg"
+                  <Image 
+                    src={`/img/${type}.jpg`}
+                    alt={type.charAt(0).toUpperCase() + type.slice(1)}
+                    fill
+                    className="w-full h-full object-cover rounded-lg"
+                    quality={100}
+                    priority
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 rounded-lg transition-all duration-300 flex items-center justify-center">
                       <span className={`text-2xl font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${colors.accent}`}>
@@ -261,7 +277,7 @@ const HeroLayout = () => {
       {/* Footer */}
       <footer className={`${colors.primary} py-8`}>
         <div className="container mx-auto px-4">
-          <div className="flex justify-center space-x-12">
+          <div className="flex justify-center space-x-12 ">
             {[
               { icon: Mail, href: "mailto:calebseely@gmail.com" },
               { icon: Linkedin, href: "https://www.linkedin.com/in/caleb-seely" },
@@ -271,7 +287,7 @@ const HeroLayout = () => {
               <a 
                 key={href}
                 href={href}
-                className={`${colors.text} hover:${colors.accent} transition-colors`}
+                className={`${colors.text} hover:${colors.accent} transition-colors `}
                 target="_blank"
               >
                 <Icon size={28} />

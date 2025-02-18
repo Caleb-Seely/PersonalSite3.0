@@ -3,18 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { MapPin, Clock, ArrowUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-
-// Dark theme color palette
-const colors = {
-    primary: "bg-black",
-    secondary: "bg-zinc-900",
-    accent: "text-[#8DB7F5]",
-    accentBg: "bg-[#8DB7F5]",
-    accent2: "text-[#10B981]",
-    text: "text-white",
-    textMuted: "text-zinc-400",
-    hover: "hover:bg-zinc-800",
-};
+import Image from "next/image";
 
 interface Activity {
   name: string;
@@ -46,7 +35,8 @@ const StravaWidget = () => {
 
         const data = await response.json();
         setActivity(data);
-      } catch (err) {
+      } catch (error) {
+        console.error('Error:', error);
         setError('Unable to load activity data');
       } finally {
         setIsLoading(false);
@@ -126,10 +116,12 @@ const StravaWidget = () => {
       <CardContent className="p-4 pt-0 space-y-4">
         {activity.map && (
           <div className="relative w-full h-48 md:h-64 rounded-lg overflow-hidden">
-            <img 
-              src={activity.map} 
-              alt="Activity route"
-              className="w-full h-full object-cover"
+            <Image
+                src={activity.map}
+                alt="Activity route"
+                width={640} // Adjust to your preferred width
+                height={480} // Adjust to your preferred height
+                className="w-full h-full object-contain md:object-cover" // Ensures full visibility on mobile and proper scaling on larger screens
             />
           </div>
         )}

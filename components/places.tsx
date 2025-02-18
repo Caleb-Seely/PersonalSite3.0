@@ -1,10 +1,11 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, ChevronLeft, ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { Menu, X, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Mail, Linkedin, FileText, Github } from 'lucide-react';
 import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
+import Image from "next/image";
 
 const colors = {
     primary: "bg-black",
@@ -21,7 +22,7 @@ const colors = {
 const PlacesPage = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
-    const typingTimeoutRef = useRef(null);
+    const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [windowWidth, setWindowWidth] = useState<number>(typeof window !== "undefined" ? window.innerWidth : 1024);
 
 
@@ -85,9 +86,11 @@ const PlacesPage = () => {
     // Faster typing speed (10ms instead of 20ms)
     // For longer text (>100 characters), make it even faster (5ms)
     const typingSpeed = targetText.length > 100 ? 5 : 10;
-
+    
+    
     const typeText = () => {
       if (index < targetText.length) {
+        
         currentText += targetText[index];
         setDisplayText(currentText);
         index++;
@@ -106,12 +109,12 @@ const PlacesPage = () => {
     };
   }, [currentPlace]);
 
-  const handlePlaceClick = (place) => {
+  const handlePlaceClick = (place: React.SetStateAction<{ id: number; title: string; image: string; description: string; }>) => {
     setCurrentPlace(place);
     setIsExpanded(false);
   };
 
-  const getTitleColor = (title) => {
+  const getTitleColor = (title: string) => {
     return title === "Steens Mountain" ? colors.steensAccent : colors.accent2;
   };
 
@@ -158,10 +161,13 @@ const PlacesPage = () => {
         {/* Featured Image */}
         <div className="max-w-4xl mx-auto mb-4">
           <div className="relative h-[400px] w-full overflow-hidden rounded-lg" ref={imageRef}>
-            <img
-              src={currentPlace.image}
-              alt={currentPlace.title}
-              className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+          <Image
+            src={currentPlace.image}
+            alt={currentPlace.title}
+            fill
+            className="object-cover transition-transform duration-500 hover:scale-105"
+            quality={100}
+            priority
             />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black p-6">
               <h1 className={`text-3xl font-bold ${getTitleColor(currentPlace.title)}`}>
@@ -176,7 +182,7 @@ const PlacesPage = () => {
           <div 
             className="bg-zinc-900 p-6 rounded-lg cursor-pointer group relative"
             onClick={() => setIsExpanded(!isExpanded)}
-            style={{ minHeight: '160px' }}
+            style={{ minHeight: '180px' }}
           >
             <div 
               className={`transition-all duration-300 ${
@@ -226,13 +232,14 @@ const PlacesPage = () => {
                         className="cursor-pointer transform transition-all duration-300 hover:scale-105 relative "
                         onClick={() => handlePlaceClick(place)}
                     >
-                        <div className="relative aspect-video rounded-lg overflow-hidden z-20">
-                        <img
+                        <div className="relative aspect-video rounded-lg overflow-hidden z-5">
+                        <Image
                             src={place.image}
                             alt={place.title}
-                            className="w-full h-full object-cover z-10"
+                            fill
+                            className="w-full h-full z-10"
                         />
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black p-4">
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black p-4 z-10">
                             <h3 className={`text-lg font-semibold ${getTitleColor(place.title)}`}>
                             {place.title}
                             </h3>
@@ -259,6 +266,27 @@ const PlacesPage = () => {
            </div>
 
         </div>
+
+        {/* Footer */}
+      <footer className={` text-cream py-12`}>
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center space-x-12">
+            <a href="mailto:calebseely@gmail.com" className="hover:text-emerald-500 transition-colors" target="_blank">
+              <Mail size={28} />
+            </a>
+            <a href="https://www.linkedin.com/in/caleb-seely" className="hover:text-emerald-500 transition-colors" target="_blank">
+              <Linkedin size={28} />
+            </a>
+            <a href="misc/Caleb_Seely_Resume.pdf" className="hover:text-emerald-500 transition-colors" target="_blank">
+              <FileText size={28} />
+            </a>
+            <a href="https://github.com/Caleb-Seely" className="hover:text-emerald-500 transition-colors" target="_blank">
+              <Github size={28} />
+            </a>
+          </div>
+        </div>
+      </footer>
+
     </div>
   );
 };

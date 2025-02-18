@@ -135,11 +135,21 @@ export async function GET() {
 
     console.log('Successfully transformed Strava activity data');
     return NextResponse.json(activity);
-  } catch (error) {
-    console.error('Error in API route:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch activity data', details: error.message },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error in API route:', error.message); // Log the error message for debugging
+      return NextResponse.json(
+        { error: 'Failed to fetch activity data', details: error.message },
+        { status: 500 }
+      );
+    } else {
+      // Handle the case where 'error' is not an instance of Error (e.g., string or unknown object)
+      console.error('Unknown error:', error);
+      return NextResponse.json(
+        { error: 'Failed to fetch activity data', details: 'Unknown error' },
+        { status: 500 }
+      );
+    }
   }
+  
 }

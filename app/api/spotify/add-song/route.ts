@@ -1,3 +1,4 @@
+//Spotiry/add-songs/route
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
@@ -22,6 +23,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No song URL provided' }, { status: 400 });
     }
   } catch (error) {
+    console.error('Error:', error);
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
   }
 
@@ -79,11 +81,20 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Error:', error); // Log the error for debugging
-    return NextResponse.json(
-      { error: error.message || 'Failed to add song' },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error:', error.message); // Log the error message for debugging
+      return NextResponse.json(
+        { error: error.message || 'Failed to add song' },
+        { status: 500 }
+      );
+    } else {
+      console.error('Error:', error); // Handle non-Error cases if necessary
+      return NextResponse.json(
+        { error: 'Failed to add song' },
+        { status: 500 }
+      );
+    }
   }
+  
 }

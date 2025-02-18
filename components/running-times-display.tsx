@@ -5,6 +5,7 @@ import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Menu, X, ChevronDown, ChevronUp, Mail, Github, FileText, Linkedin } from 'lucide-react';
 import Link from 'next/link';
+import Image from "next/image";
 
 // Dark theme color palette
 const colors = {
@@ -35,8 +36,6 @@ const RunningTimesDisplay = () => {
 
   const [currentDistance, setCurrentDistance] = useState(null);
   const [displayTime, setDisplayTime] = useState('00:00:00.00');
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [isSticky, setIsSticky] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -78,14 +77,6 @@ const RunningTimesDisplay = () => {
       }
     }
 
-    const stickyThreshold = 300;
-    const nearestKnownDistance = runningData.find(d => 
-      Math.abs(d.meters - distance) < stickyThreshold
-    );
-
-    if (nearestKnownDistance && isSticky) {
-      return nearestKnownDistance.time;
-    }
 
     const lowerSeconds = timeToSeconds(lower.time);
     const upperSeconds = timeToSeconds(upper.time);
@@ -97,7 +88,7 @@ const RunningTimesDisplay = () => {
   };
 
   const animateToTime = (targetTime, duration = 1500) => {
-    setIsAnimating(true);
+    
     const startSeconds = timeToSeconds(displayTime || "00:00:00.00");
     const endSeconds = timeToSeconds(targetTime);
     const startTimestamp = Date.now();
@@ -113,7 +104,8 @@ const RunningTimesDisplay = () => {
         requestAnimationFrame(updateNumber);
       } else {
         setDisplayTime(targetTime);
-        setIsAnimating(false);
+        
+        
       }
     };
 
@@ -188,11 +180,14 @@ const RunningTimesDisplay = () => {
       {/* Banner Image */}
       <div className="relative h-48 w-full overflow-hidden">
         <div className="absolute inset-0 z-10" />
-        <img
-          src="/img/running_banner5.jpg"
-          alt="Running Banner"
-          className="w-full h-full object-cover"
-        />
+        <Image
+            src="/img/running_banner5.jpg"
+            alt="Running Banner"
+            layout="fill"
+            objectFit="cover"
+            unoptimized
+            className="w-full h-full"
+            />
       </div>
 
       <div className="max-w-4xl mx-auto p-5 space-y-8">
@@ -218,17 +213,17 @@ const RunningTimesDisplay = () => {
                 I <span className="text-[#8DB7F5]">❤</span> running.
             </p>
             <div className={`overflow-hidden transition-all duration-300 ${isExpanded ? 'max-h-96' : 'max-h-20'}`}>
+            <p className="text-gray-400 mt-2">
+                Running has been more than a sport to me&mdash;it&apos;s been a constant. From the first awkward, lung-burning laps in middle school to the crisp, predawn slogs through winter rain, this sport has shaped my days, my mindset, and my ambitions.
+            </p>
+            <div className={`${isExpanded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
                 <p className="text-gray-400 mt-2">
-                Running has been more than a sport to me—it's been a constant. From the first awkward, lung-burning laps in middle school to the crisp, predawn slogs through winter rain, this sport has shaped my days, my mindset, and my ambitions.
-                </p>
-                <div className={`${isExpanded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
-                <p className="text-gray-400 mt-2">    
-                    For over a decade, I've chased every experience running has will offer me. The anxious thrill of race day. The quiet meditation of solo miles. The unshakable camaraderie of teammates and training partners. Every step—easy or injured—has added to the story.
+                For over a decade, I&apos;ve chased every experience running has will offer me. The anxious thrill of race day. The quiet meditation of solo miles. The unshakable camaraderie of teammates and training partners. Every step&mdash;easy or injured&mdash;has added to the story.
                 </p>
                 <p className="text-gray-400 mt-2">
-                    I'm endlessly grateful for the coaches who have challenged me, the friends who have pushed me, and the countless roads and trails that have left their mark on me as much as I have on them. Running isn't just something I do; it's a part of who I am          
+                I&apos;m endlessly grateful for the coaches who have challenged me, the friends who have pushed me, and the countless roads and trails that have left their mark on me as much as I have on them. Running isn&apos;t just something I do; it&apos;s a part of who I am.
                 </p>
-                </div>
+            </div>
             </div>
             <Button 
                 variant="ghost" 
@@ -281,19 +276,24 @@ const RunningTimesDisplay = () => {
 
         {/* Photo Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[1, 2, 3].map((num) => (
+        {[1, 2, 3].map((num) => (
             <div 
-              key={num}
-              className="relative w-full  bg-gray-100 rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+            key={num}
+            className="relative w-full h-80  rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
-              <img
+            <Image
                 src={`/img/running${num}.jpg`}
                 alt={`Running photo ${num}`}
-                className=" top-0 left-0 w-full h-full object-cover"
-              />
+                layout="fill"
+                objectFit="contain"  // Changed to contain
+                className="w-full h-full"
+                unoptimized
+            />
             </div>
-          ))}
+        ))}
         </div>
+
+
 
         
       </div>
