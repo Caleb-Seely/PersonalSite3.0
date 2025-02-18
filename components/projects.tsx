@@ -4,24 +4,24 @@ import { Menu, X, ChevronRight, Mail, Github, FileText, Linkedin } from 'lucide-
 import Link from 'next/link';
 import Image from "next/image";
 
-// Dark theme color palette
-// const colors = {
-//     primary: "bg-black",
-//     secondary: "bg-zinc-900",
-//     accent: "text-[#8DB7F5]",
-//     accentBg: "bg-[#8DB7F5]",
-//     accent2: "text-[#10B981]",
-//     text: "text-white",
-//     textMuted: "text-zinc-400",
-//     hover: "hover:bg-zinc-800",
-//   };
+// Define the Project interface
+interface Project {
+  id: number;
+  title: string;
+  tools: string[];
+  shortDescription: string;
+  longDescription: string;
+  images: string[];
+  github?: string;
+  live?: string;
+}
 
 const ProjectsPage = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedTech, setSelectedTech] = useState<string | null>(null);
 
-  const projects = [
+  const projects: Project[] = [
     {
       id: 1,
       title: "AI-Powered Task Manager",
@@ -183,15 +183,15 @@ const ProjectsPage = () => {
               <h2 className="text-3xl font-bold mb-6">{selectedProject.title}</h2>
               
               <div className="flex gap-4 mb-6 overflow-x-auto">
-                {selectedProject.images.map((img, index) => (
+                {selectedProject.images.map((img: string, index: number) => (
                   <Image
-                  key={index}
-                  src={img}
-                  alt={`${selectedProject.title} screenshot ${index + 1}`}
-                  width={384} // Set a default width (adjust as necessary)
-                  height={256} // Set a default height (adjust as necessary)
-                  className="rounded-lg w-full md:w-96 object-contain md:object-cover" // Adjust for mobile and larger screens
-                />
+                    key={index}
+                    src={img}
+                    alt={`${selectedProject.title} screenshot ${index + 1}`}
+                    width={384}
+                    height={256}
+                    className="rounded-lg w-full md:w-96 object-contain md:object-cover"
+                  />
                 ))}
               </div>
 
@@ -200,7 +200,7 @@ const ProjectsPage = () => {
               <div className="mb-6">
                 <h3 className="text-xl font-bold mb-3 text-[#8DB7F5]">Tools & Technologies</h3>
                 <div className="flex flex-wrap gap-2">
-                  {selectedProject.tools.map((tool) => (
+                  {selectedProject.tools.map((tool: string) => (
                     <span
                       key={tool}
                       className="px-3 py-1 rounded-full bg-[#10B981]/20 text-[#10B981]"
@@ -226,8 +226,7 @@ const ProjectsPage = () => {
                     href={selectedProject.live}
                     className="flex items-center gap-2 text-[#8DB7F5] hover:text-[#10B981]"
                   >
-                    {/* <ExternalLink size={20} />
-                    <span>Live Demo</span> */}
+                    <span>Live Demo</span>
                   </a>
                 )}
               </div>
@@ -243,21 +242,20 @@ const ProjectsPage = () => {
         )}
       </div>
 
-
       {/* Footer */}
-      <footer className={` text-cream py-12`}>
+      <footer className="text-cream py-12">
         <div className="container mx-auto px-4">
           <div className="flex justify-center space-x-12">
-            <a href="mailto:calebseely@gmail.com" className="hover:text-emerald-500 transition-colors" target="_blank">
+            <a href="mailto:calebseely@gmail.com" className="hover:text-emerald-500 transition-colors" target="_blank" rel="noopener noreferrer">
               <Mail size={28} />
             </a>
-            <a href="https://www.linkedin.com/in/caleb-seely" className="hover:text-emerald-500 transition-colors" target="_blank">
+            <a href="https://www.linkedin.com/in/caleb-seely" className="hover:text-emerald-500 transition-colors" target="_blank" rel="noopener noreferrer">
               <Linkedin size={28} />
             </a>
-            <a href="misc/Caleb_Seely_Resume.pdf" className="hover:text-emerald-500 transition-colors" target="_blank">
+            <a href="misc/Caleb_Seely_Resume.pdf" className="hover:text-emerald-500 transition-colors" target="_blank" rel="noopener noreferrer">
               <FileText size={28} />
             </a>
-            <a href="https://github.com/Caleb-Seely" className="hover:text-emerald-500 transition-colors" target="_blank">
+            <a href="https://github.com/Caleb-Seely" className="hover:text-emerald-500 transition-colors" target="_blank" rel="noopener noreferrer">
               <Github size={28} />
             </a>
           </div>

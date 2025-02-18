@@ -17,7 +17,7 @@ const colors = {
     text: "text-white",
     textMuted: "text-zinc-400",
     hover: "hover:bg-zinc-800",
-  };
+};
 
 const RunningTimesDisplay = () => {
   const runningData = [
@@ -34,25 +34,25 @@ const RunningTimesDisplay = () => {
     { distance: 'a marathon', meters: 42195, time: "02:37:41.00", showButton: true, label: 'Full' }
   ];
 
-  const [currentDistance, setCurrentDistance] = useState(null);
+  const [currentDistance, setCurrentDistance] = useState<number | null>(null);
   const [displayTime, setDisplayTime] = useState('00:00:00.00');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Utility functions remain the same
-  const timeToSeconds = (timeStr) => {
+  // Utility functions with added type annotations
+  const timeToSeconds = (timeStr: string): number => {
     const [hours, minutes, seconds] = timeStr.split(':');
     return parseFloat(hours) * 3600 + parseFloat(minutes) * 60 + parseFloat(seconds);
   };
 
-  const secondsToTimeString = (totalSeconds) => {
+  const secondsToTimeString = (totalSeconds: number): string => {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toFixed(2).padStart(5, '0')}`;
   };
 
-  const formatTimeForDisplay = (timeStr) => {
+  const formatTimeForDisplay = (timeStr: string): string => {
     if (!timeStr) return '';
     const [hours, minutes, seconds] = timeStr.split(':');
     if (hours === "00") {
@@ -64,8 +64,7 @@ const RunningTimesDisplay = () => {
     return timeStr;
   };
 
-  // Rest of the utility functions remain the same as in your original code
-  const interpolateTime = (distance) => {
+  const interpolateTime = (distance: number): string => {
     let lower = runningData[0];
     let upper = runningData[runningData.length - 1];
 
@@ -77,7 +76,6 @@ const RunningTimesDisplay = () => {
       }
     }
 
-
     const lowerSeconds = timeToSeconds(lower.time);
     const upperSeconds = timeToSeconds(upper.time);
     
@@ -87,8 +85,7 @@ const RunningTimesDisplay = () => {
     return secondsToTimeString(interpolatedSeconds);
   };
 
-  const animateToTime = (targetTime, duration = 1500) => {
-    
+  const animateToTime = (targetTime: string, duration = 1500): void => {
     const startSeconds = timeToSeconds(displayTime || "00:00:00.00");
     const endSeconds = timeToSeconds(targetTime);
     const startTimestamp = Date.now();
@@ -104,22 +101,20 @@ const RunningTimesDisplay = () => {
         requestAnimationFrame(updateNumber);
       } else {
         setDisplayTime(targetTime);
-        
-        
       }
     };
 
     requestAnimationFrame(updateNumber);
   };
 
-  const handleSliderChange = (newValue) => {
+  const handleSliderChange = (newValue: number[]): void => {
     const distance = newValue[0];
     setCurrentDistance(distance);
     const newTime = interpolateTime(distance);
     animateToTime(newTime);
   };
 
-  const handleDistanceClick = (meters) => {
+  const handleDistanceClick = (meters: number): void => {
     setCurrentDistance(meters);
     const newTime = interpolateTime(meters);
     animateToTime(newTime);

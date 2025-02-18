@@ -2,9 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Music, Send } from 'lucide-react';
 import Image from "next/image";
 
+// Define interface for currently playing song
+interface CurrentlyPlaying {
+  albumArt: string;
+  songName: string;
+  artist: string;
+  isPlaying?: boolean;
+}
+
 const SpotifySection = () => {
   const [songInput, setSongInput] = useState('');
-  const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
+  const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
 
@@ -35,7 +43,7 @@ const SpotifySection = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!songInput.trim()) return;
 
