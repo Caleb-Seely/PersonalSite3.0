@@ -98,7 +98,7 @@ const HeroLayout = () => {
       <div className="relative h-screen">
         <div className="absolute inset-0 z-10" /> {/* Reduced overlay opacity */}
         <Image 
-          src="/img/hero.jpg" 
+          src="/img/hero.webp" 
           alt="Landscape Hero" 
           layout="fill" 
           objectFit="cover"
@@ -224,7 +224,7 @@ const HeroLayout = () => {
                 <Card className={`group relative cursor-pointer hover:shadow-xl transition-all duration-300 h-64 ${colors.secondary}`}>
                   <CardContent className="p-0 h-full">
                   <Image 
-                    src={`/img/${type}.jpg`}
+                    src={`/img/${type}.webp`}
                     alt={type.charAt(0).toUpperCase() + type.slice(1)}
                     fill
                     className="w-full h-full object-cover rounded-lg"

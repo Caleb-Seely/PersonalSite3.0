@@ -176,7 +176,7 @@ const RunningTimesDisplay = () => {
       <div className="relative h-48 w-full overflow-hidden">
         <div className="absolute inset-0 z-10" />
         <Image
-            src="/img/running_banner5.jpg"
+            src="/img/running_banner5.webp"
             alt="Running Banner"
             layout="fill"
             objectFit="cover"
