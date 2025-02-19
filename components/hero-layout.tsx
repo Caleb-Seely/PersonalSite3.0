@@ -19,11 +19,8 @@ const colors = {
 };
 
 const welcomeMessages = [
-  "Welcome to my corner of the web",
   "Hello, I'm Caleb",
-  "Explorer. Developer. Runner.",
   "Building the future, one line at a time",
-  "Where code meets creativity",
   "Hey You",
   "This site was built with love",
   "This site was built with love, not sleep",
@@ -206,7 +203,7 @@ const HeroLayout = () => {
             {['Pacing', 'Projects', 'Places'].map((type) => (
               <Link 
                 key={type} 
-                href={type === 'Pacing' ? '/running-times-display' : type === 'Projects' 
+                href={type === 'Pacing' ? '/pacing' : type === 'Projects' 
                     ? '/projects': type === 'Places' 
                     ? '/places' : '#'}
                 className="block h-full"

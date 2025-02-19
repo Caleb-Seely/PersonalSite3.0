@@ -82,7 +82,7 @@ const ProjectsPage = () => {
               Home
             </Link>
             <Link 
-              href="/running-times-display" 
+              href="/pacing" 
               className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors"
             >
               Pacing

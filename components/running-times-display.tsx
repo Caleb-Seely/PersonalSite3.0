@@ -23,13 +23,13 @@ const RunningTimesDisplay = () => {
   const runningData = [
     { distance: '100m', meters: 100, time: "00:00:12.91", showButton: true, label: '100m' },
     { distance: '200m', meters: 200, time: "00:00:25.06", showButton: false },
-    { distance: '400m', meters: 400, time: "00:00:52.51", showButton: false, label: '400m' },
+    { distance: '400m', meters: 400, time: "00:00:52.51", showButton: true, label: '400m' },
     { distance: '800m', meters: 800, time: "00:01:52.62", showButton: true, label: '800m' },
     { distance: '1500m', meters: 1500, time: "00:03:51.58", showButton: true, label: '1500m' },
-    { distance: '3000m', meters: 3000, time: "00:08:47.91", showButton: false },
+    { distance: '3000m', meters: 3000, time: "00:08:47.91", showButton: true, label: '3k' },
     { distance: '5000m', meters: 5000, time: "00:15:47.00", showButton: true, label: '5K' },
-    { distance: '8000m', meters: 8000, time: "00:24:39.00", showButton: false },
-    { distance: '10000m', meters: 10000, time: "00:32:40.60", showButton: false, label: '10K' },
+    { distance: '8000m', meters: 8000, time: "00:24:39.00", showButton: true, label: '8k' },
+    { distance: '10000m', meters: 10000, time: "00:32:40.60", showButton: true, label: '10K' },
     { distance: 'a half marathon', meters: 21097.5, time: "01:14:47.00", showButton: true, label: 'Half' },
     { distance: 'a marathon', meters: 42195, time: "02:37:41.00", showButton: true, label: 'Full' }
   ];
@@ -134,10 +134,14 @@ const RunningTimesDisplay = () => {
       : `${Math.round(currentDistance)}m`;
   };
 
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
-    <div className="h-screen bg-black text-white overflow-auto scrollbar-none">
-        {/* Navigation */}
-        <div className="absolute top-0 w-full p-4 flex justify-between items-center">
+    <div className="relative h-screen bg-black text-white overflow-auto">
+        {/* Fixed Navigation */}
+        <div className="absolute top-0 w-full p-4 flex justify-between items-center z-20">
             <div className="text-cream text-2xl font-bold">CS</div>
             <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -149,7 +153,7 @@ const RunningTimesDisplay = () => {
 
         {/* Menu Items */}
         {isMenuOpen && (
-          <div className="absolute top-16 right-4 bg-black bg-opacity-95 z-40 rounded-lg shadow-lg p-4">
+          <div className="fixed top-16 right-4 bg-black bg-opacity-95 z-40 rounded-lg shadow-lg p-4">
             <nav className="text-white text-l space-y-1">
               <Link href="/" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
                 Home
@@ -172,8 +176,8 @@ const RunningTimesDisplay = () => {
           </div>
         )}
 
-      {/* Banner Image */}
-      <div className="relative h-48 w-full overflow-hidden">
+      {/* Banner Image - added padding-top to account for fixed header */}
+      <div className="relative h-48 w-full overflow-hidden pt-16">
         <div className="absolute inset-0 z-10" />
         <Image
             src="/img/running_banner5.webp"
@@ -186,7 +190,7 @@ const RunningTimesDisplay = () => {
             />
       </div>
 
-      <div className="max-w-4xl mx-auto p-5 space-y-8">
+      <div className="max-w-4xl mx-auto p-2 space-y-4">
         {/* Header Section with fixed height */}
         <div className="text-left min-h-[160px] flex flex-col justify-start">
           <h1 className="text-5xl font-bold mb-4 leading-tight">
@@ -203,28 +207,34 @@ const RunningTimesDisplay = () => {
           </div>
         </div>
 
-        {/* Experience Section with expand/collapse */}
-        <Card className="p-4 pb-2 bg-gray-900 border-gray-800"> {/* Reduced bottom padding */}
+        {/* Experience Section with expand/collapse - clickable card */}
+        <Card 
+          className="p-4 pb-2 bg-gray-900 border-gray-800 cursor-pointer" 
+          onClick={toggleExpand}
+        >
             <p className="text-lg text-white">
                 I <span className="text-[#8DB7F5]">❤</span> running.
             </p>
-            <div className={`overflow-hidden transition-all duration-300 ${isExpanded ? 'max-h-96' : 'max-h-20'}`}>
-            <p className="text-gray-400 mt-2">
-                Running has been more than a sport to me&mdash;it&apos;s been a constant. From the first awkward, lung-burning laps in middle school to the crisp, predawn slogs through winter rain, this sport has shaped my days, my mindset, and my ambitions.
-            </p>
-            <div className={`${isExpanded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
-                <p className="text-gray-400 mt-2">
-                For over a decade, I&apos;ve chased every experience running has will offer me. The anxious thrill of race day. The quiet meditation of solo miles. The unshakable camaraderie of teammates and training partners. Every step&mdash;easy or injured&mdash;has added to the story.
-                </p>
-                <p className="text-gray-400 mt-2">
-                I&apos;m endlessly grateful for the coaches who have challenged me, the friends who have pushed me, and the countless roads and trails that have left their mark on me as much as I have on them. Running isn&apos;t just something I do; it&apos;s a part of who I am.
-                </p>
-            </div>
+            <div className={`overflow-hidden transition-all duration-300 ${isExpanded ? 'max-h-[500px]' : 'max-h-20'}`}>
+              <p className="text-gray-400 mt-2">
+                  Running has been more than a sport to me&mdash;it&apos;s been a constant. From the first awkward, lung-burning laps in middle school to the crisp, predawn slogs through winter rain, this sport has shaped my days, my mindset, and my ambitions.
+              </p>
+              <div className={`${isExpanded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
+                  <p className="text-gray-400 mt-2">
+                  For over a decade, I&apos;ve chased every experience running has will offer me. The anxious thrill of race day. The quiet meditation of solo miles. The unshakable camaraderie of teammates and training partners. Every step&mdash;easy or injured&mdash;has added to the story.
+                  </p>
+                  <p className="text-gray-400 mt-2">
+                  I&apos;m endlessly grateful for the coaches who have challenged me, the friends who have pushed me, and the countless roads and trails that have left their mark on me as much as I have on them. Running isn&apos;t just something I do; it&apos;s a part of who I am.
+                  </p>
+              </div>
             </div>
             <Button 
                 variant="ghost" 
-                className="w-full p-1 h-5 text-gray-400 hover:text-gray-400 hover:bg-gray-700 duration-200"  // No color change on hover
-                onClick={() => setIsExpanded(!isExpanded)}
+                className="w-full p-1 h-5 text-gray-400 hover:text-gray-400 hover:bg-gray-700 duration-200"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent card click event
+                  toggleExpand();
+                }}
             >
                 {isExpanded ? (
                 <ChevronUp className="h-6 w-6" />
@@ -234,8 +244,8 @@ const RunningTimesDisplay = () => {
             </Button>
         </Card>
         
-        {/* Distance Buttons */}
-        <div className="flex justify-between gap-2 overflow-x-auto pb-2">
+        {/* Distance Buttons - using flex-wrap to allow buttons to wrap to next line */}
+        <div className="flex flex-wrap gap-2 pb-2">
           {runningData
             .filter(data => data.showButton)
             .map((data) => (
@@ -243,7 +253,7 @@ const RunningTimesDisplay = () => {
                 key={data.distance}
                 variant={currentDistance === data.meters ? "default" : "outline"}
                 onClick={() => handleDistanceClick(data.meters)}
-                className="px-4 py-2 whitespace-nowrap bg-gray-900 border-gray-700 hover:bg-gray-800"
+                className="px-4 py-2 whitespace-nowrap bg-gray-900 border-gray-700 hover:bg-gray-800 mb-1"
                 size="sm"
               >
                 {data.label}
@@ -275,39 +285,35 @@ const RunningTimesDisplay = () => {
         {[1, 2, 3].map((num) => (
             <div 
             key={num}
-            className="relative w-full h-80  rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+            className="relative w-full h-80 rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
             <Image
-                src={`/img/running${num}.jpg`}
+                src={`/img/running${num}.webp`}
                 alt={`Running photo ${num}`}
                 layout="fill"
-                objectFit="contain"  // Changed to contain
+                objectFit="contain"
                 className="w-full h-full"
                 unoptimized
             />
             </div>
         ))}
         </div>
-
-
-
-        
       </div>
 
-      {/* Footer */}
-      <footer className={` text-cream py-12`}>
+      {/* Footer with improved hover effects */}
+      <footer className="text-cream py-12">
         <div className="container mx-auto px-4">
           <div className="flex justify-center space-x-12">
-            <a href="mailto:calebseely@gmail.com" className="hover:text-sand transition-colors" target="_blank">
+            <a href="mailto:calebseely@gmail.com" className="transition-all duration-300 hover:text-[#8DB7F5] hover:scale-110" target="_blank">
               <Mail size={28} />
             </a>
-            <a href="https://www.linkedin.com/in/caleb-seely" className="hover:text-sand transition-colors" target="_blank">
+            <a href="https://www.linkedin.com/in/caleb-seely" className="transition-all duration-300 hover:text-[#8DB7F5] hover:scale-110" target="_blank">
               <Linkedin size={28} />
             </a>
-            <a href="misc/Caleb_Seely_Resume.pdf" className="hover:text-sand transition-colors" target="_blank">
+            <a href="misc/Caleb_Seely_Resume.pdf" className="transition-all duration-300 hover:text-[#8DB7F5] hover:scale-110" target="_blank">
               <FileText size={28} />
             </a>
-            <a href="https://github.com/Caleb-Seely" className="hover:text-sand transition-colors" target="_blank">
+            <a href="https://github.com/Caleb-Seely" className="transition-all duration-300 hover:text-[#8DB7F5] hover:scale-110" target="_blank">
               <Github size={28} />
             </a>
           </div>
