@@ -12,7 +12,7 @@ export default function Home() {
         fill
         className="object-cover"
         priority
-        unoptimized={true} // Ensures Next.js optimizes the image
+        unoptimized={true} 
         sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 1920px"
         />
       </div>

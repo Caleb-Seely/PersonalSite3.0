@@ -119,7 +119,7 @@ const HeroLayout = () => {
         {isMenuOpen && (
           <div className="absolute top-16 right-4 bg-black bg-opacity-70 z-40 rounded-lg shadow-lg p-4">
             <nav className="text-white text-l space-y-1">
-              <Link href="/running-times-display" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
+              <Link href="/pacing" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
                 Pacing
               </Link>
               <Link href="/projects" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
