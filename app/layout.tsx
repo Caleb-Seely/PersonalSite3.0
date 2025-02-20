@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CS ",
+  title: "Caleb Seely ",
   description: "Built by AI and no sleep",
 };
 
@@ -25,10 +25,10 @@ export default function RootLayout({
   return (
     <html lang="en">
         <head>
-        <link rel="icon" type="image/png" sizes="192x192" href="/my-favicon/icon-192.png" />
-        <link rel="icon" type="image/png" sizes="96x96" href="/my-favicon/icon-96.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/my-favicon/running-shoe-rotate1.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/my-favicon/running-shoe-rotate1.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/my-favicon/icon-32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/my-favicon/icon-16.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/my-favicon/running-shoe-rotate1.png" />
         <link rel="apple-touch-icon" href="/my-favicon/apple-icon.png" />
         <link rel="manifest" href="/my-favicon/manifest.json" />
         </head>
