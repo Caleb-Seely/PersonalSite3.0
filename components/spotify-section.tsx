@@ -104,7 +104,17 @@ const SpotifySection = () => {
 
           {/* Playlist Submission Section */}
           <div className="flex-1 bg-gray-800 rounded-lg p-6 shadow-md border border-gray-700">
-            <h2 className="text-2xl font-bold mb-6 ">Add to My Playlist</h2>
+            <h2 className="text-2xl font-bold mb-6">
+                Add to My{' '}
+                <a
+                    href="https://open.spotify.com/playlist/2jlzrqaXQ9Y985JWRk1vlC?si=508f79d181c94bc8"
+                    target="_blank" // Opens the link in a new tab
+                    rel="noopener noreferrer" // Security best practice for target="_blank"
+                    className="text-[#10B981] hover:underline" // Sets the color and adds hover effect
+                >
+                    Playlist
+                </a>
+            </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="relative">
                 <input 

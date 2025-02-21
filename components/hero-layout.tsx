@@ -20,7 +20,7 @@ const colors = {
 
 const welcomeMessages = [
   "Hello, I'm Caleb",
-  "Building the future, one line at a time",
+  "Building the future, one mile at a time",
   "Hey You",
   "This site was built with love",
   "This site was built with love, not sleep",
@@ -141,57 +141,57 @@ const HeroLayout = () => {
         )}
       </div>
 
-      {/* About Section */}
-      <section id="about" className={`py-16 ${colors.secondary}`}>
-        <div className="container mx-auto px-8 max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Headshot Card */}
-            <Card className={`h-full ${colors.primary}`}>
-              <CardContent className="p-4 flex flex-col h-full">
-                <div className="relative h-80 mb-4 rounded-lg overflow-hidden">
-                <Image 
-                    src="/img/headshot1.jpg" 
-                    alt="Headshot" 
-                    layout="fill" 
-                    objectFit="cover" 
-                    objectPosition="top"
-                  />
-                </div>
-                <div className="text-center ">
-                  <h3 className="text-xl md:text-2xl font-bold text-white">Caleb Seely</h3>
-                  <p className="text-gray-400 text-sm md:text-base">Software Developer</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Bio Card */}
-            <Card className={`h-full ${colors.primary}`}>
-            <CardContent className="p-6 h-full flex flex-col justify-between">
-                <div className="space-y-4">
-                    <h2 className={`text-2xl font-bold font-serif ${colors.accent2}`}>Rooted in Portland</h2>
-                    <p className={`text-sm leading-relaxed ${colors.text}`}>
-                    Born and raised in PNW, for college I ventured to the University of Idaho, where I earned a degree in Computer Science and a minor in Mathematics, and a lifetime of memories.
-                    </p>
-                    <h2 className={`text-2xl font-bold font-serif ${colors.accent}`}>
-                    Chasing the next adventure. Always
-                    </h2>
-                    <p className={`text-sm leading-relaxed ${colors.text}`}>
-                    The best stories don&apos;t come from staying inside. That&apos;s why I spent a month training in Flagstaff, skied through a Bend winter, and solo-traveled across Thailand. Just out here collecting as many experience tokens as I can.
-                    Thanks for stopping by!
-                    </p>
-                </div>
-            </CardContent>
-            </Card>
-
-            {/* Strava Widget Card */}
-            <Card className={`h-full ${colors.primary}`}>
-              <CardContent className="p-4 ">
-                <StravaWidget />
-              </CardContent>
-            </Card>
+{/* About Section */}
+<section id="about" className={`py-16 ${colors.secondary}`}>
+  <div className="container mx-auto px-8 max-w-7xl">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Headshot Card */}
+      <Card className={`h-full ${colors.primary}`}>
+        <CardContent className="p-4 flex flex-col h-full">
+          <div className="relative h-80 mb-4 rounded-lg overflow-hidden">
+            <Image 
+              src="/img/headshot1.jpg" 
+              alt="Headshot" 
+              layout="fill" 
+              objectFit="cover" 
+              objectPosition="center"
+            />
           </div>
-        </div>
-      </section>
+          <div className="text-center ">
+            <h3 className="text-xl md:text-2xl font-bold text-white">Caleb Seely</h3>
+            <p className="text-gray-400 text-sm md:text-base">Software Developer</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Bio Card */}
+      <Card className={`h-full ${colors.primary}`}>
+        <CardContent className="p-6 h-full flex flex-col justify-between">
+          <div className="space-y-4">
+            <h2 className={`text-2xl font-bold font-serif lg:text-2xl md:text-xl ${colors.accent2}`}>Rooted in Portland</h2>
+            <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
+              Born and raised in PNW, for college I ventured to the University of Idaho, where I earned a degree in Computer Science, a minor in Mathematics, and a lifetime of memories.
+            </p>
+            <h2 className={`text-2xl font-bold font-serif lg:text-2xl md:text-xl ${colors.accent}`}>
+              Chasing the next adventure. Always
+            </h2>
+            <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
+              The best stories don&apos;t come from staying inside. Just out here collecting as many experience tokens as I can.
+              Thanks for stopping by!
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Strava Widget Card */}
+      <Card className={`h-full ${colors.primary}`}>
+        <CardContent className="p-4 ">
+          <StravaWidget />
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</section>
 
       {/* Spotify Section */}
       <SpotifySection />

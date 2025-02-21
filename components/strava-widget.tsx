@@ -109,24 +109,29 @@ const StravaWidget = () => {
   );
 
   return (
-    <Card className="h-full">
-      <CardHeader className="p-4 pb-2">
+    <Card className="h-full flex flex-col">
+      <CardHeader className="p-4 pb-0">
         <h3 className="text-lg font-semibold">{activity.name}</h3>
       </CardHeader>
-      <CardContent className="p-4 pt-0 space-y-4">
+      <CardContent className="p-4 flex-grow flex flex-col">
         {activity.map && (
-          <div className="relative w-full h-48 md:h-64 rounded-lg overflow-hidden">
+          <div className="relative w-full aspect-square max-h-64 rounded-lg overflow-hidden mb-4">
+            <div className="absolute top-1 left-1 z-5">
+              <span className="text-xs font-semibold bg-white bg-opacity-75 px-1 py-0.5 rounded text-orange-500">
+                Strava
+              </span>
+            </div>
             <Image
                 src={activity.map}
                 alt="Activity route"
-                width={640} // Adjust to your preferred width
-                height={480} // Adjust to your preferred height
-                className="w-full h-full object-contain md:object-cover" // Ensures full visibility on mobile and proper scaling on larger screens
+                width={640}
+                height={480}
+                className="w-full h-full object-cover"
             />
           </div>
         )}
         
-        <div className="grid grid-cols-3 gap-4 text-sm">
+        <div className="grid grid-cols-3 gap-2 text-sm mt-auto">
           <MetricDisplay 
             Icon={MapPin} 
             value={formatDistance(activity.distance)} 

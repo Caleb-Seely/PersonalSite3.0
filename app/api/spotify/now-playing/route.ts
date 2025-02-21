@@ -21,7 +21,7 @@ export async function GET() {
     if (response.status === 204 || (response.status === 200 && response.headers.get('content-length') === '0')) {
       return NextResponse.json({ 
         isPlaying: false,
-        songName: 'I \'m not playing music right now.',
+        songName: 'I\'m not playing music right now.',
         artist: 'Spotify paused',
         albumArt: '/img/running-shoe-rotate1.png' // Path to your custom image
       });
