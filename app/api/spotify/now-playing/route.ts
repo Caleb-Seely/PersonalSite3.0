@@ -23,9 +23,11 @@ export async function GET() {
         isPlaying: false,
         songName: 'I\'m not playing music right now.',
         artist: 'Spotify paused',
-        albumArt: '/img/running-shoe-rotate1.png' // Path to your custom image
+        albumArt: '/my-favicon/icon-emerald-30.webp'
       });
     }
+
+    
 
     // Ensure response is valid JSON
     const text = await response.text();
@@ -34,13 +36,26 @@ export async function GET() {
     }
 
     const data = JSON.parse(text);
-    console.log('Successfully fetched Spotify data');
-    return NextResponse.json({
-      isPlaying: data.is_playing,
-      songName: data.item?.name || 'Unknown',
-      artist: data.item?.artists?.[0]?.name || 'Unknown',
-      albumArt: data.item?.album?.images?.[0]?.url || ''
-    });
+
+    if (data.currently_playing_type === 'episode') {
+        // Handle podcast episode
+        const result = {
+          isPlaying: data.is_playing,
+          songName: 'I\'m not playing music right now.',
+          artist: 'Spotify paused',
+          albumArt: '/my-favicon/icon-emerald-30.webp'
+        };
+        return NextResponse.json(result);
+    } else {
+      // Handle music track (default case)
+      const result = {
+        isPlaying: data.is_playing,
+        songName: data.item.name || 'Unknown',
+        artist: data.item.artists?.[0]?.name || 'Unknown Artist',
+        albumArt: data.item.album?.images?.[0]?.url || '/my-favicon/icon-emerald-30.webp'
+      };
+      return NextResponse.json(result);
+    }
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json({ error: 'Failed to fetch from Spotify' }, { status: 500 });

@@ -177,8 +177,10 @@ const HeroLayout = () => {
             </h2>
             <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
               The best stories don&apos;t come from staying inside. Just out here collecting as many experience tokens as I can.
-              Thanks for stopping by!
             </p>
+            <h2 className={`text-2xl font-bold font-serif lg:text-2xl md:text-xl ${colors.text}`}>
+              Thanks for stopping by!
+            </h2>
           </div>
         </CardContent>
       </Card>
