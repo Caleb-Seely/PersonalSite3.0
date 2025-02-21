@@ -93,7 +93,7 @@ async function getLatestActivity(accessToken: string) {
     }
 
     const activity = activities[0];
-    console.log('Activity data returned:', activities);
+    //console.log('Activity data returned:', activities);
     
     // Validate required fields
     const requiredFields = ['name', 'distance', 'moving_time', 'total_elevation_gain', 'map'];
