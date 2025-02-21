@@ -62,6 +62,7 @@ async function getLatestActivity(accessToken: string) {
         'Authorization': `Bearer ${accessToken}`,
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-store, max-age=0'
       },
     });
 
@@ -92,6 +93,7 @@ async function getLatestActivity(accessToken: string) {
     }
 
     const activity = activities[0];
+    console.log('Activity data returned:', activities);
     
     // Validate required fields
     const requiredFields = ['name', 'distance', 'moving_time', 'total_elevation_gain', 'map'];

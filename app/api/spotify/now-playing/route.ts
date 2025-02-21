@@ -12,7 +12,8 @@ export async function GET() {
   try {
     const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
       headers: {
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `Bearer ${accessToken}`,
+        'Cache-Control': 'no-store, max-age=0'
       }
     });
 
