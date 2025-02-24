@@ -9,7 +9,6 @@ const REFRESH_TOKEN = process.env.STRAVA_REFRESH_TOKEN;
 
 async function getAccessToken() {
   try {
-    console.log('Strava/latests-activity/route using refresh_token for an access_token');
     const response = await fetch('https://www.strava.com/oauth/token', {
       method: 'POST',
       headers: {
@@ -21,6 +20,8 @@ async function getAccessToken() {
         refresh_token: REFRESH_TOKEN,
         grant_type: 'refresh_token',
       }),
+      // Add cache: 'no-store' to prevent caching of the token request
+      cache: 'no-store',
     });
 
     if (!response.ok) {
@@ -40,7 +41,10 @@ async function validateGoogleMapsUrl(polyline: string) {
   const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?size=400x400&path=enc:${encodeURIComponent(polyline)}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
   
   try {
-    const mapResponse = await fetch(mapUrl);
+    const mapResponse = await fetch(mapUrl, {
+      // Add cache: 'no-store' to prevent caching of Google Maps requests
+      cache: 'no-store',
+    });
     if (!mapResponse.ok) {
       console.error('Google Maps API Error:', {
         status: mapResponse.status,
@@ -57,13 +61,19 @@ async function validateGoogleMapsUrl(polyline: string) {
 
 async function getLatestActivity(accessToken: string) {
   try {
-    const response = await fetch(`${STRAVA_API_URL}/athlete/activities?per_page=1`, {
+    // Add timestamp to URL to prevent caching
+    const timestamp = Date.now();
+    const response = await fetch(`${STRAVA_API_URL}/athlete/activities?per_page=1&_t=${timestamp}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Cache-Control': 'no-store, max-age=0'
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
       },
+      // Add cache: 'no-store' to prevent fetch-level caching
+      cache: 'no-store',
     });
 
     if (!response.ok) {
@@ -86,6 +96,7 @@ async function getLatestActivity(accessToken: string) {
     console.log('Successfully fetched Strava activities:', {
       count: activities.length,
       hasData: Boolean(activities[0]),
+      timestamp: new Date().toISOString(), // Add timestamp to logs
     });
 
     if (activities.length === 0) {
@@ -93,9 +104,7 @@ async function getLatestActivity(accessToken: string) {
     }
 
     const activity = activities[0];
-    //console.log('Activity data returned:', activities);
     
-    // Validate required fields
     const requiredFields = ['name', 'distance', 'moving_time', 'total_elevation_gain', 'map'];
     const missingFields = requiredFields.filter(field => !(field in activity));
 
@@ -104,7 +113,6 @@ async function getLatestActivity(accessToken: string) {
       throw new Error(`Activity missing required fields: ${missingFields.join(', ')}`);
     }
 
-    // Handle map polyline and Google Maps validation
     let mapUrl = null;
     if (activity.map?.summary_polyline) {
       mapUrl = await validateGoogleMapsUrl(activity.map.summary_polyline);
@@ -116,6 +124,8 @@ async function getLatestActivity(accessToken: string) {
       moving_time: activity.moving_time,
       total_elevation_gain: activity.total_elevation_gain,
       map: mapUrl,
+      // Add fetched timestamp to response
+      fetched_at: new Date().toISOString(),
     };
   } catch (error) {
     console.error('Error fetching latest activity:', error);
@@ -125,33 +135,47 @@ async function getLatestActivity(accessToken: string) {
 
 export async function GET() {
   try {
+    // Add response headers to prevent caching
+    const headers = new Headers({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    });
+
     const accessToken = await getAccessToken();
     const activity = await getLatestActivity(accessToken);
 
     if (!activity) {
-      return NextResponse.json(
-        { message: 'No activities found' },
-        { status: 404 }
+      return new NextResponse(
+        JSON.stringify({ message: 'No activities found' }),
+        { status: 404, headers }
       );
     }
 
     console.log('Successfully transformed Strava activity data');
-    return NextResponse.json(activity);
+    return new NextResponse(JSON.stringify(activity), { 
+      status: 200,
+      headers 
+    });
   } catch (error: unknown) {
+    const headers = new Headers({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    });
+
     if (error instanceof Error) {
-      console.error('Error in API route:', error.message); // Log the error message for debugging
-      return NextResponse.json(
-        { error: 'Failed to fetch activity data', details: error.message },
-        { status: 500 }
+      console.error('Error in API route:', error.message);
+      return new NextResponse(
+        JSON.stringify({ error: 'Failed to fetch activity data', details: error.message }),
+        { status: 500, headers }
       );
     } else {
-      // Handle the case where 'error' is not an instance of Error (e.g., string or unknown object)
       console.error('Unknown error:', error);
-      return NextResponse.json(
-        { error: 'Failed to fetch activity data', details: 'Unknown error' },
-        { status: 500 }
+      return new NextResponse(
+        JSON.stringify({ error: 'Failed to fetch activity data', details: 'Unknown error' }),
+        { status: 500, headers }
       );
     }
   }
-  
 }
