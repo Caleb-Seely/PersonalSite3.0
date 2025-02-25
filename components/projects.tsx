@@ -8,6 +8,11 @@ import { personalSite2Reflection } from './reflections/personalSite2';
 import {messagesDBReflection} from './reflections/messagesDB';
 import { compilerReflection } from './reflections/compiler';
 import { capstoneReflection } from './reflections/capstone';
+import { _3BallReflection } from './reflections/3Ball';
+import { ecommerceReflection } from './reflections/ecommerce';
+import { predictingSalesReflection } from './reflections/predictingSales';
+import { mediaArchiveReflection } from './reflections/mediaArchive';
+
 
 // Define the Project interface
 interface Project {
@@ -71,7 +76,41 @@ const ProjectsPage = () => {
           shortDescription: "My senior capstone research project",
           longDescription: capstoneReflection,
           images: []
-        }
+        },
+        {
+         id: 6,
+         title: "3Ball",
+         tools: ["c#", "Unity"],
+         shortDescription: "A Unity game for Android",
+         longDescription: _3BallReflection,
+         images: [],
+         github: "https://github.com/Caleb-Seely/3Ball"
+       },
+       {
+         id: 7,
+         title: "E-Commerce Website",
+         tools: ["JS", "React", "APIs"],
+         shortDescription: "A fully functional shopping website",
+         longDescription: ecommerceReflection,
+         images: []
+       },
+       {
+         id: 8,
+         title: "ML Sales Prediction",
+         tools: ["AI", "Python"],
+         shortDescription: "An ML project using Random Forest",
+         longDescription: predictingSalesReflection,
+         images: []
+       },
+       {
+         id: 9,
+         title: "Family Media Archive",
+         tools: ["Personal"],
+         shortDescription: "A project to backup and organize my family history",
+         longDescription: mediaArchiveReflection,
+         images: []
+       }
+
   ];
 
   const allTechnologies = [...new Set(projects.flatMap(project => project.tools))].sort();
