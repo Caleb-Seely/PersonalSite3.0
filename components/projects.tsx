@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { Menu, X, ChevronRight, Mail, Github, FileText, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import Image from "next/image";
+import { personalSiteReflection } from './reflections/personalSite3';
+import {messagesDBReflection} from './reflections/messagesDB';
+import { compilerReflection } from './reflections/compiler';
 
 // Define the Project interface
 interface Project {
@@ -25,7 +28,7 @@ const ProjectsPage = () => {
     {
       id: 1,
       title: "AI-Powered Task Manager",
-      tools: ["React", "Python", "TensorFlow", "AWS"],
+      tools: ["AI", "Python", "TensorFlow", "AWS"],
       shortDescription: "Smart task management system with AI-driven prioritization",
       longDescription: "Developed a sophisticated task management application that uses machine learning to analyze task patterns and suggest optimal scheduling. Implemented natural language processing for task input and automated categorization.",
       images: ["/api/placeholder/600/400", "/api/placeholder/600/400"],
@@ -33,24 +36,42 @@ const ProjectsPage = () => {
       live: "https://task-manager-demo.com"
     },
     {
-      id: 2,
-      title: "E-commerce Analytics Dashboard",
-      tools: ["Vue.js", "Node.js", "PostgreSQL", "Docker"],
-      shortDescription: "Real-time analytics dashboard for e-commerce platforms",
-      longDescription: "Created a comprehensive analytics dashboard that provides real-time insights into sales, inventory, and customer behavior. Features include customizable widgets, automated reporting, and predictive analytics.",
-      images: ["/api/placeholder/600/400"],
-      github: "https://github.com/example/analytics-dashboard"
-    },
-    {
-      id: 3,
-      title: "Smart Home IoT Hub",
-      tools: ["React Native", "MongoDB", "MQTT", "Raspberry Pi"],
-      shortDescription: "Centralized control system for IoT devices",
-      longDescription: "Built a mobile application that serves as a central hub for controlling various IoT devices. Implemented real-time device status monitoring, automation rules, and energy consumption tracking.",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"],
-      github: "https://github.com/example/iot-hub",
-      live: "https://iot-hub-demo.com"
-    }
+        id: 2,
+        title: "CalebSeely.com",
+        tools: ["AI", "TypeScript"],
+        shortDescription: "A redesign of my personal website with a focus on style and utility.",
+        longDescription: personalSiteReflection,
+        images: [],
+        github: "https://github.com/Caleb-Seely/PersonalSite3.0"
+      },
+      {
+        id: 3,
+        title: "Messages Database Design",
+        tools: ["SQL", "Python", "JS"],
+        shortDescription: "SMS & MMS analysis.",
+        longDescription: messagesDBReflection,
+        images: [],
+        github: "https://github.com/Caleb-Seely/MessagesDB"
+      },
+      {
+        id: 4,
+        title: "C Compiler",
+        tools: ["C"],
+        shortDescription: "Compiler built from the ground up based on the C language",
+        longDescription: compilerReflection,
+        images: [],
+        github: "https://github.com/Caleb-Seely/C-Minus"
+      },
+      {
+         id: 5,
+         title: "CalebSeely.com",
+         tools: ["AI", "TypeScript"],
+         shortDescription: "A redesign of my personal website with a focus on style and utility.",
+         longDescription: personalSiteReflection,
+         images: [],
+         github: "https://github.com/Caleb-Seely/PersonalSite3.0",
+         live: "https://calebseely.netlify.app/"
+      }
   ];
 
   const allTechnologies = [...new Set(projects.flatMap(project => project.tools))].sort();
@@ -195,7 +216,10 @@ const ProjectsPage = () => {
                 ))}
               </div>
 
-              <p className="text-gray-300 mb-6">{selectedProject.longDescription}</p>
+              <div
+                className="text-gray-300 mb-6"
+                dangerouslySetInnerHTML={{ __html: selectedProject.longDescription }}
+                />
               
               <div className="mb-6">
                 <h3 className="text-xl font-bold mb-3 text-[#8DB7F5]">Tools & Technologies</h3>
