@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { Menu, X, ChevronRight, Mail, Github, FileText, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import Image from "next/image";
-import { personalSiteReflection } from './reflections/personalSite3';
+import { personalSite3Reflection } from './reflections/personalSite3';
+import { personalSite2Reflection } from './reflections/personalSite2';
 import {messagesDBReflection} from './reflections/messagesDB';
 import { compilerReflection } from './reflections/compiler';
+import { capstoneReflection } from './reflections/capstone';
 
 // Define the Project interface
 interface Project {
@@ -26,26 +28,16 @@ const ProjectsPage = () => {
 
   const projects: Project[] = [
     {
-      id: 1,
-      title: "AI-Powered Task Manager",
-      tools: ["AI", "Python", "TensorFlow", "AWS"],
-      shortDescription: "Smart task management system with AI-driven prioritization",
-      longDescription: "Developed a sophisticated task management application that uses machine learning to analyze task patterns and suggest optimal scheduling. Implemented natural language processing for task input and automated categorization.",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"],
-      github: "https://github.com/example/task-manager",
-      live: "https://task-manager-demo.com"
-    },
-    {
-        id: 2,
+        id: 1,
         title: "CalebSeely.com",
         tools: ["AI", "TypeScript"],
         shortDescription: "A redesign of my personal website with a focus on style and utility.",
-        longDescription: personalSiteReflection,
+        longDescription: personalSite3Reflection,
         images: [],
         github: "https://github.com/Caleb-Seely/PersonalSite3.0"
       },
       {
-        id: 3,
+        id: 2,
         title: "Messages Database Design",
         tools: ["SQL", "Python", "JS"],
         shortDescription: "SMS & MMS analysis.",
@@ -54,7 +46,7 @@ const ProjectsPage = () => {
         github: "https://github.com/Caleb-Seely/MessagesDB"
       },
       {
-        id: 4,
+        id: 3,
         title: "C Compiler",
         tools: ["C"],
         shortDescription: "Compiler built from the ground up based on the C language",
@@ -63,15 +55,23 @@ const ProjectsPage = () => {
         github: "https://github.com/Caleb-Seely/C-Minus"
       },
       {
-         id: 5,
-         title: "CalebSeely.com",
-         tools: ["AI", "TypeScript"],
-         shortDescription: "A redesign of my personal website with a focus on style and utility.",
-         longDescription: personalSiteReflection,
+         id: 4,
+         title: "CalebSeely.com (Old)",
+         tools: ["JS", "Bootstrap", "APIs"],
+         shortDescription: "My first real attempt at an online portfolio",
+         longDescription: personalSite2Reflection,
          images: [],
-         github: "https://github.com/Caleb-Seely/PersonalSite3.0",
+         github: "https://github.com/Caleb-Seely/PersonalSite2.0",
          live: "https://calebseely.netlify.app/"
-      }
+      },
+      {
+          id: 5,
+          title: "OBDII Research",
+          tools: ["Java", "Android", "APIs"],
+          shortDescription: "My senior capstone research project",
+          longDescription: capstoneReflection,
+          images: []
+        }
   ];
 
   const allTechnologies = [...new Set(projects.flatMap(project => project.tools))].sort();
@@ -128,11 +128,11 @@ const ProjectsPage = () => {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 pt-24">
-        <h1 className="text-4xl font-bold mb-8">My Projects -This part is not done yet</h1>
+        <h1 className="text-4xl font-bold mb-8">My Projects </h1>
         
         {/* Filters Section */}
         <div className="mb-8">
-          <h2 className="text-xl mb-4 text-[#8DB7F5]">Filter by Technology Filler Projects</h2>
+          <h2 className="text-xl mb-4 text-[#8DB7F5]">Filter by Technology</h2>
           <div className="flex flex-wrap gap-2">
             <button
               className={`px-4 py-2 rounded-full border transition-colors ${
