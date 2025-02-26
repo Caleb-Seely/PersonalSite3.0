@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, ChevronUp, Mail, Github, FileText, Linkedin } from 'lucide-react';
 import SpotifySection from './spotify-section';
 import StravaWidget from './strava-widget';
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -19,13 +19,13 @@ const colors = {
 };
 
 const welcomeMessages = [
-  "Hello, I'm Caleb",
+  "Hi, I'm Caleb",
   "Building the future, one mile at a time",
   "Hey You",
   "This site was built with love",
   "This site was built with love, not sleep",
   "RUN",
-  "Welcome to the Internet",
+  "Welcome to my home",
   "Let me out!",
   "Hà Giang, Vietnam"
 ];
@@ -142,65 +142,70 @@ const HeroLayout = () => {
       </div>
 
 {/* About Section */}
-<section id="about" className={`py-16 ${colors.secondary}`}>
-  <div className="container mx-auto px-8 max-w-7xl">
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {/* Headshot Card */}
-      <Card className={`h-full ${colors.primary}`}>
-        <CardContent className="p-4 flex flex-col h-full">
-          <div className="relative h-80 mb-4 rounded-lg overflow-hidden">
-            <Image 
-              src="/img/headshot1.jpg" 
-              alt="Headshot" 
-              layout="fill" 
-              objectFit="cover" 
-              objectPosition="center"
-            />
-          </div>
-          <div className="text-center ">
-            <h3 className="text-xl md:text-2xl font-bold text-white">Caleb Seely</h3>
-            <p className="text-gray-400 text-sm md:text-base">Software Developer</p>
-          </div>
-        </CardContent>
-      </Card>
+<section id="about" className={`py-16 ${colors.primary}`}>
+  <div className="container mx-auto px-2 max-w-7xl">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-12 relative">
+      
+{/* Business Card Container (Headshot & Bio together) */}
+<div className="md:col-span-8 bg-white rounded-xl shadow-lg overflow-hidden">
+  <div className="grid md:grid-cols-2 h-full">
+    
+    {/* Headshot Side */}
+    <div className="relative h-64 md:h-full py-8 md:py-0">
+      <div className="absolute inset-0">
+        <Image 
+          src="/img/headshot1.jpg" 
+          alt="Headshot" 
+          layout="fill" 
+          objectFit="cover" 
+          objectPosition="center"
+        />
+      </div>
+    </div>
 
-      {/* Bio Card */}
-      <Card className={`h-full ${colors.primary}`}>
-        <CardContent className="p-6 h-full flex flex-col justify-between">
-          <div className="space-y-4">
-            <h2 className={`text-2xl font-bold font-serif lg:text-2xl md:text-xl ${colors.accent2}`}>Rooted in Portland</h2>
-            <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
-              Born and raised in PNW, for college I ventured to the University of Idaho, where I earned a degree in Computer Science, a minor in Mathematics, and a lifetime of memories.
-            </p>
-            <h2 className={`text-2xl font-bold font-serif lg:text-2xl md:text-xl ${colors.accent}`}>
-              Chasing the next adventure. Always
-            </h2>
-            <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
-              The best stories don&apos;t come from staying inside. Just out here collecting as many experience tokens as I can.
-            </p>
-            <h2 className={`text-2xl font-bold font-serif lg:text-2xl md:text-xl ${colors.text}`}>
-              Thanks for stopping by!
-            </h2>
-          </div>
-        </CardContent>
-      </Card>
+    {/* Bio Side */}
+    <div className={`px-4 flex flex-col justify-between ${colors.primary} py-8 md:py-0`}>
+      <div className="space-y-4">
+        <h2 className={`text-2xl font-bold font-serif lg:text-4xl md:text-xl ${colors.accent2}`}>Rooted in Portland</h2>
+        <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
+          Born and raised in PNW, for college I ventured to the University of Idaho, where I earned a degree in Computer Science, a minor in Mathematics, and a lifetime of memories.
+        </p>
+        <h2 className={`text-2xl font-bold font-serif lg:text-3xl md:text-xl ${colors.accent}`}>
+          Chasing the next adventure. Always
+        </h2>
+        <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
+          The best stories don&apos;t come from staying inside. Just out here collecting as many experience tokens as I can.
+        </p>
+      </div>
 
-      {/* Strava Widget Card */}
-      <Card className={`h-full ${colors.primary}`}>
-        <CardContent className="p-4 ">
-          <StravaWidget />
-        </CardContent>
-      </Card>
+      {/* Anchored to the bottom */}
+      <h2 className={`text-2xl font-bold font-serif lg:text-2xl md:text-xl ${colors.text}`}>
+        Thanks for stopping by!
+      </h2>
+    </div>        
+  </div>
+</div>
+
+      {/* Strava Widget - Clearly separated but on same line for large screens */}
+      <div className="md:col-span-4">
+        <Card className={`h-full ${colors.primary} shadow-lg rounded-xl`}>
+          <CardContent className="p-4">
+            <StravaWidget />
+          </CardContent>
+        </Card>
+      </div>
+
     </div>
   </div>
 </section>
+
 
       {/* Spotify Section */}
       <SpotifySection />
 
       {/* Projects Section */}
       <section id="projects" className={`py-16 ${colors.primary}`}>
-        <div className="container mx-auto px-8 max-w-7xl">
+        <div className="container mx-auto px-2 max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {['Pacing', 'Projects', 'Places'].map((type) => (
               <Link 
