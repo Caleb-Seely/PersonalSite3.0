@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Menu, X, ChevronRight, Mail, Github, FileText, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import Image from "next/image";
+import InteractiveConstellation from './twinkleStars';
 import { personalSite3Reflection } from './reflections/personalSite3';
 import { personalSite2Reflection } from './reflections/personalSite2';
 import {messagesDBReflection} from './reflections/messagesDB';
@@ -50,25 +51,23 @@ const ProjectsPage = () => {
         images: [],
         github: "https://github.com/Caleb-Seely/MessagesDB"
       },
-      {
-        id: 3,
-        title: "C Compiler",
-        tools: ["C"],
-        shortDescription: "Compiler built from the ground up based on the C language",
-        longDescription: compilerReflection,
-        images: [],
-        github: "https://github.com/Caleb-Seely/C-Minus"
-      },
-      {
-         id: 4,
-         title: "CalebSeely.com (Old)",
-         tools: ["JS", "Bootstrap", "APIs"],
-         shortDescription: "My first real attempt at an online portfolio",
-         longDescription: personalSite2Reflection,
+        {
+         id: 3,
+         title: "3Ball",
+         tools: ["C#", "Unity"],
+         shortDescription: "A Unity game for Android",
+         longDescription: _3BallReflection,
          images: [],
-         github: "https://github.com/Caleb-Seely/PersonalSite2.0",
-         live: "https://calebseely.netlify.app/"
-      },
+         github: "https://github.com/Caleb-Seely/3Ball"
+       },    
+       {
+         id: 4,
+         title: "E-Commerce Website",
+         tools: ["JS", "React", "APIs"],
+         shortDescription: "A fully functional shopping website",
+         longDescription: ecommerceReflection,
+         images: []
+       },
       {
           id: 5,
           title: "OBDII Research",
@@ -79,20 +78,22 @@ const ProjectsPage = () => {
         },
         {
          id: 6,
-         title: "3Ball",
-         tools: ["c#", "Unity"],
-         shortDescription: "A Unity game for Android",
-         longDescription: _3BallReflection,
+         title: "C Compiler",
+         tools: ["C"],
+         shortDescription: "Compiler built from the ground up based on the C language",
+         longDescription: compilerReflection,
          images: [],
-         github: "https://github.com/Caleb-Seely/3Ball"
+         github: "https://github.com/Caleb-Seely/C-Minus"
        },
        {
-         id: 7,
-         title: "E-Commerce Website",
-         tools: ["JS", "React", "APIs"],
-         shortDescription: "A fully functional shopping website",
-         longDescription: ecommerceReflection,
-         images: []
+          id: 7,
+          title: "CalebSeely.com (Old)",
+          tools: ["JS", "Bootstrap", "APIs"],
+          shortDescription: "My first real attempt at an online portfolio",
+          longDescription: personalSite2Reflection,
+          images: [],
+          github: "https://github.com/Caleb-Seely/PersonalSite2.0",
+          live: "https://calebseely.netlify.app/"
        },
        {
          id: 8,
@@ -121,7 +122,7 @@ const ProjectsPage = () => {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
-      <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center bg-black z-50">
+      <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center z-50">
         <div className="text-white text-2xl font-bold">CS</div>
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -165,8 +166,10 @@ const ProjectsPage = () => {
         </div>
       )}
 
+      <InteractiveConstellation />
+      
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 pt-24">
+      <div className="max-w-6xl mx-auto px-4 pt-24 z-15">
         <h1 className="text-4xl font-bold mb-8">My Projects </h1>
         
         {/* Filters Section */}
@@ -177,7 +180,7 @@ const ProjectsPage = () => {
               className={`px-4 py-2 rounded-full border transition-colors ${
                 selectedTech === null
                   ? 'bg-[#10B981] text-black border-[#10B981]'
-                  : 'border-[#10B981] text-[#10B981] hover:bg-[#10B981] hover:text-black'
+                  : 'border-[#10B981] text-[#10B981] bg-white hover:bg-[#10B981] hover:text-black'
               }`}
               onClick={() => setSelectedTech(null)}
             >
@@ -186,10 +189,10 @@ const ProjectsPage = () => {
             {allTechnologies.map((tech) => (
               <button
                 key={tech}
-                className={`px-4 py-2 rounded-full border transition-colors ${
+                className={`px-4 py-2 rounded-full border z-15 transition-colors ${
                   selectedTech === tech
                     ? 'bg-[#10B981] text-black border-[#10B981]'
-                    : 'border-[#10B981] text-[#10B981] hover:bg-[#10B981] hover:text-black'
+                    : 'border-[#10B981] bg-black text-[#10B981] hover:bg-[#10B981] hover:text-black'
                 }`}
                 onClick={() => setSelectedTech(tech)}
               >
