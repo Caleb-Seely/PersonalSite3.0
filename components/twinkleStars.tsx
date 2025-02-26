@@ -230,8 +230,8 @@ const InteractiveConstellation = () => {
               fill={hoveredStar === star.id ? "#10B981" : "#FFFFFF"}
               opacity={star.opacity * twinkle}
             //   style={{ pointerEvents: 'auto', cursor: 'pointer' }}
-            //   onMouseEnter={() => setHoveredStar(star.id)}
-            //   onMouseLeave={() => setHoveredStar(null)}
+              onMouseEnter={() => setHoveredStar(star.id)}
+              onMouseLeave={() => setHoveredStar(null)}
               
             />
           );

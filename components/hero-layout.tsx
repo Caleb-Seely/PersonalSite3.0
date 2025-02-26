@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, ChevronUp, Mail, Github, FileText, Linkedin } from 'lucide-react';
 import SpotifySection from './spotify-section';
 import StravaWidget from './strava-widget';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import Link from 'next/link';
 import Image from 'next/image';
 
