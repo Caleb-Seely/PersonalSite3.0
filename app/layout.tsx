@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Caleb Seely",
-  description: "Built by AI and no sleep",
+  description: "Built by AI",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
