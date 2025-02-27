@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Mail, Linkedin, FileText, Github } from 'lucide-react';
-import Link from 'next/link';
+import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
@@ -46,7 +45,6 @@ interface Place {
 }
 
 const PlacesPage = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [windowWidth, setWindowWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1024);

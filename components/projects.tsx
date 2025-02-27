@@ -1,12 +1,11 @@
 "use client";
 import React, { useState } from 'react';
-import { Menu, X, ChevronRight, Mail, Github, FileText, Linkedin } from 'lucide-react';
-import Link from 'next/link';
+import { ChevronRight, Github } from 'lucide-react';
 import Image from "next/image";
 import InteractiveConstellation from './twinkleStars';
 import { personalSite3Reflection } from './reflections/personalSite3';
 import { personalSite2Reflection } from './reflections/personalSite2';
-import {messagesDBReflection} from './reflections/messagesDB';
+import { messagesDBReflection } from './reflections/messagesDB';
 import { compilerReflection } from './reflections/compiler';
 import { capstoneReflection } from './reflections/capstone';
 import { _3BallReflection } from './reflections/3Ball';
@@ -49,7 +48,6 @@ const navLinks = [
 
 const ProjectsPage = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedTech, setSelectedTech] = useState<string | null>(null);
 
   const projects: Project[] = [

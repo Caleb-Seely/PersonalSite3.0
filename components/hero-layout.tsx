@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, ChevronUp, Mail, Github, FileText, Linkedin } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import SpotifySection from './spotify-section';
 import StravaWidget from './strava-widget';
 import { Card, CardContent } from "@/components/ui/card";
@@ -88,7 +88,7 @@ const TypeWriter: React.FC<TypeWriterProps> = ({ message, onComplete }) => {
 };
 
 const HeroLayout = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+ 
   const [isForestFireExpanded, setIsForestFireExpanded] = useState(false);
   const [welcomeMessage, setWelcomeMessage] = useState("");
   const [showWelcome, setShowWelcome] = useState(true);

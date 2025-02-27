@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown, ChevronUp, Mail, Github, FileText, Linkedin } from 'lucide-react';
+import { ChevronDown, ChevronUp} from 'lucide-react';
 import Image from "next/image";
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
@@ -44,7 +44,6 @@ const RunningTimesDisplay = () => {
 
   const [currentDistance, setCurrentDistance] = useState<number | null>(null);
   const [displayTime, setDisplayTime] = useState('00:00:00.00');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Utility functions with added type annotations
