@@ -3,7 +3,6 @@
 import Script from 'next/script';
 
 export default function CloudflareAnalytics() {
-  // You can store this in an environment variable if you prefer
   const CLOUDFLARE_SITE_ID = process.env.CLOUDFLARE_SITE_ID;
   
   if (!CLOUDFLARE_SITE_ID) {

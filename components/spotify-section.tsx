@@ -74,8 +74,8 @@ const SpotifySection = () => {
   };
 
   return (
-    <section id="spotify" className="bg-gray-900 py-20 text-white">
-      <div className="container mx-auto px-4 max-w-6xl">
+    <section id="spotify" className="bg-gray-900 py-8 text-white">
+      <div className="container mx-auto px-2 max-w-6xl">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Currently Playing Section */}
           {currentlyPlaying && (

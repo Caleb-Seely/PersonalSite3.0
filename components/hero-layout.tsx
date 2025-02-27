@@ -142,7 +142,7 @@ const HeroLayout = () => {
       </div>
 
 {/* About Section */}
-<section id="about" className={`py-16 ${colors.primary}`}>
+<section id="about" className={`py-8 ${colors.primary}`}>
   <div className="container mx-auto px-2 max-w-7xl">
     <div className="grid grid-cols-1 md:grid-cols-12 gap-12 relative">
       
@@ -153,13 +153,12 @@ const HeroLayout = () => {
     {/* Headshot Side */}
     <div className="relative h-64 md:h-full py-8 md:py-0">
       <div className="absolute inset-0">
-        <Image 
-          src="/img/headshot1.jpg" 
-          alt="Headshot" 
-          layout="fill" 
-          objectFit="cover" 
-          objectPosition="center"
-        />
+      <Image 
+      src="/img/headshot.webp" 
+         alt="Headshot" 
+         fill
+         style={{ objectFit: 'cover', objectPosition: 'center' }}
+      />
       </div>
     </div>
 
@@ -204,7 +203,7 @@ const HeroLayout = () => {
       <SpotifySection />
 
       {/* Projects Section */}
-      <section id="projects" className={`py-16 ${colors.primary}`}>
+      <section id="projects" className={`py-8 ${colors.primary}`}>
         <div className="container mx-auto px-2 max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {['Pacing', 'Projects', 'Places'].map((type) => (
