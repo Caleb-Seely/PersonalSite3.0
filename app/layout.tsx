@@ -1,12 +1,10 @@
-"use client";
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Script from "next/script";
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
-import { GA_MEASUREMENT_ID, pageview } from "../lib/gtag"; // Import tracking functions
+import Script from 'next/script';
+
+//Google Measurment ID
+export const GA_MEASUREMENT_ID = process.env.GOOGLE_ANALYTICS_ID; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,18 +18,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Caleb Seely",
-  description: "Built by AI",
+  description: "Built by AI and no sleep",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      pageview(pathname);
-    }
-  }, [pathname]);
-
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en">
       <head>
