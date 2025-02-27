@@ -6,6 +6,8 @@ import StravaWidget from './strava-widget';
 import { Card, CardContent } from "@/components/ui/card";
 import Link from 'next/link';
 import Image from 'next/image';
+import NavMenu from "../components/nav_menu";
+import Footer from "@/components/footer";
 
 const colors = {
   primary: "bg-black",
@@ -17,6 +19,13 @@ const colors = {
   textMuted: "text-zinc-400",
   hover: "hover:bg-zinc-800",
 };
+
+const navLinks = [
+   { href: "/pacing", label: "Pacing" },
+   { href: "/projects", label: "Projects" },
+   { href: "/places", label: "Places" },
+   { href: "/misc/Caleb_Seely_Resume.pdf", label: "Resume", target: "_blank", rel: "noopener noreferrer" },
+ ];
 
 const welcomeMessages = [
   "Hi, I'm Caleb",
@@ -104,99 +113,66 @@ const HeroLayout = () => {
           )}
         </div>
 
-        {/* Navigation */}
-        <div className="absolute top-0 w-full p-4 flex justify-between items-center z-20">
-          <div className={`text-2xl font-bold ${colors.text}`}>CS</div>
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`z-auto ${colors.text} transition-colors`}
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
+        <NavMenu links={navLinks} />
 
-        {/* Menu Items */}
-        {isMenuOpen && (
-          <div className="absolute top-16 right-4 bg-black bg-opacity-70 z-40 rounded-lg shadow-lg p-4">
-            <nav className="text-white text-l space-y-1">
-              <Link href="/pacing" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
-                Pacing
-              </Link>
-              <Link href="/projects" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
-                Projects
-              </Link>
-              <Link href="/places" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
-                Places
-              </Link>
-              <a
-                href="/misc/Caleb_Seely_Resume.pdf"
-                className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Resume
-              </a>
-            </nav>
-          </div>
-        )}
       </div>
 
-{/* About Section */}
-<section id="about" className={`py-8 ${colors.primary}`}>
-  <div className="container mx-auto px-2 max-w-7xl">
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-12 relative">
-      
-{/* Business Card Container (Headshot & Bio together) */}
-<div className="md:col-span-8 bg-white rounded-xl shadow-lg overflow-hidden">
-  <div className="grid md:grid-cols-2 h-full">
-    
-    {/* Headshot Side */}
-    <div className="relative h-64 md:h-full py-8 md:py-0">
-      <div className="absolute inset-0">
-      <Image 
-      src="/img/headshot.webp" 
-         alt="Headshot" 
-         fill
-         style={{ objectFit: 'cover', objectPosition: 'center' }}
-      />
+            {/* About Section */}
+            <section id="about" className={`py-8 ${colors.primary}`}>
+            <div className="container mx-auto px-2 max-w-7xl">
+               <div className="grid grid-cols-1 md:grid-cols-12 gap-12 relative">
+                  
+            {/* Business Card Container (Headshot & Bio together) */}
+            <div className="md:col-span-8 bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="grid md:grid-cols-2 h-full">
+               
+               {/* Headshot Side */}
+               <div className="relative h-64 md:h-full py-8 md:py-0">
+                  <div className="absolute inset-0">
+                  <Image 
+                  src="/img/headshot.webp" 
+                     alt="Headshot" 
+                     fill
+                     style={{ objectFit: 'cover', objectPosition: 'center' }}
+                  />
+                  </div>
+               </div>
+
+               {/* Bio Side */}
+               <div className={`px-4 flex flex-col justify-between ${colors.primary} py-8 md:py-0`}>
+                  <div className="space-y-4">
+                  <h2 className={`text-2xl font-bold font-serif lg:text-4xl md:text-xl ${colors.accent2}`}>Rooted in Portland</h2>
+                  <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
+                     Born and raised in PNW, for college I ventured to the University of Idaho, where I earned a degree in Computer Science, a minor in Mathematics, and a lifetime of memories.
+                  </p>
+                  <h2 className={`text-2xl font-bold font-serif lg:text-3xl md:text-xl ${colors.accent}`}>
+                     Chasing the next adventure. Always
+                  </h2>
+                  <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
+                     The best stories don&apos;t come from staying inside. Just out here collecting as many experience tokens as I can.
+                  </p>
+                  </div>
+
+                  {/* Anchored to the bottom */}
+                  <h2 className={`text-2xl font-bold font-serif lg:text-2xl md:text-xl ${colors.text}`}>
+                  Thanks for stopping by!
+                  </h2>
+               </div>        
+            </div>
+            </div>
+
+            {/* Strava Widget - Clearly separated but on same line for large screens */}
+            <div className="md:col-span-4">
+            <Card className={`h-full ${colors.primary} shadow-lg rounded-xl`}>
+               <CardContent className="p-4">
+                  <StravaWidget />
+               </CardContent>
+            </Card>
+            </div>
+
+         </div>
       </div>
-    </div>
-
-    {/* Bio Side */}
-    <div className={`px-4 flex flex-col justify-between ${colors.primary} py-8 md:py-0`}>
-      <div className="space-y-4">
-        <h2 className={`text-2xl font-bold font-serif lg:text-4xl md:text-xl ${colors.accent2}`}>Rooted in Portland</h2>
-        <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
-          Born and raised in PNW, for college I ventured to the University of Idaho, where I earned a degree in Computer Science, a minor in Mathematics, and a lifetime of memories.
-        </p>
-        <h2 className={`text-2xl font-bold font-serif lg:text-3xl md:text-xl ${colors.accent}`}>
-          Chasing the next adventure. Always
-        </h2>
-        <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
-          The best stories don&apos;t come from staying inside. Just out here collecting as many experience tokens as I can.
-        </p>
-      </div>
-
-      {/* Anchored to the bottom */}
-      <h2 className={`text-2xl font-bold font-serif lg:text-2xl md:text-xl ${colors.text}`}>
-        Thanks for stopping by!
-      </h2>
-    </div>        
-  </div>
-</div>
-
-      {/* Strava Widget - Clearly separated but on same line for large screens */}
-      <div className="md:col-span-4">
-        <Card className={`h-full ${colors.primary} shadow-lg rounded-xl`}>
-          <CardContent className="p-4">
-            <StravaWidget />
-          </CardContent>
-        </Card>
-      </div>
-
-    </div>
-  </div>
-</section>
+      </section>
 
 
       {/* Spotify Section */}
@@ -269,27 +245,7 @@ const HeroLayout = () => {
       </section>
 
       {/* Footer */}
-      <footer className={`${colors.primary} py-8`}>
-        <div className="container mx-auto px-4">
-          <div className="flex justify-center space-x-12 ">
-            {[
-              { icon: Mail, href: "mailto:calebseely@gmail.com" },
-              { icon: Linkedin, href: "https://www.linkedin.com/in/caleb-seely" },
-              { icon: FileText, href: "misc/Caleb_Seely_Resume.pdf" },
-              { icon: Github, href: "https://github.com/Caleb-Seely" }
-            ].map(({ icon: Icon, href }) => (
-              <a 
-                key={href}
-                href={href}
-                className={`${colors.text} hover:${colors.accent} transition-colors `}
-                target="_blank"
-              >
-                <Icon size={28} />
-              </a>
-            ))}
-          </div>
-        </div>
-      </footer>
+      <Footer colors={colors} />
     </div>
   );
 };

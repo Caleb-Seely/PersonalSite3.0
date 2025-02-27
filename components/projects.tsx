@@ -13,7 +13,8 @@ import { _3BallReflection } from './reflections/3Ball';
 import { ecommerceReflection } from './reflections/ecommerce';
 import { predictingSalesReflection } from './reflections/predictingSales';
 import { mediaArchiveReflection } from './reflections/mediaArchive';
-
+import NavMenu from "../components/nav_menu";
+import Footer from "@/components/footer";
 
 // Define the Project interface
 interface Project {
@@ -26,6 +27,25 @@ interface Project {
   github?: string;
   live?: string;
 }
+
+// Dark theme color palette
+const colors = {
+   primary: "bg-black",
+   secondary: "bg-zinc-900",
+   accent: "text-[#8DB7F5]",
+   accentBg: "bg-[#8DB7F5]",
+   accent2: "text-[#10B981]",
+   text: "text-white",
+   textMuted: "text-zinc-400",
+   hover: "hover:bg-zinc-800",
+};
+
+const navLinks = [
+   { href: "/", label: "Home" },
+   { href: "/pacing", label: "Pacing" },
+   { href: "/places", label: "Places" },
+   { href: "/misc/Caleb_Seely_Resume.pdf", label: "Resume", target: "_blank", rel: "noopener noreferrer" },
+ ];
 
 const ProjectsPage = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -121,50 +141,8 @@ const ProjectsPage = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Navigation */}
-      <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center z-50">
-        <div className="text-white text-2xl font-bold">CS</div>
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="z-50 text-white"
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
 
-      {/* Menu Items */}
-      {isMenuOpen && (
-        <div className="absolute top-16 right-4 bg-black bg-opacity-95 z-40 rounded-lg shadow-lg p-4">
-          <nav className="text-white text-l space-y-1">
-            <Link 
-              href="/" 
-              className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors"
-            >
-              Home
-            </Link>
-            <Link 
-              href="/pacing" 
-              className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors"
-            >
-              Pacing
-            </Link>
-            <Link 
-              href="/places" 
-              className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors"
-            >
-              Places
-            </Link>
-            <a
-              href="/misc/Caleb_Seely_Resume.pdf"
-              className="block py-1 px-2 rounded hover:bg-gray-800 transition-colors"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Resume
-            </a>
-          </nav>
-        </div>
-      )}
+      <NavMenu links={navLinks} />
 
       <InteractiveConstellation />
       
@@ -309,24 +287,7 @@ const ProjectsPage = () => {
       </div>
 
       {/* Footer */}
-      <footer className="text-cream py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-center space-x-12">
-            <a href="mailto:calebseely@gmail.com" className="hover:text-emerald-500 transition-colors" target="_blank" rel="noopener noreferrer">
-              <Mail size={28} />
-            </a>
-            <a href="https://www.linkedin.com/in/caleb-seely" className="hover:text-emerald-500 transition-colors" target="_blank" rel="noopener noreferrer">
-              <Linkedin size={28} />
-            </a>
-            <a href="misc/Caleb_Seely_Resume.pdf" className="hover:text-emerald-500 transition-colors" target="_blank" rel="noopener noreferrer">
-              <FileText size={28} />
-            </a>
-            <a href="https://github.com/Caleb-Seely" className="hover:text-emerald-500 transition-colors" target="_blank" rel="noopener noreferrer">
-              <Github size={28} />
-            </a>
-          </div>
-        </div>
-      </footer>
+      <Footer colors={colors} />
     </div>
   );
 };

@@ -4,8 +4,9 @@ import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Menu, X, ChevronDown, ChevronUp, Mail, Github, FileText, Linkedin } from 'lucide-react';
-import Link from 'next/link';
 import Image from "next/image";
+import NavMenu from "../components/nav_menu";
+import Footer from "@/components/footer";
 
 // Dark theme color palette
 const colors = {
@@ -18,6 +19,13 @@ const colors = {
     textMuted: "text-zinc-400",
     hover: "hover:bg-zinc-800",
 };
+
+const navLinks = [
+   { href: "/", label: "Home" },
+   { href: "/projects", label: "Projects" },
+   { href: "/places", label: "Places" },
+   { href: "/misc/Caleb_Seely_Resume.pdf", label: "Resume", target: "_blank", rel: "noopener noreferrer" },
+ ];
 
 const RunningTimesDisplay = () => {
   const runningData = [
@@ -140,50 +148,16 @@ const RunningTimesDisplay = () => {
 
   return (
     <div className="relative h-screen bg-black text-white overflow-auto">
-        {/* Fixed Navigation */}
-        <div className="absolute top-0 w-full p-4 flex justify-between items-center z-20">
-            <div className="text-cream text-2xl font-bold">CS</div>
-            <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="z-50 text-cream"
-            >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-        </div>
-
-        {/* Menu Items */}
-        {isMenuOpen && (
-          <div className="fixed top-16 right-4 bg-black bg-opacity-95 z-40 rounded-lg shadow-lg p-4">
-            <nav className="text-white text-l space-y-1">
-              <Link href="/" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
-                Home
-              </Link>
-              <Link href="/projects" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
-                Projects
-              </Link>
-              <Link href="/places" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
-                Places
-              </Link>
-              <a
-                href="/misc/Caleb_Seely_Resume.pdf"
-                className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Resume
-              </a>
-            </nav>
-          </div>
-        )}
+        <NavMenu links={navLinks} />
 
       {/* Banner Image - added padding-top to account for fixed header */}
       <div className="relative h-48 w-full overflow-hidden pt-16">
         <div className="absolute inset-0 z-10" />
         <Image
-            src="/img/running_banner5.webp"
+            src="/img/Hayward_Banner.webp"
             alt="Running Banner"
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
             unoptimized
             className="w-full h-full"
             priority
@@ -301,24 +275,7 @@ const RunningTimesDisplay = () => {
       </div>
 
       {/* Footer with improved hover effects */}
-      <footer className="text-cream py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-center space-x-12">
-            <a href="mailto:calebseely@gmail.com" className="transition-all duration-300 hover:text-[#8DB7F5] hover:scale-110" target="_blank">
-              <Mail size={28} />
-            </a>
-            <a href="https://www.linkedin.com/in/caleb-seely" className="transition-all duration-300 hover:text-[#8DB7F5] hover:scale-110" target="_blank">
-              <Linkedin size={28} />
-            </a>
-            <a href="misc/Caleb_Seely_Resume.pdf" className="transition-all duration-300 hover:text-[#8DB7F5] hover:scale-110" target="_blank">
-              <FileText size={28} />
-            </a>
-            <a href="https://github.com/Caleb-Seely" className="transition-all duration-300 hover:text-[#8DB7F5] hover:scale-110" target="_blank">
-              <Github size={28} />
-            </a>
-          </div>
-        </div>
-      </footer>
+      <Footer colors={colors} />
     </div>
   );
 };

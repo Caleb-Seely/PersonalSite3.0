@@ -7,6 +7,8 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import Image from "next/image";
 import type { Swiper as SwiperInstance } from 'swiper';
+import NavMenu from "../components/nav_menu";
+import Footer from "@/components/footer";
 
 // Preload images constant - now properly implemented
 const IMAGE_URLS = [
@@ -16,6 +18,13 @@ const IMAGE_URLS = [
   "/img/Ha_Giang.webp",
   "/img/Flagstaff.webp"
 ];
+
+const navLinks = [
+   { href: "/", label: "Home" },
+   { href: "/pacing", label: "Pacing" },
+   { href: "/projects", label: "Projects" },
+   { href: "/misc/Caleb_Seely_Resume.pdf", label: "Resume", target: "_blank", rel: "noopener noreferrer" },
+ ];
 
 const colors = {
     primary: "bg-black",
@@ -172,41 +181,8 @@ const PlacesPage = () => {
   
   return (
     <div className="min-h-screen bg-black text-white ">
-      {/* Navigation remains the same */}
-      <div className="absolute top-0 w-full p-4 flex justify-between items-center z-20">
-        <div className={`text-2xl font-bold ${colors.text}`}>CS</div>
-        <button 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className={`z-50 ${colors.text} `}
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Menu Items remain the same */}
-      {isMenuOpen && (
-        <div className="absolute top-16 right-4 bg-black bg-opacity-95 z-40 rounded-lg shadow-lg p-4">
-          <nav className="text-white text-l space-y-1">
-            <Link href="/" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
-              Home
-            </Link>
-            <Link href="/pacing" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
-              Pacing
-            </Link>
-            <Link href="/projects" className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}>
-              Projects
-            </Link>
-            <a
-              href="/misc/Caleb_Seely_Resume.pdf"
-              className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Resume
-            </a>
-          </nav>
-        </div>
-      )}
+      
+      <NavMenu links={navLinks} />
 
       {/* Main content */}
       <div className="container mx-auto px-4 pt-12">
@@ -337,24 +313,7 @@ const PlacesPage = () => {
       </div>
 
       {/* Footer */}
-      <footer className="text-cream py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-center space-x-12">
-            <a href="mailto:calebseely@gmail.com" className="transition-all duration-300 hover:text-[#8DB7F5] hover:scale-110" target="_blank">
-              <Mail size={28} />
-            </a>
-            <a href="https://www.linkedin.com/in/caleb-seely" className="transition-all duration-300 hover:text-[#8DB7F5] hover:scale-110" target="_blank">
-              <Linkedin size={28} />
-            </a>
-            <a href="misc/Caleb_Seely_Resume.pdf" className="transition-all duration-300 hover:text-[#8DB7F5] hover:scale-110" target="_blank">
-              <FileText size={28} />
-            </a>
-            <a href="https://github.com/Caleb-Seely" className="transition-all duration-300 hover:text-[#8DB7F5] hover:scale-110" target="_blank">
-              <Github size={28} />
-            </a>
-          </div>
-        </div>
-      </footer>
+      <Footer colors={colors} />
     </div>
   );
 };
