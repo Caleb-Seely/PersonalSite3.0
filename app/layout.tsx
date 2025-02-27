@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Script from 'next/script';
+import GoogleAnalytics from '../components/GoogleAnalytics';
 
-//Google Measurment ID
-export const GA_MEASUREMENT_ID = process.env.GOOGLE_ANALYTICS_ID; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,29 +33,10 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="32x32" href="/my-favicon/icon-blue30-32.webp" />
         <link rel="icon" type="image/png" sizes="16x16" href="/my-favicon/running-shoe-rotate1.png" />
         <link rel="apple-touch-icon" href="/my-favicon/apple-icon.png" />
-
-        {/* Google Analytics */}
-        <Script 
-          strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} 
-        />
-        <Script
-          id="google-analytics"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${GA_MEASUREMENT_ID}', {
-                page_path: window.location.pathname,
-              });
-            `,
-          }}
-        />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
+        <GoogleAnalytics />
       </body>
     </html>
   );
