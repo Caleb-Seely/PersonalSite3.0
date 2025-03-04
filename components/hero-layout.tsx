@@ -36,7 +36,9 @@ const welcomeMessages = [
   "RUN",
   "Welcome to my home",
   "Let me out!",
-  "Hà Giang, Vietnam"
+  "Hà Giang, Vietnam",
+  "Just Win"
+
 ];
 
 interface TypeWriterProps {
