@@ -1,6 +1,40 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
+interface SpotifyImage {
+  url: string;
+  height: number;
+  width: number;
+}
+
+interface SpotifyArtist {
+  name: string;
+  id: string;
+}
+
+interface SpotifyAlbum {
+  images: SpotifyImage[];
+}
+
+interface SpotifyTrack {
+  name: string;
+  artists: SpotifyArtist[];
+  album: SpotifyAlbum;
+}
+
+interface SpotifyResponse {
+  is_playing: boolean;
+  currently_playing_type: string;
+  item: SpotifyTrack;
+}
+
+interface NowPlayingResponse {
+  isPlaying: boolean;
+  songName: string;
+  artist: string;
+  albumArt: string;
+}
+
 export async function GET() {
   const cookieStore = cookies();
   const accessToken = (await cookieStore).get('spotify_access_token')?.value;
@@ -27,7 +61,7 @@ export async function GET() {
     });
 
     // Create the response with no-cache headers
-    const createResponse = (data: any) => {
+    const createResponse = (data: NowPlayingResponse) => {
       return NextResponse.json(data, {
         headers: {
           'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
@@ -52,10 +86,15 @@ export async function GET() {
     // Ensure response is valid JSON
     const text = await response.text();
     if (!text) {
-      return createResponse({ error: 'Empty response from Spotify' });
+      return createResponse({ 
+        isPlaying: false,
+        songName: 'Error fetching song data',
+        artist: 'Spotify error',
+        albumArt: '/my-favicon/icon-emerald-30.webp'
+      });
     }
 
-    const data = JSON.parse(text);
+    const data = JSON.parse(text) as SpotifyResponse;
 
     if (data.currently_playing_type === 'episode') {
       // Handle podcast episode
