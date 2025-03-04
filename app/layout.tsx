@@ -62,18 +62,20 @@ export default function RootLayout({
           rel="preload" 
           href="/img/hero-1920.webp" 
           as="image" 
-          fetchPriority="high" 
+          type="image/webp"
+          fetchPriority="high"
         />
-         <link 
+        <link 
           rel="preload" 
-          href="/img/Steens.webp" 
+          href="/img/Hayward_Banner.webp" 
           as="image" 
+          type="image/webp"
         />
-         <link 
+        <link 
           rel="preload" 
-          href="/img/hero-1920.webp" 
+          href="/img/steens.webp" 
           as="image" 
-          fetchPriority="high" 
+          type="image/webp"
         />
         
         {/* Favicon configuration */}
@@ -83,7 +85,6 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="32x32" href="/my-favicon/icon-blue30-32.webp" />
         <link rel="icon" type="image/png" sizes="16x16" href="/my-favicon/running-shoe-rotate1.png" />
         <link rel="apple-touch-icon" href="/my-favicon/apple-icon.png" />
-        
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
