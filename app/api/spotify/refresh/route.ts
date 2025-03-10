@@ -6,15 +6,37 @@ const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
 
+// Define specific types for debug information
+interface DebugInfo {
+  timestamp: string;
+  steps: DebugStep[];
+}
+
+interface DebugStep {
+  step: string;
+  details?: unknown; // Using unknown instead of any
+  time: string;
+}
+
+// Define response type
+interface RefreshResponse {
+  success: boolean;
+  access_token?: string;
+  expires_in?: number;
+  timestamp?: number;
+  error?: string;
+  debug?: DebugInfo;
+}
+
 export async function GET() {
   // Debug info container
-  const debugInfo: Record<string, any> = {
+  const debugInfo: DebugInfo = {
     timestamp: new Date().toISOString(),
     steps: []
   };
 
   // Helper to add debug step
-  const addDebugStep = (step: string, details?: any) => {
+  const addDebugStep = (step: string, details?: unknown) => {
     console.log(`[Spotify Refresh Debug] ${step}`, details || '');
     debugInfo.steps.push({ step, details, time: new Date().toISOString() });
   };
@@ -32,7 +54,7 @@ export async function GET() {
       { 
         error: 'Missing environment variables',
         debug: process.env.NODE_ENV === 'development' ? debugInfo : undefined
-      },
+      } as RefreshResponse,
       { status: 500 }
     );
   }
@@ -51,7 +73,7 @@ export async function GET() {
         grant_type: 'refresh_token',
         refresh_token: REFRESH_TOKEN,
       }),
-      cache: 'no-store'
+      
     });
 
     if (!response.ok) {
@@ -65,7 +87,15 @@ export async function GET() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json();
+    // Define response data type
+    interface SpotifyTokenResponse {
+      access_token: string;
+      token_type: string;
+      expires_in: number;
+      scope?: string;
+    }
+
+    const data = await response.json() as SpotifyTokenResponse;
     
     if (!data.access_token) {
       addDebugStep('No access token in response', { responseData: data });
@@ -89,7 +119,7 @@ export async function GET() {
     });
 
     // Create response with the access token
-    const responseData = {
+    const responseData: RefreshResponse = {
       success: true,
       access_token: data.access_token,
       expires_in: 3600,
@@ -113,9 +143,10 @@ export async function GET() {
 
     return NextResponse.json(
       { 
+        success: false,
         error: 'Failed to refresh token',
         debug: process.env.NODE_ENV === 'development' ? debugInfo : undefined
-      },
+      } as RefreshResponse,
       { status: 500 }
     );
   }

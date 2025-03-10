@@ -33,7 +33,19 @@ interface NowPlayingResponse {
   songName: string;
   artist: string;
   albumArt: string;
-  debug?: any; // Optional debug info for development
+  debug?: DebugInfo; // Changed from any to DebugInfo
+}
+
+// Added a specific type for debug information
+interface DebugInfo {
+  timestamp: string;
+  steps: DebugStep[];
+}
+
+interface DebugStep {
+  step: string;
+  details?: unknown; // Using unknown instead of any
+  time: string;
 }
 
 export async function GET() {
@@ -44,14 +56,14 @@ export async function GET() {
     albumArt: '/my-favicon/icon-emerald-30.webp'
   };
   
-  // Debug info container
-  const debugInfo: Record<string, any> = {
+  // Debug info container - updated type
+  const debugInfo: DebugInfo = {
     timestamp: new Date().toISOString(),
     steps: []
   };
   
-  // Helper to add debug step
-  const addDebugStep = (step: string, details?: any) => {
+  // Helper to add debug step - updated parameter type
+  const addDebugStep = (step: string, details?: unknown) => {
     console.log(`[Spotify Debug] ${step}`, details || '');
     debugInfo.steps.push({ step, details, time: new Date().toISOString() });
   };
