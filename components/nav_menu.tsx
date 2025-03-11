@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
-import { colors, colorCombos } from '@/app/styles/colors';
+import { tw, transitions } from '@/app/styles/theme/utils';
 
 interface NavLink {
   href: string;
@@ -20,11 +20,11 @@ const NavMenu: React.FC<NavMenuProps> = ({ links }) => {
   return (
     <>
       {/* Fixed Navigation */}
-      <div className="absolute top-0 w-full p-4 flex justify-between items-center z-20">
-        <div className="text-cream text-2xl font-bold">CS</div>
+      <div className={`absolute top-0 w-full p-4 flex justify-between items-center z-20 `}>
+        <div className={`text-2xl font-bold ${tw.text('accent')}`}>CS</div>
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="z-50 text-cream"
+          className={`z-50 ${tw.text('text')}`}
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -32,18 +32,18 @@ const NavMenu: React.FC<NavMenuProps> = ({ links }) => {
 
       {/* Menu Items */}
       {isMenuOpen && (
-        <div className={`fixed top-16 right-4 ${colors.primary} bg-opacity-80 z-40 rounded-lg shadow-lg p-4`}>
-          <nav className={`${colors.text} text-l space-y-1`}>
-          {links.map((link) => (
-            <Link
-               key={link.href}
-               href={link.href}
-               className={`block py-1 px-2 rounded ${colors.hover} transition-colors`}
-               target={link.target}
-               rel={link.rel}
-            >
-               {link.label}
-            </Link>
+        <div className={`fixed top-16 right-4 ${tw.bg('primary')} ${tw.bgWithOpacity('primary', 'heavy')} z-40 rounded-lg shadow-lg p-4`}>
+          <nav className={`${tw.text('text')} text-l space-y-1`}>
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`block py-1 px-2 rounded ${tw.hoverBg('hover')} ${transitions.color}`}
+                target={link.target}
+                rel={link.rel}
+              >
+                {link.label}
+              </Link>
             ))}
           </nav>
         </div>

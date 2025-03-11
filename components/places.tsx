@@ -8,7 +8,7 @@ import Image from "next/image";
 import type { Swiper as SwiperInstance } from 'swiper';
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
-import { colors, colorCombos } from '@/app/styles/colors';
+import { colors } from '@/app/styles/colors';
 
 // Preload images constant - now properly implemented
 const IMAGE_URLS = [
@@ -175,7 +175,7 @@ const PlacesPage = () => {
       <div className="container mx-auto px-4 pt-12">
         {/* Preloader overlaid on the UI while images are loading */}
         {!imagesPreloaded && (
-          <div className="fixed inset-0  flex items-center justify-center z-5">
+          <div className="absolute inset-0  flex items-center justify-center z-5">
             <div className="text-white text-xl animate-pulse">Loading places...</div>
           </div>
         )}
@@ -208,7 +208,7 @@ const PlacesPage = () => {
         {/* Description */}
         <div className="max-w-4xl mx-auto mb-6">
           <div 
-            className="bg-zinc-900 p-6 rounded-lg cursor-pointer group relative"
+            className="bg-gray-900 p-6 rounded-lg cursor-pointer group relative"
             onClick={() => setIsExpanded(!isExpanded)}
             style={{ minHeight: '180px' }}
           >
@@ -301,7 +301,7 @@ const PlacesPage = () => {
       </div>
 
       {/* Footer */}
-      <Footer colors={colors} />
+      <Footer/>
     </div>
   );
 };

@@ -8,7 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
-import { colors, colorCombos } from '@/app/styles/colors';
+import { colors} from '@/app/styles/colors';
 
 const navLinks = [
    { href: "/pacing", label: "Pacing" },
@@ -205,7 +205,7 @@ const HeroLayout = () => {
       </section>
 
       {/* Forest Fires Section - Reduced padding */}
-      <section id="forest-fires" className={`py-8 ${colors.secondary}`}>
+      <section id="forest-fires" className={`py-8 bg-gray-900`}>
         <div className="container mx-auto px-8">
           <button 
             onClick={() => setIsForestFireExpanded(!isForestFireExpanded)}
@@ -218,9 +218,9 @@ const HeroLayout = () => {
           {isForestFireExpanded && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {['Historical Context', 'Pacific Northwest Legacy', 'Modern Challenges'].map((title, index) => (
-                <Card key={title} className={`${colors.primary}`}>
-                  <CardContent className="p-4">
-                    <h3 className={`text-xl font-semibold mb-4 ${colors.accent2}`}>{title}</h3>
+                <Card key={title} className={` bg-gray-800`}>
+                  <CardContent className="p-4 ">
+                    <h3 className={`text-xl font-semibold mb-4 ${colors.text}`}>{title}</h3>
                     <p className={colors.textMuted}>
                       {index === 0 && "Forest fires are a critical component of many ecosystems, playing a vital role in maintaining forest health and biodiversity. While often viewed as purely destructive forces, these natural phenomena have shaped our landscapes for millions of years."}
                       {index === 1 && "In the Pacific Northwest, fire has historically been an essential ecological process. Indigenous peoples used controlled burns as a land management tool for thousands of years before European settlement. Today, we're learning to better understand and manage the complex relationship between fire, forests, and human communities."}
@@ -235,7 +235,7 @@ const HeroLayout = () => {
       </section>
 
       {/* Footer */}
-      <Footer colors={colors} />
+      <Footer />
     </div>
   );
 };

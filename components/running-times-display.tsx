@@ -7,7 +7,7 @@ import { ChevronDown, ChevronUp} from 'lucide-react';
 import Image from "next/image";
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
-import { colors, colorCombos } from '@/app/styles/colors';
+import { colors } from '@/app/styles/colors';
 
 const navLinks = [
    { href: "/", label: "Home" },
@@ -272,7 +272,7 @@ const RunningTimesDisplay = () => {
       </div>
 
       {/* Footer with improved hover effects */}
-      <Footer colors={colors} />
+      <Footer/>
     </div>
   );
 };
