@@ -156,7 +156,7 @@ const ProjectsPage = () => {
               className={`px-4 py-2 rounded-full border transition-colors ${
                 selectedTech === null
                   ? 'bg-[#10B981] text-black border-[#10B981]'
-                  : 'border-[#10B981] text-[#10B981] bg-white hover:bg-[#10B981] hover:text-black'
+                  : 'border-[#10B981] text-[#10B981] bg-black hover:bg-[#10B981] hover:text-black'
               }`}
               onClick={() => setSelectedTech(null)}
             >

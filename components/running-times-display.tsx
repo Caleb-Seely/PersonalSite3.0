@@ -17,7 +17,8 @@ const colors = {
     accent2: "text-[#10B981]",
     text: "text-white",
     textMuted: "text-zinc-400",
-    hover: "hover:bg-zinc-800",
+    hover: "hover:bg-zinc-800"
+    
 };
 
 const navLinks = [
@@ -220,22 +221,28 @@ const RunningTimesDisplay = () => {
             </Button>
         </Card>
         
-        {/* Distance Buttons - using flex-wrap to allow buttons to wrap to next line */}
-        <div className="flex flex-wrap gap-2 pb-2">
-          {runningData
-            .filter(data => data.showButton)
-            .map((data) => (
-              <Button
-                key={data.distance}
-                variant={currentDistance === data.meters ? "default" : "outline"}
-                onClick={() => handleDistanceClick(data.meters)}
-                className="px-4 py-2 whitespace-nowrap bg-gray-900 border-gray-700 hover:bg-gray-800 mb-1"
-                size="sm"
-              >
-                {data.label}
-              </Button>
-            ))}
-        </div>
+      {/* Distance Buttons - using flex-wrap to allow buttons to wrap to next line */}
+      <div className="flex flex-wrap gap-2 pb-2">
+      {runningData
+         .filter(data => data.showButton)
+         .map((data) => (
+            <Button
+            key={data.distance}
+            variant={currentDistance === data.meters ? "default" : "outline"}
+            onClick={() => handleDistanceClick(data.meters)}
+            className={`
+               px-4 py-2 whitespace-nowrap 
+               bg-gray-900 border-gray-700 
+               hover:bg-gray-900 hover:${colors.accent2}
+               ${currentDistance === data.meters ? colors.accent2 : colors.text}
+               mb-1
+            `}
+            size="sm"
+            >
+            {data.label}
+            </Button>
+         ))}
+      </div>
 
         {/* Slider Section */}
         <div className="space-y-2">
@@ -248,8 +255,8 @@ const RunningTimesDisplay = () => {
             min={100}
             step={0.01}
             onValueChange={handleSliderChange}
-            className="py-4 [&>.relative>.bg-primary]:bg-emerald-500" // Added green color
-          />
+            className="py-4 [&>.relative>.bg-primary]:bg-[#10B981]"
+            />
           <div className="flex justify-between text-sm text-gray-400">
             <span>100m</span>
             <span>Marathon</span>
