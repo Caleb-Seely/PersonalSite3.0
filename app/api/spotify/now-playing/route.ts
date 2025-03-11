@@ -10,7 +10,7 @@ export async function GET() {
       isPlaying: false,
       songName: "I'm not playing music right now.",
       artist: 'Spotify paused',
-      albumArt: '/img/running-shoe-rotate1.png',
+      albumArt: '/my-favicon/icon-emerald-30.webp',
       error: 'No access token'
     }, { status: 401 });
   }
@@ -29,7 +29,7 @@ export async function GET() {
         isPlaying: false,
         songName: "I'm not playing music right now.",
         artist: 'Spotify paused',
-        albumArt: '/img/running-shoe-rotate1.png'
+        albumArt: '/my-favicon/icon-emerald-30.webp'
       });
     }
     
@@ -39,9 +39,9 @@ export async function GET() {
         isPlaying: false,
         songName: "I'm not playing music right now.",
         artist: 'Spotify paused',
-        albumArt: '/img/running-shoe-rotate1.png',
+        albumArt: '/my-favicon/icon-emerald-30.webp',
         error: `Spotify API error: ${response.status}`
-      }, { status: response.status });
+      }, { status: 401 });
     }
     
     // Ensure response is valid JSON
@@ -51,13 +51,24 @@ export async function GET() {
         isPlaying: false,
         songName: "I'm not playing music right now.",
         artist: 'Spotify paused',
-        albumArt: '/img/running-shoe-rotate1.png',
+        albumArt: '/my-favicon/icon-emerald-30.webp',
         error: 'Empty response from Spotify'
       }, { status: 500 });
     }
     
     const data = JSON.parse(text);
     console.log('Successfully fetched Spotify data');
+
+    //Podcast 
+    if (data.currently_playing_type === 'episode'){
+      return NextResponse.json({ 
+         isPlaying: false,
+         songName: "I'm not playing music right now.",
+         artist: 'Spotify paused.',
+         albumArt: '/my-favicon/icon-emerald-30.webp',
+         error: 'Podcast returned'
+       }, { status: 202 });
+    }
     
     return NextResponse.json({
       isPlaying: data.is_playing,
@@ -72,7 +83,7 @@ export async function GET() {
       isPlaying: false,
       songName: "I'm not playing music right now.",
       artist: 'Spotify paused',
-      albumArt: '/img/running-shoe-rotate1.png',
+      albumArt: '/my-favicon/icon-emerald-30.webp',
       error: 'Failed to fetch from Spotify'
     }, { status: 500 });
   }
