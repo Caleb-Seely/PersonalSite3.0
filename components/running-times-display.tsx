@@ -7,26 +7,14 @@ import { ChevronDown, ChevronUp} from 'lucide-react';
 import Image from "next/image";
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
-
-// Dark theme color palette
-const colors = {
-    primary: "bg-black",
-    secondary: "bg-zinc-900",
-    accent: "text-[#8DB7F5]",
-    accentBg: "bg-[#8DB7F5]",
-    accent2: "text-[#10B981]",
-    text: "text-white",
-    textMuted: "text-zinc-400",
-    hover: "hover:bg-zinc-800"
-    
-};
+import { colors, colorCombos } from '@/app/styles/colors';
 
 const navLinks = [
    { href: "/", label: "Home" },
    { href: "/projects", label: "Projects" },
    { href: "/places", label: "Places" },
    { href: "/misc/Caleb_Seely_Resume.pdf", label: "Resume", target: "_blank", rel: "noopener noreferrer" },
- ];
+];
 
 const RunningTimesDisplay = () => {
   const runningData = [

@@ -14,6 +14,7 @@ import { predictingSalesReflection } from './reflections/predictingSales';
 import { mediaArchiveReflection } from './reflections/mediaArchive';
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
+import { colors, colorCombos } from '@/app/styles/colors';
 
 // Define the Project interface
 interface Project {
@@ -27,24 +28,12 @@ interface Project {
   live?: string;
 }
 
-// Dark theme color palette
-const colors = {
-   primary: "bg-black",
-   secondary: "bg-zinc-900",
-   accent: "text-[#8DB7F5]",
-   accentBg: "bg-[#8DB7F5]",
-   accent2: "text-[#10B981]",
-   text: "text-white",
-   textMuted: "text-zinc-400",
-   hover: "hover:bg-zinc-800",
-};
-
 const navLinks = [
    { href: "/", label: "Home" },
    { href: "/pacing", label: "Pacing" },
    { href: "/places", label: "Places" },
    { href: "/misc/Caleb_Seely_Resume.pdf", label: "Resume", target: "_blank", rel: "noopener noreferrer" },
- ];
+];
 
 const ProjectsPage = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -138,25 +127,23 @@ const ProjectsPage = () => {
     : projects;
 
   return (
-    <div className="min-h-screen bg-black text-white">
-
+    <div className={`min-h-screen ${colors.primary} ${colors.text}`}>
       <NavMenu links={navLinks} />
-
       <InteractiveConstellation />
       
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 pt-24 z-15">
-        <h1 className="text-4xl font-bold mb-8">My Projects </h1>
+        <h1 className="text-4xl font-bold mb-8">My Projects</h1>
         
         {/* Filters Section */}
         <div className="mb-8">
-          <h2 className="text-xl mb-4 text-[#8DB7F5]">Filter by Technology</h2>
+          <h2 className={`text-xl mb-4 ${colors.accent}`}>Filter by Technology</h2>
           <div className="flex flex-wrap gap-2">
             <button
-              className={`px-4 py-2 rounded-full border transition-colors ${
+              className={`px-4 py-2 rounded-full border ${colorCombos.buttonTransition} ${
                 selectedTech === null
-                  ? 'bg-[#10B981] text-black border-[#10B981]'
-                  : 'border-[#10B981] text-[#10B981] bg-black hover:bg-[#10B981] hover:text-black'
+                  ? colorCombos.primaryButton
+                  : colorCombos.outlineButton
               }`}
               onClick={() => setSelectedTech(null)}
             >
@@ -165,10 +152,10 @@ const ProjectsPage = () => {
             {allTechnologies.map((tech) => (
               <button
                 key={tech}
-                className={`px-4 py-2 rounded-full border z-15 transition-colors ${
+                className={`px-4 py-2 rounded-full border ${colorCombos.buttonTransition} ${
                   selectedTech === tech
-                    ? 'bg-[#10B981] text-black border-[#10B981]'
-                    : 'border-[#10B981] bg-black text-[#10B981] hover:bg-[#10B981] hover:text-black'
+                    ? colorCombos.primaryButton
+                    : colorCombos.outlineButton
                 }`}
                 onClick={() => setSelectedTech(tech)}
               >
@@ -183,24 +170,21 @@ const ProjectsPage = () => {
           {filteredProjects.map((project) => (
             <div
               key={project.id}
-              className="group relative bg-gray-900 rounded-lg p-6 hover:shadow-lg hover:shadow-[#8DB7F5]/20 transition-all duration-300 cursor-pointer"
+              className={`group p-6 ${colorCombos.projectCard} cursor-pointer`}
               onClick={() => setSelectedProject(project)}
             >
               <h3 className="text-2xl font-bold mb-4">{project.title}</h3>
               <div className="flex flex-wrap gap-2 mb-4">
                 {project.tools.map((tool) => (
-                  <span
-                    key={tool}
-                    className="text-sm px-3 py-1 rounded-full bg-[#10B981]/20 text-[#10B981]"
-                  >
+                  <span key={tool} className={`text-sm px-3 py-1 rounded-full ${colorCombos.toolTag}`}>
                     {tool}
                   </span>
                 ))}
               </div>
-              <p className="text-gray-400 mb-4 transform transition-all duration-300 group-hover:text-white">
+              <p className={`${colors.textMuted} mb-4 transform transition-all duration-300 group-hover:${colors.text}`}>
                 {project.shortDescription}
               </p>
-              <div className="flex items-center text-[#8DB7F5] mt-4">
+              <div className={`flex items-center ${colors.accent} mt-4`}>
                 <span className="mr-2">Learn More</span>
                 <ChevronRight size={20} />
               </div>
@@ -208,17 +192,15 @@ const ProjectsPage = () => {
           ))}
         </div>
 
-        {/* Modal for detailed view */}
+        {/* Modal */}
         {selectedProject && (
           <div 
-            className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50"
+            className={`fixed inset-0 ${colorCombos.modalOverlay} flex items-center justify-center p-4 z-50`}
             onClick={(e) => {
-              if (e.target === e.currentTarget) {
-                setSelectedProject(null);
-              }
+              if (e.target === e.currentTarget) setSelectedProject(null);
             }}
           >
-            <div className="bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-8">
+            <div className={`${colorCombos.card} rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-8`}>
               <h2 className="text-3xl font-bold mb-6">{selectedProject.title}</h2>
               
               <div className="flex gap-4 mb-6 overflow-x-auto">
@@ -234,19 +216,15 @@ const ProjectsPage = () => {
                 ))}
               </div>
 
-              <div
-                className="text-gray-300 mb-6"
+              <div className={`${colors.textMuted} mb-6`}
                 dangerouslySetInnerHTML={{ __html: selectedProject.longDescription }}
-                />
+              />
               
               <div className="mb-6">
-                <h3 className="text-xl font-bold mb-3 text-[#8DB7F5]">Tools & Technologies</h3>
+                <h3 className={`text-xl font-bold mb-3 ${colors.accent}`}>Tools & Technologies</h3>
                 <div className="flex flex-wrap gap-2">
-                  {selectedProject.tools.map((tool: string) => (
-                    <span
-                      key={tool}
-                      className="px-3 py-1 rounded-full bg-[#10B981]/20 text-[#10B981]"
-                    >
+                  {selectedProject.tools.map((tool) => (
+                    <span key={tool} className={`px-3 py-1 rounded-full ${colorCombos.toolTag}`}>
                       {tool}
                     </span>
                   ))}
@@ -255,19 +233,13 @@ const ProjectsPage = () => {
 
               <div className="flex gap-4">
                 {selectedProject.github && (
-                  <a
-                    href={selectedProject.github}
-                    className="flex items-center gap-2 text-[#8DB7F5] hover:text-[#10B981]"
-                  >
+                  <a href={selectedProject.github} className={colorCombos.linkHover}>
                     <Github size={20} />
                     <span>View Code</span>
                   </a>
                 )}
                 {selectedProject.live && (
-                  <a
-                    href={selectedProject.live}
-                    className="flex items-center gap-2 text-[#8DB7F5] hover:text-[#10B981]"
-                  >
+                  <a href={selectedProject.live} className={colorCombos.linkHover}>
                     <span>Live Demo</span>
                   </a>
                 )}
@@ -275,7 +247,7 @@ const ProjectsPage = () => {
 
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-white"
+                className={`absolute top-4 right-4 ${colors.textMuted} ${colors.hoverText}`}
               >
                 ✕
               </button>
@@ -284,7 +256,6 @@ const ProjectsPage = () => {
         )}
       </div>
 
-      {/* Footer */}
       <Footer colors={colors} />
     </div>
   );

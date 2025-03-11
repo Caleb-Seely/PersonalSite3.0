@@ -1,6 +1,7 @@
-import { useState } from "react";
-import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { Menu, X } from 'lucide-react';
+import { colors, colorCombos } from '@/app/styles/colors';
 
 interface NavLink {
   href: string;
@@ -15,7 +16,6 @@ interface NavMenuProps {
 
 const NavMenu: React.FC<NavMenuProps> = ({ links }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const colors = { hover: "hover:bg-gray-700" };
 
   return (
     <>
@@ -32,8 +32,8 @@ const NavMenu: React.FC<NavMenuProps> = ({ links }) => {
 
       {/* Menu Items */}
       {isMenuOpen && (
-        <div className="fixed top-16 right-4 bg-black bg-opacity-80 z-40 rounded-lg shadow-lg p-4">
-          <nav className="text-white text-l space-y-1">
+        <div className={`fixed top-16 right-4 ${colors.primary} bg-opacity-80 z-40 rounded-lg shadow-lg p-4`}>
+          <nav className={`${colors.text} text-l space-y-1`}>
           {links.map((link) => (
             <Link
                key={link.href}

@@ -8,24 +8,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
-
-const colors = {
-  primary: "bg-black",
-  secondary: "bg-zinc-900",
-  accent: "text-[#8DB7F5]",
-  accentBg: "bg-[#8DB7F5]",
-  accent2: "text-[#10B981]",
-  text: "text-white",
-  textMuted: "text-zinc-400",
-  hover: "hover:bg-zinc-800",
-};
+import { colors, colorCombos } from '@/app/styles/colors';
 
 const navLinks = [
    { href: "/pacing", label: "Pacing" },
    { href: "/projects", label: "Projects" },
    { href: "/places", label: "Places" },
    { href: "/misc/Caleb_Seely_Resume.pdf", label: "Resume", target: "_blank", rel: "noopener noreferrer" },
- ];
+];
 
 const welcomeMessages = [
   "Hi, I'm Caleb",
@@ -36,9 +26,7 @@ const welcomeMessages = [
   "RUN",
   "Welcome to my home",
   "Let me out!",
-  "Hà Giang, Vietnam",
-  "Just Win"
-
+  "Hà Giang, Vietnam"
 ];
 
 interface TypeWriterProps {

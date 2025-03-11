@@ -8,6 +8,7 @@ import Image from "next/image";
 import type { Swiper as SwiperInstance } from 'swiper';
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
+import { colors, colorCombos } from '@/app/styles/colors';
 
 // Preload images constant - now properly implemented
 const IMAGE_URLS = [
@@ -24,18 +25,6 @@ const navLinks = [
    { href: "/projects", label: "Projects" },
    { href: "/misc/Caleb_Seely_Resume.pdf", label: "Resume", target: "_blank", rel: "noopener noreferrer" },
  ];
-
-const colors = {
-    primary: "bg-black",
-    secondary: "bg-zinc-900",
-    accent: "text-[#8DB7F5]",
-    accentBg: "bg-[#8DB7F5]",
-    accent2: "text-[#10B981]",
-    steensAccent: "text-[#FFAB5B]",
-    text: "text-white",
-    textMuted: "text-zinc-400",
-    hover: "hover:bg-zinc-800",
-};
 
 interface Place {
   id: number;
