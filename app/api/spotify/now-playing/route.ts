@@ -17,6 +17,7 @@ export async function GET() {
   
   const timestamp = new Date().getTime();
   try {
+   console.log("Fetching new song")
    const response = await fetch(`https://api.spotify.com/v1/me/player/currently-playing?_t=${timestamp}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
