@@ -15,11 +15,14 @@ export async function GET() {
     }, { status: 401 });
   }
   
+  const timestamp = new Date().getTime();
   try {
-    const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+   const response = await fetch(`https://api.spotify.com/v1/me/player/currently-playing?_t=${timestamp}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        'Cache-Control': 'no-store, max-age=0'
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       }
     });
     
