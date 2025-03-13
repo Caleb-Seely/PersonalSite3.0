@@ -60,79 +60,89 @@ async function validateGoogleMapsUrl(polyline: string) {
 }
 
 async function getLatestActivity(accessToken: string) {
-  try {
-    // Add timestamp to URL to prevent caching
-    const timestamp = Date.now();
-    const response = await fetch(`${STRAVA_API_URL}/athlete/activities?per_page=1&_t=${timestamp}`, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0',
-      },
-      // Add cache: 'no-store' to prevent fetch-level caching
-      cache: 'no-store',
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Strava API error:', {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorText,
-      });
-
-      if (response.status === 401) {
-        throw new Error('Unauthorized - Token may be expired');
-      }
-
-      throw new Error(`Strava API returned ${response.status}: ${errorText}`);
-    }
-
-    const activities = await response.json();
-    
-    console.log('Successfully fetched Strava activities:', {
-      count: activities.length,
-      hasData: Boolean(activities[0]),
-      timestamp: new Date().toISOString(), // Add timestamp to logs
-    });
-
-    if (activities.length === 0) {
-      return null;
-    }
-
-    const activity = activities[0];
-    
-    const requiredFields = ['name', 'distance', 'moving_time', 'total_elevation_gain', 'map'];
-    const missingFields = requiredFields.filter(field => !(field in activity));
-
-    if (missingFields.length > 0) {
-      console.error('Missing required fields in activity:', missingFields);
-      throw new Error(`Activity missing required fields: ${missingFields.join(', ')}`);
-    }
-
-    let mapUrl = null;
-    if (activity.map?.summary_polyline) {
-      mapUrl = await validateGoogleMapsUrl(activity.map.summary_polyline);
-    }
-
-    return {
-      name: activity.name,
-      distance: activity.distance,
-      moving_time: activity.moving_time,
-      total_elevation_gain: activity.total_elevation_gain,
-      map: mapUrl,
-      // Add fetched timestamp to response
-      fetched_at: new Date().toISOString(),
-    };
-  } catch (error) {
-    console.error('Error fetching latest activity:', error);
-    throw error;
-  }
-}
-
+   try {
+     // Add timestamp to URL to prevent caching
+     const timestamp = Date.now();
+     const response = await fetch(`${STRAVA_API_URL}/athlete/activities?per_page=10&_t=${timestamp}`, {
+       headers: {
+         'Authorization': `Bearer ${accessToken}`,
+         'Accept': 'application/json',
+         'Content-Type': 'application/json',
+         'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+         'Pragma': 'no-cache',
+         'Expires': '0',
+       },
+       // Add cache: 'no-store' to prevent fetch-level caching
+       cache: 'no-store',
+     });
+ 
+     if (!response.ok) {
+       const errorText = await response.text();
+       console.error('Strava API error:', {
+         status: response.status,
+         statusText: response.statusText,
+         error: errorText,
+       });
+ 
+       if (response.status === 401) {
+         throw new Error('Unauthorized - Token may be expired');
+       }
+ 
+       throw new Error(`Strava API returned ${response.status}: ${errorText}`);
+     }
+ 
+     const activities = await response.json();
+     
+     console.log('Successfully fetched Strava activities:', {
+       count: activities.length,
+       hasData: Boolean(activities[0]),
+       timestamp: new Date().toISOString(), // Add timestamp to logs
+     });
+ 
+     if (activities.length === 0) {
+       return null;
+     }
+ 
+     // Find the first public activity in the list
+     const publicActivity = activities.find(activity => activity.visibility === 'everyone');
+     
+     if (!publicActivity) {
+       console.log('No public activities found');
+       return null;
+     }
+     
+     const activity = publicActivity;
+     
+     const requiredFields = ['name', 'distance', 'moving_time', 'total_elevation_gain', 'map'];
+     const missingFields = requiredFields.filter(field => !(field in activity));
+ 
+     if (missingFields.length > 0) {
+       console.error('Missing required fields in activity:', missingFields);
+       throw new Error(`Activity missing required fields: ${missingFields.join(', ')}`);
+     }
+ 
+     let mapUrl = null;
+     if (activity.map?.summary_polyline) {
+       mapUrl = await validateGoogleMapsUrl(activity.map.summary_polyline);
+     }
+ 
+     return {
+       id: activity.id,
+       name: activity.name,
+       distance: activity.distance,
+       moving_time: activity.moving_time,
+       total_elevation_gain: activity.total_elevation_gain,
+       map: mapUrl,
+       visibility: activity.visibility,
+       // Add fetched timestamp to response
+       fetched_at: new Date().toISOString(),
+     };
+   } catch (error) {
+     console.error('Error fetching latest public activity:', error);
+     throw error;
+   }
+ }
+ 
 export async function GET() {
   try {
     // Add response headers to prevent caching
