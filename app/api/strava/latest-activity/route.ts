@@ -7,6 +7,18 @@ const CLIENT_ID = process.env.STRAVA_CLIENT_ID;
 const CLIENT_SECRET = process.env.STRAVA_CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.STRAVA_REFRESH_TOKEN;
 
+interface StravaActivity {
+   id: string;
+   name: string;
+   distance: number;
+   moving_time: number;
+   total_elevation_gain: number;
+   visibility: string;
+   map?: {
+     summary_polyline?: string;
+   };
+ }
+
 async function getAccessToken() {
   try {
     const response = await fetch('https://www.strava.com/oauth/token', {
@@ -104,7 +116,8 @@ async function getLatestActivity(accessToken: string) {
      }
  
      // Find the first public activity in the list
-     const publicActivity = activities.find(activity => activity.visibility === 'everyone');
+     const publicActivity = activities.find((activity: StravaActivity) => activity.visibility === 'everyone');
+     
      
      if (!publicActivity) {
        console.log('No public activities found');
@@ -142,7 +155,7 @@ async function getLatestActivity(accessToken: string) {
      throw error;
    }
  }
- 
+
 export async function GET() {
   try {
     // Add response headers to prevent caching
