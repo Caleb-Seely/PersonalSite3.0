@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Linkedin, FileText, Github } from "lucide-react";
+import { Mail, Linkedin, FileText, Github, Camera } from "lucide-react";
 import { tw, transitions } from '@/app/styles/theme/utils';
 
 const Footer = () => {
@@ -7,7 +7,8 @@ const Footer = () => {
     { icon: Mail, href: "mailto:calebseely@gmail.com" },
     { icon: Linkedin, href: "https://www.linkedin.com/in/caleb-seely" },
     { icon: FileText, href: "/misc/Caleb_Seely_Resume.pdf" },
-    { icon: Github, href: "https://github.com/Caleb-Seely" }
+    { icon: Github, href: "https://github.com/Caleb-Seely" },
+    { icon: Camera, href: "/misc/ClearShot_Privacy_Policy.pdf"}
   ];
 
   return (

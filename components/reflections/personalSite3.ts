@@ -4,7 +4,7 @@ export const personalSite3Reflection = `
 <div class="space-y-2">
   <div class=" rounded-lg p-4  border-l-4 border-[#10B981] ">
     <p class="text-gray-300 leading-relaxed ">
-      This website rebuild was a <span class="text-[#10B981]">fantastic learning opportunity,</span> allowing me to deepen my understanding of modern web development and tackle new technical challenges. Leveraging AI tools significantly accelerated my learning and development.
+      This website rebuild was a <span class="text-[#10B981]">fantastic learning opportunity,</span> allowing me to deepen my understanding of modern web development and tackle new technical challenges. Leveraging AI tools to significantly accelerate both learning and development.
     </p>
   </div>
 
