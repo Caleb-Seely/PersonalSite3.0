@@ -9,6 +9,7 @@ import Image from 'next/image';
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
 import { colors} from '@/app/styles/colors';
+import ForestFireSection from './forest-fire-section';
 
 const navLinks = [
    { href: "/pacing", label: "Pacing" },
@@ -78,8 +79,6 @@ const TypeWriter: React.FC<TypeWriterProps> = ({ message, onComplete }) => {
 };
 
 const HeroLayout = () => {
- 
-  const [isForestFireExpanded, setIsForestFireExpanded] = useState(false);
   const [welcomeMessage, setWelcomeMessage] = useState("");
   const [showWelcome, setShowWelcome] = useState(true);
 
@@ -107,137 +106,109 @@ const HeroLayout = () => {
 
       </div>
 
-            {/* About Section */}
-            <section id="about" className={`py-8 ${colors.primary}`}>
-            <div className="container mx-auto px-2 max-w-7xl">
-               <div className="grid grid-cols-1 md:grid-cols-12 gap-12 relative">
-                  
-            {/* Business Card Container (Headshot & Bio together) */}
-            <div className="md:col-span-8 bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="grid md:grid-cols-2 h-full">
-               
-               {/* Headshot Side */}
-               <div className="relative h-64 md:h-full py-8 md:py-0">
-                  <div className="absolute inset-0">
-                  <Image 
-                  src="/img/headshot.webp" 
-                     alt="Headshot" 
-                     fill
-                     style={{ objectFit: 'cover', objectPosition: 'center' }}
-                  />
-                  </div>
-               </div>
-
-               {/* Bio Side */}
-               <div className={`px-4 flex flex-col justify-between ${colors.primary} py-8 md:py-0`}>
-                  <div className="space-y-4">
-                  <h2 className={`text-2xl font-bold font-serif lg:text-4xl md:text-xl ${colors.accent2}`}>Rooted in Portland</h2>
-                  <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
-                     Born and raised in PNW, for college I ventured to the University of Idaho, where I earned a degree in Computer Science, a minor in Mathematics, and a lifetime of memories.
-                  </p>
-                  <h2 className={`text-2xl font-bold font-serif lg:text-3xl md:text-xl ${colors.accent}`}>
-                     Chasing the next adventure. Always
-                  </h2>
-                  <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
-                     The best stories don&apos;t come from staying inside. Just out here collecting as many experience tokens as I can.
-                  </p>
-                  </div>
-
-                  {/* Anchored to the bottom */}
-                  <h2 className={`text-2xl font-bold font-serif lg:text-2xl md:text-xl ${colors.text}`}>
-                  Thanks for stopping by!
-                  </h2>
-               </div>        
-            </div>
-            </div>
-
-            {/* Strava Widget - Clearly separated but on same line for large screens */}
-            <div className="md:col-span-4">
-            <Card className={`h-full ${colors.primary} shadow-lg rounded-xl`}>
-               <CardContent className="p-4">
-                  <StravaWidget />
-               </CardContent>
-            </Card>
-            </div>
-
-         </div>
-      </div>
-      </section>
-
-
-      {/* Spotify Section */}
-      <SpotifySection />
-
-      {/* Projects Section */}
-      <section id="projects" className={`py-8 ${colors.primary}`}>
+      {/* About Section */}
+      <section id="about" className={`py-8 ${colors.primary}`}>
         <div className="container mx-auto px-2 max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {['Pacing', 'Projects', 'Places'].map((type) => (
-              <Link 
-                key={type} 
-                href={type === 'Pacing' ? '/pacing' : type === 'Projects' 
-                    ? '/projects': type === 'Places' 
-                    ? '/places' : '#'}
-                className="block h-full"
-              >
-                
-                <Card className={`group relative cursor-pointer hover:shadow-xl transition-all duration-300 h-64 ${colors.secondary}`}>
-                  <CardContent className="p-0 h-full">
-                  <Image 
-                    src={`/img/${type}.webp`}
-                    alt={type.charAt(0).toUpperCase() + type.slice(1)}
-                    fill
-                    className="w-full h-full object-cover rounded-lg"
-                    quality={75}
-                    
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 rounded-lg transition-all duration-300 flex items-center justify-center">
-                      <span className={`text-2xl font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${colors.accent}`}>
-                        {type.charAt(0).toUpperCase() + type.slice(1)}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
+           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 relative">
+              
+        {/* Business Card Container (Headshot & Bio together) */}
+        <div className="md:col-span-8 bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="grid md:grid-cols-2 h-full">
+           
+          {/* Headshot Side */}
+          <div className="relative h-64 md:h-full py-8 md:py-0">
+             <div className="absolute inset-0">
+             <Image 
+             src="/img/headshot.webp" 
+                alt="Headshot" 
+                fill
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
+             />
+             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Forest Fires Section - Reduced padding */}
-      <section id="forest-fires" className={`py-8 bg-gray-900`}>
-        <div className="container mx-auto px-8">
-          <button 
-            onClick={() => setIsForestFireExpanded(!isForestFireExpanded)}
-            className="w-full flex items-center justify-between mb-4"
+          {/* Bio Side */}
+          <div className={`px-4 flex flex-col justify-between ${colors.primary} py-8 md:py-0`}>
+             <div className="space-y-4">
+             <h2 className={`text-2xl font-bold font-serif lg:text-4xl md:text-xl ${colors.accent2}`}>Rooted in Portland</h2>
+             <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
+                Born and raised in PNW, for college I ventured to the University of Idaho, where I earned a degree in Computer Science, a minor in Mathematics, and a lifetime of memories.
+             </p>
+             <h2 className={`text-2xl font-bold font-serif lg:text-3xl md:text-xl ${colors.accent}`}>
+                Chasing the next adventure. Always
+             </h2>
+             <p className={`text-sm lg:text-sm md:text-xs leading-relaxed ${colors.text}`}>
+                The best stories don&apos;t come from staying inside. Just out here collecting as many experience tokens as I can.
+             </p>
+             </div>
+
+             {/* Anchored to the bottom */}
+             <h2 className={`text-2xl font-bold font-serif lg:text-2xl md:text-xl ${colors.text}`}>
+             Thanks for stopping by!
+             </h2>
+          </div>        
+        </div>
+        </div>
+
+        {/* Strava Widget - Clearly separated but on same line for large screens */}
+        <div className="md:col-span-4">
+        <Card className={`h-full ${colors.primary} shadow-lg rounded-xl`}>
+           <CardContent className="p-4">
+              <StravaWidget />
+           </CardContent>
+        </Card>
+        </div>
+
+     </div>
+  </div>
+  </section>
+
+  {/* Spotify Section */}
+  <SpotifySection />
+
+  {/* Projects Section */}
+  <section id="projects" className={`py-8 ${colors.primary}`}>
+    <div className="container mx-auto px-2 max-w-7xl">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {['Pacing', 'Projects', 'Places'].map((type) => (
+          <Link 
+            key={type} 
+            href={type === 'Pacing' ? '/pacing' : type === 'Projects' 
+                ? '/projects': type === 'Places' 
+                ? '/places' : '#'}
+            className="block h-full"
           >
-            <h2 className={`text-3xl font-bold ${colors.accent2}`}>Why Forest Fires Matter</h2>
-            {isForestFireExpanded ? <ChevronUp size={32} /> : <ChevronDown size={32} />}
-          </button>
-          
-          {isForestFireExpanded && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {['Historical Context', 'Pacific Northwest Legacy', 'Modern Challenges'].map((title, index) => (
-                <Card key={title} className={` bg-gray-800`}>
-                  <CardContent className="p-4 ">
-                    <h3 className={`text-xl font-semibold mb-4 ${colors.text}`}>{title}</h3>
-                    <p className={colors.textMuted}>
-                      {index === 0 && "Forest fires are a critical component of many ecosystems, playing a vital role in maintaining forest health and biodiversity. While often viewed as purely destructive forces, these natural phenomena have shaped our landscapes for millions of years."}
-                      {index === 1 && "In the Pacific Northwest, fire has historically been an essential ecological process. Indigenous peoples used controlled burns as a land management tool for thousands of years before European settlement. Today, we're learning to better understand and manage the complex relationship between fire, forests, and human communities."}
-                      {index === 2 && "Climate change and decades of fire suppression have created new challenges in forest management. As we face longer fire seasons and more intense blazes, it's crucial to develop sustainable approaches to living with fire in our landscapes."}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Footer */}
-      <Footer />
+            
+            <Card className={`group relative cursor-pointer hover:shadow-xl transition-all duration-300 h-64 ${colors.secondary}`}>
+              <CardContent className="p-0 h-full">
+              <Image 
+                src={`/img/${type}.webp`}
+                alt={type.charAt(0).toUpperCase() + type.slice(1)}
+                fill
+                className="w-full h-full object-cover rounded-lg"
+                quality={75}
+                
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 rounded-lg transition-all duration-300 flex items-center justify-center">
+                  <span className={`text-2xl font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${colors.accent}`}>
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
     </div>
-  );
+  </section>
+
+  {/* Forest Fires Section */}
+  <ForestFireSection />
+
+  {/* Footer */}
+  <Footer />
+</div>
+);
 };
 
 export default HeroLayout;

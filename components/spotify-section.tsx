@@ -74,81 +74,81 @@ const SpotifySection = () => {
   };
 
   return (
-    <section id="spotify" className="bg-gray-900 py-8 text-white">
-      <div className="container mx-auto px-2 max-w-6xl">
-        <div className="flex flex-col md:flex-row gap-8">
-          {/* Currently Playing Section */}
-          {currentlyPlaying && (
-            <div className="flex-1 bg-gray-800 rounded-lg p-6 shadow-md border border-gray-700">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Music className="text-emerald-500" size={20} />
-                Currently Playing
-              </h3>
-              <div className="flex items-center gap-4">
-                {currentlyPlaying.albumArt && (
-                  <Image
-                  src={currentlyPlaying.albumArt}
-                  alt="Album Art"
-                  width={64}  // Set the width (16 * 4 for pixel scaling)
-                  height={64} // Set the height (16 * 4 for pixel scaling)
-                  className="rounded-md shadow-sm" // Your custom classes for styling
-                />
-                )}
-                <div>
-                  <p className="font-medium text-white">{currentlyPlaying.songName}</p>
-                  <p className="text-gray-400">{currentlyPlaying.artist}</p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Playlist Submission Section */}
-          <div className="flex-1 bg-gray-800 rounded-lg p-6 shadow-md border border-gray-700">
-            <h2 className="text-2xl font-bold mb-6">
-                Add to My{' '}
-                <a
-                    href="https://open.spotify.com/playlist/2jlzrqaXQ9Y985JWRk1vlC?si=508f79d181c94bc8"
-                    target="_blank" // Opens the link in a new tab
-                    rel="noopener noreferrer" // Security best practice for target="_blank"
-                    className="text-[#10B981] hover:underline" // Sets the color and adds hover effect
-                >
-                    Playlist
-                </a>
-            </h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="relative">
-                <input 
-                  type="text" 
-                  value={songInput}
-                  onChange={(e) => setSongInput(e.target.value)}
-                  placeholder="Enter song name or Spotify URL..."
-                  className="w-full p-4 pr-12 rounded-lg border border-gray-700 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none"
-                  disabled={isSubmitting}
-                />
-                <button 
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-emerald-500 hover:text-emerald-400 disabled:opacity-50"
-                >
-                  <Send size={20} />
-                </button>
-              </div>
-              
-              {submitMessage && (
-                <p className={`text-center ${submitMessage.includes('Error') || submitMessage.includes('Failed') ? 'text-red-500' : 'text-emerald-500'}`}>
-                  {submitMessage}
-                </p>
-              )}
-            </form>
-            
-            <p className="mt-4 text-sm text-gray-400 text-center">
-              Suggest a song to add to my public playlist!
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+   <section id="spotify" className="bg-gray-900 py-12 text-white">
+     <div className="container mx-auto px-2 max-w-7xl">
+       <div className="flex flex-col md:flex-row gap-8">
+         {/* Currently Playing Section */}
+         {currentlyPlaying && (
+           <div className="flex-1 bg-gray-800 rounded-lg p-8 shadow-lg border border-gray-700">
+             <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
+               <Music className="text-emerald-500" size={24} />
+               Currently Playing
+             </h3>
+             <div className="flex items-center gap-6">
+               {currentlyPlaying.albumArt && (
+                 <Image
+                   src={currentlyPlaying.albumArt}
+                   alt="Album Art"
+                   width={96}
+                   height={96}
+                   className="rounded-md shadow-md"
+                 />
+               )}
+               <div>
+                 <p className="font-medium text-white text-lg">{currentlyPlaying.songName}</p>
+                 <p className="text-gray-400 text-base mt-1">{currentlyPlaying.artist}</p>
+               </div>
+             </div>
+           </div>
+         )}
+ 
+         {/* Playlist Submission Section */}
+         <div className="flex-1 bg-gray-800 rounded-lg p-8 shadow-lg border border-gray-700">
+           <h2 className="text-2xl font-bold mb-6">
+             Add to My{' '}
+             <a
+               href="https://open.spotify.com/playlist/2jlzrqaXQ9Y985JWRk1vlC?si=508f79d181c94bc8"
+               target="_blank"
+               rel="noopener noreferrer"
+               className="text-emerald-500 hover:underline"
+             >
+               Playlist
+             </a>
+           </h2>
+           <form onSubmit={handleSubmit} className="space-y-6">
+             <div className="relative">
+               <input 
+                 type="text" 
+                 value={songInput}
+                 onChange={(e) => setSongInput(e.target.value)}
+                 placeholder="Enter song name or Spotify URL..."
+                 className="w-full p-4 pr-12 rounded-lg border border-gray-700 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none text-lg"
+                 disabled={isSubmitting}
+               />
+               <button 
+                 type="submit"
+                 disabled={isSubmitting}
+                 className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-emerald-500 hover:text-emerald-400 disabled:opacity-50"
+               >
+                 <Send size={24} />
+               </button>
+             </div>
+             
+             {submitMessage && (
+               <p className={`text-center text-base ${submitMessage.includes('Error') || submitMessage.includes('Failed') ? 'text-red-500' : 'text-emerald-500'}`}>
+                 {submitMessage}
+               </p>
+             )}
+           </form>
+           
+           <p className="mt-6 text-base text-gray-400 text-center">
+             Suggest a song to add to my public playlist!
+           </p>
+         </div>
+       </div>
+     </div>
+   </section>
+ );
 };
 
 export default SpotifySection;
