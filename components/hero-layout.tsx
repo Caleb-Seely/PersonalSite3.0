@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
 import SpotifySection from './spotify-section';
 import StravaWidget from './strava-widget';
 import { Card, CardContent } from "@/components/ui/card";

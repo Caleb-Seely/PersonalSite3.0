@@ -31,7 +31,7 @@ const ForestFireSection: React.FC<ForestFireSectionProps> = ({ className = '' })
                   <p className={colors.text}>
                     {index === 0 && 
                       <>
-                        Forest fires are a critical component of many ecosystems, helping regenerate soil, recycle nutrients, and maintain biodiversity. Many plant species, like lodgepole pine, depend on fire for regeneration. Fires also reduce fuel loads and disease, promoting forest health when they occur under natural regimes. However, decades of fire suppression have disrupted these natural cycles, leading to denser forests with higher fuel loads. As a result, today's wildfires tend to be larger, hotter, and more destructive than those of the past. 
+                        Forest fires are a critical component of many ecosystems, helping regenerate soil, recycle nutrients, and maintain biodiversity. Many plant species, like lodgepole pine, depend on fire for regeneration. Fires also reduce fuel loads and disease, promoting forest health when they occur under natural regimes. However, decades of fire suppression have disrupted these natural cycles, leading to denser forests with higher fuel loads. As a result, today&apos;s wildfires tend to be larger, hotter, and more destructive than those of the past. 
                        (<a href="https://www.researchgate.net/publication/287243259_Fire_in_Mediterranean_Ecosystems_Ecology_Evolution_and_Management" target="_blank" rel="noopener noreferrer" className={colors.accent}>Keeley et al., 2011</a>).
                       </>
                     }
@@ -43,7 +43,7 @@ const ForestFireSection: React.FC<ForestFireSectionProps> = ({ className = '' })
                     }
                     {index === 2 && 
                       <>
-                        Climate change is driving longer, more intense fire seasons due to higher temperatures, earlier snowmelt, and prolonged drought. Combined with a century of fire suppression, this has led to more severe wildfires. Modern forest management increasingly focuses on "living with fire" through prescribed burns, thinning, and community resilience. Scientists have found that climate change caused by humans has nearly doubled the amount of forest burned in the western U.S. since the 1980s by drying out forests and making them more flammable. 
+                        Climate change is driving longer, more intense fire seasons due to higher temperatures, earlier snowmelt, and prolonged drought. Combined with a century of fire suppression, this has led to more severe wildfires. Modern forest management increasingly focuses on &quot;living with fire&quot; through prescribed burns, thinning, and community resilience. Scientists have found that climate change caused by humans has nearly doubled the amount of forest burned in the western U.S. since the 1980s by drying out forests and making them more flammable. 
                         (<a href="https://doi.org/10.1073/pnas.1607171113" target="_blank" rel="noopener noreferrer" className={colors.accent}>Abatzoglou & Williams, 2016</a>).
                       </>
                     }
