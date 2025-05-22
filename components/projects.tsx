@@ -123,7 +123,7 @@ const ProjectsPage = () => {
    {
      id: "personal-site-3",
      title: "CalebSeely.com",
-     tools: ["AI", "TypeScript"],
+     tools: ["AI", "TypeScript", "APIs"],
      shortDescription: "A redesign of my personal website with a focus on style and utility.",
      longDescription: personalSite3Reflection,
      images: [],

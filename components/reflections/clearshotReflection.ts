@@ -2,7 +2,7 @@ export const clearShotReflection=`
 <div class="space-y-2">
   <div class="rounded-lg p-4 border-l-4 border-[#10B981]">
     <p class="text-gray-300 leading-relaxed">
-      I wanted to use my Garmin watch to <span class="text-[#10B981]">remotely control my phone’s camera</span>. Most Garmin remote camera apps on the store had poor reviews due to either reliability issues or hidden costs. I decided to build my own. What followed was a deep dive into two different development environments, countless roadblocks, and moments of triumph that made it all worth it.
+      I wanted to use my Garmin watch to <span class="text-[#10B981]">remote control my phone’s camera</span>. Most Garmin remote camera apps on the store had poor reviews due to either reliability issues or hidden costs. I decided to build my own. What followed was a deep dive into two different development environments, countless roadblocks, and moments of triumph that made it all worth it.
     </p>
   </div>
 
