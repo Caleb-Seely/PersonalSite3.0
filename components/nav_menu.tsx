@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { tw, transitions } from '@/app/styles/theme/utils';
+import { trackNavigationClick, trackResumeDownload } from './google-analytics';
 
 interface NavLink {
   href: string;
@@ -41,6 +42,14 @@ const NavMenu: React.FC<NavMenuProps> = ({ links }) => {
                 className={`block py-1 px-2 rounded ${tw.hoverBg('hover')} ${transitions.color}`}
                 target={link.target}
                 rel={link.rel}
+                onClick={() => {
+                  if (link.label === 'Resume') {
+                    trackResumeDownload()
+                  } else {
+                    trackNavigationClick(link.label.toLowerCase(), 'nav_menu')
+                  }
+                  setIsMenuOpen(false)
+                }}
               >
                 {link.label}
               </Link>

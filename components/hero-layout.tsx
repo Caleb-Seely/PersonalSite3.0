@@ -9,6 +9,7 @@ import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
 import { colors} from '@/app/styles/colors';
 import ForestFireSection from './forest-fire-section';
+import { trackNavigationClick, trackDeviceType } from './google-analytics';
 
 const navLinks = [
    { href: "/pacing", label: "Pacing" },
@@ -84,6 +85,9 @@ const HeroLayout = () => {
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * welcomeMessages.length);
     setWelcomeMessage(welcomeMessages[randomIndex]);
+    
+    // Track device type on homepage load
+    trackDeviceType();
   }, []);
 
   return (
@@ -176,6 +180,7 @@ const HeroLayout = () => {
                 ? '/projects': type === 'Places' 
                 ? '/places' : '#'}
             className="block h-full"
+            onClick={() => trackNavigationClick(type.toLowerCase(), 'hero_cards')}
           >
             
             <Card className={`group relative cursor-pointer hover:shadow-xl transition-all duration-300 h-64 ${colors.secondary}`}>

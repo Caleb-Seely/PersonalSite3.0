@@ -4,6 +4,7 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { MapPin, Clock, ArrowUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
+import { trackStravaInteraction } from './google-analytics';
 
 interface Activity {
   name: string;
@@ -35,6 +36,9 @@ const StravaWidget = () => {
 
         const data = await response.json();
         setActivity(data);
+        if (data && data.name) {
+          trackStravaInteraction('activity_load', data.name);
+        }
       } catch (error) {
         console.error('Error:', error);
         setError('Unable to load activity data');
@@ -97,7 +101,10 @@ const StravaWidget = () => {
     value: string; 
     label: string; 
   }) => (
-    <div className="flex flex-col items-center group">
+    <div 
+      className="flex flex-col items-center group"
+      onMouseEnter={() => trackStravaInteraction('metric_hover', label)}
+    >
       <Icon className="h-5 w-5 mb-1 text-sage transition-all duration-200 ease-in-out group-hover:text-emerald-500 group-hover:scale-110" />
       <span className="font-medium transition-all duration-200 ease-in-out group-hover:text-emerald-500 group-hover:scale-110">
         {value}

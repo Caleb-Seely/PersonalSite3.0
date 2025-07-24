@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, Github } from 'lucide-react';
 import Image from "next/image";
 import InteractiveConstellation from './twinkleStars';
@@ -15,6 +15,7 @@ import { mediaArchiveReflection } from './reflections/mediaArchive';
 import { clearShotReflection } from './reflections/clearshotReflection';
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
+import { trackProjectInteraction, trackEvent } from './google-analytics';
 // import { colors } from '@/app/styles/colors';
 
 
@@ -40,6 +41,54 @@ const navLinks = [
 const ProjectsPage = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedTech, setSelectedTech] = useState<string | null>(null);
+  
+  // Tracking for time spent viewing projects
+  const projectStartTime = useRef<number | null>(null);
+  const currentlyViewedProject = useRef<string | null>(null);
+  
+  // Track project viewing time
+  useEffect(() => {
+    if (selectedProject) {
+      // Start tracking when project modal opens
+      projectStartTime.current = Date.now();
+      currentlyViewedProject.current = selectedProject.id;
+      
+      // Track the project click
+      trackProjectInteraction(selectedProject.title, 'click');
+      
+      return () => {
+        // When project modal closes, calculate and track view time
+        if (projectStartTime.current && currentlyViewedProject.current) {
+          const viewTime = Math.round((Date.now() - projectStartTime.current) / 1000);
+          if (viewTime > 2) { // Only track if viewed for more than 2 seconds
+            trackEvent('project_view_time', 'projects', currentlyViewedProject.current, viewTime);
+          }
+        }
+      };
+    }
+  }, [selectedProject]);
+  
+  // Handle project selection with tracking
+  const handleProjectClick = (project: Project) => {
+    setSelectedProject(project);
+  };
+  
+  // Handle technology filter clicks
+  const handleFilterClick = (tech: string | null) => {
+    setSelectedTech(tech);
+    trackEvent('filter_click', 'projects', tech || 'all');
+  };
+  
+  // Handle link clicks in project modal
+  const handleGithubClick = (projectTitle: string, githubUrl: string) => {
+    trackEvent('github_click', 'projects', projectTitle);
+    window.open(githubUrl, '_blank', 'noopener noreferrer');
+  };
+  
+  const handleLiveDemoClick = (projectTitle: string, liveUrl: string) => {
+    trackEvent('live_demo_click', 'projects', projectTitle);
+    window.open(liveUrl, '_blank', 'noopener noreferrer');
+  };
 
   // Projects array with dates
   const projects: Project[] = [
@@ -171,7 +220,7 @@ const ProjectsPage = () => {
                   ? 'bg-[#10B981] text-black border-[#10B981]'
                   : 'border-[#10B981] text-[#10B981] bg-black hover:bg-[#10B981] hover:text-black'
               }`}
-              onClick={() => setSelectedTech(null)}
+              onClick={() => handleFilterClick(null)}
             >
               All
             </button>
@@ -183,7 +232,7 @@ const ProjectsPage = () => {
                     ? 'bg-[#10B981] text-black border-[#10B981]'
                     : 'border-[#10B981] bg-black text-[#10B981] hover:bg-[#10B981] hover:text-black'
                 }`}
-                onClick={() => setSelectedTech(tech)}
+                onClick={() => handleFilterClick(tech)}
               >
                 {tech}
               </button>
@@ -286,21 +335,27 @@ const ProjectsPage = () => {
 
       <div className="flex gap-4">
         {selectedProject.github && (
-          <a
-            href={selectedProject.github}
-            className="flex items-center gap-2 text-[#8DB7F5] hover:text-[#10B981]"
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              handleGithubClick(selectedProject.title, selectedProject.github!);
+            }}
+            className="flex items-center gap-2 text-[#8DB7F5] hover:text-[#10B981] cursor-pointer"
           >
             <Github size={20} />
             <span>View Code</span>
-          </a>
+          </button>
         )}
         {selectedProject.live && (
-          <a
-            href={selectedProject.live}
-            className="flex items-center gap-2 text-[#8DB7F5] hover:text-[#10B981]"
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              handleLiveDemoClick(selectedProject.title, selectedProject.live!);
+            }}
+            className="flex items-center gap-2 text-[#8DB7F5] hover:text-[#10B981] cursor-pointer"
           >
             <span>Live Demo</span>
-          </a>
+          </button>
         )}
       </div>
 

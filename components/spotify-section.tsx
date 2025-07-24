@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Music, Send } from 'lucide-react';
 import Image from "next/image";
+import { trackSpotifyInteraction } from './google-analytics';
 
 // Define interface for currently playing song
 interface CurrentlyPlaying {
@@ -32,6 +33,9 @@ const SpotifySection = () => {
         } else {
           const data = await response.json();
           setCurrentlyPlaying(data);
+          if (data && data.songName) {
+            trackSpotifyInteraction('currently_playing_view', `${data.songName} - ${data.artist}`);
+          }
         }
       } catch (error) {
         console.error('Error fetching current song:', error);
@@ -61,6 +65,7 @@ const SpotifySection = () => {
 
       if (response.ok) {
         setSubmitMessage('Song added successfully! 🎵');
+        trackSpotifyInteraction('song_submit', songInput);
         setSongInput('');
       } else {
         setSubmitMessage('Failed to add song. Please try again.');
@@ -111,6 +116,7 @@ const SpotifySection = () => {
                target="_blank"
                rel="noopener noreferrer"
                className="text-emerald-500 hover:underline"
+               onClick={() => trackSpotifyInteraction('playlist_click')}
              >
                Playlist
              </a>
