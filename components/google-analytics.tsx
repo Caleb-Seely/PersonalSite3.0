@@ -1,12 +1,45 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 
 export const GA_TRACKING_ID = 'G-1ZZLC2GJW9'
 
+// Type definitions for Google Analytics
+interface GtagConfig {
+  page_title?: string
+  page_location?: string
+  page_path?: string
+  anonymize_ip?: boolean
+  cookie_flags?: string
+  enhanced_measurement?: {
+    scrolls?: boolean
+    outbound_clicks?: boolean
+    site_search?: boolean
+    video_engagement?: boolean
+    file_downloads?: boolean
+  }
+}
+
+interface GtagEvent {
+  event_category?: string
+  event_label?: string
+  value?: number
+}
+
+type GtagCommand = 'js' | 'config' | 'event'
+type GtagArgs = [GtagCommand, string | Date, GtagConfig?] | [GtagCommand, string, GtagEvent?]
+
+// Extend Window interface for gtag
+declare global {
+  interface Window {
+    dataLayer: unknown[]
+    gtag: (...args: GtagArgs) => void
+  }
+}
+
 // Initialize Google Analytics with performance optimizations
-export function GoogleAnalytics() {
+function GoogleAnalyticsInner() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
@@ -28,12 +61,12 @@ export function GoogleAnalytics() {
       script.onload = () => {
         // Initialize gtag after script loads
         window.dataLayer = window.dataLayer || []
-        function gtag(...args: any[]) {
+        function gtag(...args: GtagArgs) {
           window.dataLayer.push(args)
         }
         
         // Make gtag globally available
-        ;(window as any).gtag = gtag
+        window.gtag = gtag
         
         gtag('js', new Date())
         gtag('config', GA_TRACKING_ID, {
@@ -61,8 +94,8 @@ export function GoogleAnalytics() {
     }
 
     // Use requestIdleCallback if available, otherwise setTimeout
-    if ('requestIdleCallback' in window) {
-      ;(window as any).requestIdleCallback(loadGA)
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(loadGA)
     } else {
       setTimeout(loadGA, 100)
     }
@@ -75,8 +108,8 @@ export function GoogleAnalytics() {
     const url = pathname + searchParams.toString()
     
     // Only track if gtag is loaded
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      ;(window as any).gtag('config', GA_TRACKING_ID, {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('config', GA_TRACKING_ID, {
         page_path: url,
       })
       
@@ -86,6 +119,14 @@ export function GoogleAnalytics() {
   }, [pathname, searchParams])
   
   return null
+}
+
+export function GoogleAnalytics() {
+  return (
+    <Suspense fallback={null}>
+      <GoogleAnalyticsInner />
+    </Suspense>
+  )
 }
 
 // Site-specific tracking setup
@@ -166,8 +207,8 @@ function trackPageSection(pathname: string) {
 export const trackEvent = (action: string, category: string, label?: string, value?: number) => {
   if (process.env.NODE_ENV !== 'production') return
   
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    ;(window as any).gtag('event', action, {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', action, {
       event_category: category,
       event_label: label,
       value: value,
@@ -215,12 +256,4 @@ export const trackDeviceType = () => {
   const isMobile = window.innerWidth <= 768
   const deviceType = isMobile ? 'mobile' : 'desktop'
   trackEvent('device_info', 'screen_size', deviceType, window.innerWidth)
-}
-
-// Declare global gtag types
-declare global {
-  interface Window {
-    dataLayer: any[]
-    gtag: (...args: any[]) => void
-  }
 }

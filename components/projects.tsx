@@ -68,11 +68,6 @@ const ProjectsPage = () => {
     }
   }, [selectedProject]);
   
-  // Handle project selection with tracking
-  const handleProjectClick = (project: Project) => {
-    setSelectedProject(project);
-  };
-  
   // Handle technology filter clicks
   const handleFilterClick = (tech: string | null) => {
     setSelectedTech(tech);
