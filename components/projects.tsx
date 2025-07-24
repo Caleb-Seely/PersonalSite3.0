@@ -13,6 +13,7 @@ import { ecommerceReflection } from './reflections/ecommerce';
 import { predictingSalesReflection } from './reflections/predictingSales';
 import { mediaArchiveReflection } from './reflections/mediaArchive';
 import { clearShotReflection } from './reflections/clearshotReflection';
+import { cameraClickReflection } from './reflections/cameraClick';
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
 import { trackProjectInteraction, trackEvent } from './google-analytics';
@@ -183,7 +184,18 @@ const ProjectsPage = () => {
      images: [],
      github: "https://github.com/Caleb-Seely/Garmin-Remote-Camera",
      date: new Date('2025-3-1')
-   }
+   },
+   {
+      id: "cameracliick",
+      title: "CameraClick Apps",
+      tools: ["AI", "Kotlin", "Monkey C"],
+      shortDescription: "Native camera control, wirelessly triggered from your wrist.",
+      longDescription: cameraClickReflection,
+      images: [],
+      live: "https://play.google.com/store/apps/details?id=com.garmin.android.apps.camera.click.comm",
+      github: "https://github.com/Caleb-Seely/GarminRemoteV2",
+      date: new Date('2025-4-1')
+    }
  ];
  
   // Sort projects by date (newest first)
