@@ -22,12 +22,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Caleb Seely",
-  description: "Built by AI and no sleep",
+  description: "Building solutions",
   // Add additional metadata for better SEO
-  metadataBase: new URL('https://calebseely.com'), // Replace with your actual domain
+  metadataBase: new URL('https://calebseely.com'), 
   openGraph: {
     title: "Caleb Seely",
-    description: "Personal website of Caleb Seely - Software Developer and Adventurer",
+    description: "Personal website of Caleb Seely - Solutions Developer",
     images: [
       {
         url: '/img/headshot.webp',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Caleb Seely",
-    description: "Personal website of Caleb Seely - Software Developer and Adventurer",
+    description: "Personal website of Caleb Seely - Solutions Developer",
     images: ['/img/headshot.webp'],
   },
   robots: {
@@ -58,26 +58,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Preload critical assets */}
-        <link 
-          rel="preload" 
-          href="/img/hero-1920.webp" 
-          as="image" 
-          type="image/webp"
-          fetchPriority="high"
-        />
-        <link 
-          rel="preload" 
-          href="/img/Hayward_Banner.webp" 
-          as="image" 
-          type="image/webp"
-        />
-        <link 
-          rel="preload" 
-          href="/img/steens.webp" 
-          as="image" 
-          type="image/webp"
-        />
         
         {/* Favicon configuration */}
         <link rel="manifest" href="/my-favicon/manifest.json" />
@@ -86,6 +66,22 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="32x32" href="/my-favicon/icon-blue30-32.webp" />
         <link rel="icon" type="image/png" sizes="16x16" href="/my-favicon/running-shoe-rotate1.png" />
         <link rel="apple-touch-icon" href="/my-favicon/apple-icon.png" />
+        
+        {/* Google Analytics */}
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=G-1ZZLC2GJW9`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-1ZZLC2GJW9');
+            `,
+          }}
+        />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}

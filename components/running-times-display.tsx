@@ -261,8 +261,8 @@ const RunningTimesDisplay = () => {
             <Image
                 src={`/img/running${num}.webp`}
                 alt={`Running photo ${num}`}
-                layout="fill"
-                objectFit="contain"
+                fill
+                style={{ objectFit: 'contain' }}
                 className="w-full h-full"
                 unoptimized
             />

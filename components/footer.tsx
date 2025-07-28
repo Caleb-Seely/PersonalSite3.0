@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mail, FileText } from "lucide-react";
 import { tw, transitions } from '@/app/styles/theme/utils';
+import { trackResumeDownload } from './google-analytics';
 
 // Custom SVG components for LinkedIn and GitHub bc they were depricated in Lucid
 const LinkedInIcon = () => (
@@ -19,23 +20,28 @@ const GitHubIcon = () => (
 
 const Footer = () => {
   const socialLinks = [
-    { icon: Mail, href: "mailto:calebseely@gmail.com", isCustom: false },
-    { icon: LinkedInIcon, href: "https://www.linkedin.com/in/caleb-seely", isCustom: true },
-    { icon: FileText, href: "/misc/Caleb_Seely_Resume.pdf", isCustom: false },
-    { icon: GitHubIcon, href: "https://github.com/Caleb-Seely", isCustom: true },
+    { icon: Mail, href: "mailto:calebseely@gmail.com", isCustom: false, isResume: false },
+    { icon: LinkedInIcon, href: "https://www.linkedin.com/in/caleb-seely", isCustom: true, isResume: false },
+    { icon: FileText, href: "/misc/Caleb_Seely_Resume.pdf", isCustom: false, isResume: true },
+    { icon: GitHubIcon, href: "https://github.com/Caleb-Seely", isCustom: true, isResume: false },
   ];
   
   return (
     <footer className={`${tw.bg('primary')} py-8`}>
       <div className="container mx-auto px-4">
         <div className="flex justify-center space-x-12">
-          {socialLinks.map(({ icon: Icon, href, isCustom }) => (
+          {socialLinks.map(({ icon: Icon, href, isCustom, isResume }) => (
             <a
               key={href}
               href={href}
               className={`${tw.text('text')} ${tw.hoverText('accent')} ${transitions.all} hover:scale-110`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                if (isResume) {
+                  trackResumeDownload()
+                }
+              }}
             >
               {isCustom ? <Icon /> : <Icon size={28} />}
             </a>

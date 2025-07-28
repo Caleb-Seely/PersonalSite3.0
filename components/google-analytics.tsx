@@ -5,119 +5,35 @@ import { usePathname, useSearchParams } from 'next/navigation'
 
 export const GA_TRACKING_ID = 'G-1ZZLC2GJW9'
 
-// Type definitions for Google Analytics
-interface GtagConfig {
-  page_title?: string
-  page_location?: string
-  page_path?: string
-  anonymize_ip?: boolean
-  cookie_flags?: string
-  enhanced_measurement?: {
-    scrolls?: boolean
-    outbound_clicks?: boolean
-    site_search?: boolean
-    video_engagement?: boolean
-    file_downloads?: boolean
-  }
-}
-
-interface GtagEvent {
-  event_category?: string
-  event_label?: string
-  value?: number
-}
-
-type GtagCommand = 'js' | 'config' | 'event'
-type GtagArgs = [GtagCommand, string | Date, GtagConfig?] | [GtagCommand, string, GtagEvent?]
-
 // Extend Window interface for gtag
 declare global {
   interface Window {
     dataLayer: unknown[]
-    gtag: (...args: GtagArgs) => void
+    gtag: (...args: unknown[]) => void
   }
 }
 
-// Initialize Google Analytics with performance optimizations
 function GoogleAnalyticsInner() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
+  // Track page views on route changes (Next.js SPA navigation)
   useEffect(() => {
-    // Only load GA in production
-    if (process.env.NODE_ENV !== 'production') return
-
-    // Use requestIdleCallback to load GA when browser is idle
-    // This ensures it doesn't interfere with critical rendering
-    const loadGA = () => {
-      // Create and load gtag script asynchronously
-      const script = document.createElement('script')
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`
-      script.async = true
-      
-      // Load with low priority to not block main thread
-      script.setAttribute('importance', 'low')
-      
-      script.onload = () => {
-        // Initialize gtag after script loads
-        window.dataLayer = window.dataLayer || []
-        function gtag(...args: GtagArgs) {
-          window.dataLayer.push(args)
-        }
-        
-        // Make gtag globally available
-        window.gtag = gtag
-        
-        gtag('js', new Date())
-        gtag('config', GA_TRACKING_ID, {
-          // Optimize for performance
-          page_title: document.title,
-          page_location: window.location.href,
-          // Reduce data collection for better performance
-          anonymize_ip: true,
-          cookie_flags: 'SameSite=None;Secure',
-          // Enable enhanced measurement for better insights
-          enhanced_measurement: {
-            scrolls: true,
-            outbound_clicks: true,
-            site_search: false,
-            video_engagement: false,
-            file_downloads: true
-          }
-        })
-        
-        // Set up site-specific tracking
-        setupSiteSpecificTracking()
-      }
-      
-      document.head.appendChild(script)
+    if (process.env.NODE_ENV === 'development' && !process.env.NEXT_PUBLIC_GA_DEBUG) {
+      return
     }
 
-    // Use requestIdleCallback if available, otherwise setTimeout
-    if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(loadGA)
-    } else {
-      setTimeout(loadGA, 100)
-    }
-  }, [])
-
-  // Track page views on route changes
-  useEffect(() => {
-    if (process.env.NODE_ENV !== 'production') return
-    
-    const url = pathname + searchParams.toString()
-    
-    // Only track if gtag is loaded
+    // Track page view once - no retry needed since GA is loaded in head
     if (typeof window !== 'undefined' && window.gtag) {
+      if (process.env.NEXT_PUBLIC_GA_DEBUG) {
+        console.log('📊 Page view:', pathname)
+      }
       window.gtag('config', GA_TRACKING_ID, {
-        page_path: url,
+        page_path: pathname,
       })
-      
-      // Track section-specific page views
-      trackPageSection(pathname)
     }
   }, [pathname, searchParams])
-  
+
   return null
 }
 
@@ -129,83 +45,11 @@ export function GoogleAnalytics() {
   )
 }
 
-// Site-specific tracking setup
-function setupSiteSpecificTracking() {
-  if (typeof window === 'undefined') return
-  
-  // Track typewriter animation completion on homepage
-  const observeTypewriter = () => {
-    const typewriterElements = document.querySelectorAll('[class*="typewriter"], [class*="typing"]')
-    typewriterElements.forEach(element => {
-      const observer = new MutationObserver(() => {
-        if (element.textContent && element.textContent.length > 0) {
-          trackEvent('engagement', 'typewriter', 'animation_complete', element.textContent.length)
-        }
-      })
-      observer.observe(element, { childList: true, subtree: true, characterData: true })
-    })
-  }
-  
-  // Track scroll depth on homepage hero section
-  let maxScrollDepth = 0
-  const trackScrollDepth = () => {
-    const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100)
-    if (scrollPercent > maxScrollDepth && scrollPercent % 25 === 0) {
-      maxScrollDepth = scrollPercent
-      trackEvent('engagement', 'scroll_depth', `${scrollPercent}%`, scrollPercent)
-    }
-  }
-  
-  // Track time spent on different sections
-  const trackTimeOnSection = () => {
-    const sections = ['hero', 'about', 'spotify', 'projects']
-    const sectionTimes: Record<string, number> = {}
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const sectionId = entry.target.id
-        if (entry.isIntersecting) {
-          sectionTimes[sectionId] = Date.now()
-        } else if (sectionTimes[sectionId]) {
-          const timeSpent = Math.round((Date.now() - sectionTimes[sectionId]) / 1000)
-          if (timeSpent > 3) { // Only track if spent more than 3 seconds
-            trackEvent('engagement', 'section_time', sectionId, timeSpent)
-          }
-          delete sectionTimes[sectionId]
-        }
-      })
-    }, { threshold: 0.5 })
-    
-    sections.forEach(sectionId => {
-      const element = document.getElementById(sectionId)
-      if (element) observer.observe(element)
-    })
-  }
-  
-  // Set up tracking with delay to ensure DOM is ready
-  setTimeout(() => {
-    observeTypewriter()
-    trackTimeOnSection()
-    window.addEventListener('scroll', trackScrollDepth, { passive: true })
-  }, 2000)
-}
-
-// Track page section visits
-function trackPageSection(pathname: string) {
-  const sectionMap: Record<string, string> = {
-    '/': 'homepage',
-    '/projects': 'projects_page',
-    '/pacing': 'running_times',
-    '/places': 'places_page'
-  }
-  
-  const section = sectionMap[pathname] || 'other'
-  trackEvent('navigation', 'page_visit', section)
-}
 
 // Enhanced event tracking functions
 export const trackEvent = (action: string, category: string, label?: string, value?: number) => {
-  if (process.env.NODE_ENV !== 'production') return
+  const shouldTrack = process.env.NODE_ENV === 'production' || process.env.NEXT_PUBLIC_GA_DEBUG
+  if (!shouldTrack) return
   
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', action, {

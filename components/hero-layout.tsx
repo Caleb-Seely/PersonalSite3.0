@@ -88,6 +88,15 @@ const HeroLayout = () => {
     
     // Track device type on homepage load
     trackDeviceType();
+    
+    // Preload Hayward banner after a few seconds for faster pacing page load
+    const preloadTimer = setTimeout(() => {
+      const img = new window.Image();
+      img.src = '/img/Hayward_Banner.webp';
+      // No need to do anything with the loaded image, it's now cached
+    }, 3000); // Wait 3 seconds before preloading
+    
+    return () => clearTimeout(preloadTimer);
   }, []);
 
   return (
@@ -173,7 +182,16 @@ const HeroLayout = () => {
   <section id="projects" className={`py-8 ${colors.primary}`}>
     <div className="container mx-auto px-2 max-w-7xl">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {['Pacing', 'Projects', 'Places'].map((type) => (
+        {['Pacing', 'Projects', 'Places'].map((type) => {
+          const handleMouseEnter = () => {
+            // Preload Hayward banner when user hovers over Pacing card
+            if (type === 'Pacing') {
+              const img = new window.Image();
+              img.src = '/img/Hayward_Banner.webp';
+            }
+          };
+          
+          return (
           <Link 
             key={type} 
             href={type === 'Pacing' ? '/pacing' : type === 'Projects' 
@@ -181,10 +199,11 @@ const HeroLayout = () => {
                 ? '/places' : '#'}
             className="block h-full"
             onClick={() => trackNavigationClick(type.toLowerCase(), 'hero_cards')}
+            onMouseEnter={handleMouseEnter}
           >
             
             <Card className={`group relative cursor-pointer hover:shadow-xl transition-all duration-300 h-64 ${colors.secondary}`}>
-              <CardContent className="p-0 h-full">
+              <CardContent className="p-0 h-full relative">
               <Image 
                 src={`/img/${type}.webp`}
                 alt={type.charAt(0).toUpperCase() + type.slice(1)}
@@ -201,7 +220,8 @@ const HeroLayout = () => {
               </CardContent>
             </Card>
           </Link>
-        ))}
+          );
+        })}
       </div>
     </div>
   </section>

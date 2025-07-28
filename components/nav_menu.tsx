@@ -42,6 +42,13 @@ const NavMenu: React.FC<NavMenuProps> = ({ links }) => {
                 className={`block py-1 px-2 rounded ${tw.hoverBg('hover')} ${transitions.color}`}
                 target={link.target}
                 rel={link.rel}
+                onMouseEnter={() => {
+                  // Preload Hayward banner when hovering over Pacing nav item
+                  if (link.label === 'Pacing') {
+                    const img = new window.Image();
+                    img.src = '/img/Hayward_Banner.webp';
+                  }
+                }}
                 onClick={() => {
                   if (link.label === 'Resume') {
                     trackResumeDownload()

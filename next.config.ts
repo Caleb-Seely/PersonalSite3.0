@@ -7,7 +7,12 @@ const nextConfig: NextConfig = {
       headers: [
         {
           key: 'Cache-Control',
-          value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          value: 'public, max-age=3600, must-revalidate',
+        },
+        // Content Security Policy for Google Analytics
+        {
+          key: 'Content-Security-Policy',
+          value: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://region1.analytics.google.com; img-src 'self' data: https: https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com;",
         },
       ],
     },

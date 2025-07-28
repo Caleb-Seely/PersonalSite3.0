@@ -35,7 +35,6 @@ interface Place {
 
 const PlacesPage = () => {
     const [isExpanded, setIsExpanded] = useState(false);
-    const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [windowWidth, setWindowWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1024);
     const [imagesPreloaded, setImagesPreloaded] = useState(false);
     const [imageTransitioning, setImageTransitioning] = useState(false);
@@ -74,7 +73,6 @@ const PlacesPage = () => {
   ];
 
   const [currentPlace, setCurrentPlace] = useState(places[0]);
-  const [isTyping, setIsTyping] = useState(false);
   const [displayText, setDisplayText] = useState('');
   const imageRef = useRef<HTMLDivElement>(null);
   const swiperRef = useRef<SwiperInstance | null>(null);  
@@ -113,53 +111,19 @@ const PlacesPage = () => {
   }, []);
 
   useEffect(() => {
-    if (typingTimeoutRef.current) {
-      clearTimeout(typingTimeoutRef.current);
-    }
-    
-    setIsTyping(true);
-    let currentText = '';
-    const targetText = currentPlace.description;
-    let index = 0;
-
-    // Even faster typing speed for better performance
-    // For longer text (>100 characters), make it even faster (2ms)
-    const typingSpeed = targetText.length > 100 ? 2 : 8;
-    
-    const typeText = () => {
-      if (index < targetText.length) {
-        currentText += targetText[index];
-        setDisplayText(currentText);
-        index++;
-        typingTimeoutRef.current = setTimeout(typeText, typingSpeed);
-      } else {
-        setIsTyping(false);
-      }
-    };
-
-    typeText();
-
-    return () => {
-      if (typingTimeoutRef.current) {
-        clearTimeout(typingTimeoutRef.current);
-      }
-    };
+    setDisplayText(currentPlace.description);
   }, [currentPlace]);
 
   const handlePlaceClick = (place: Place) => {
     // Set transitioning state to trigger fade effect
     setImageTransitioning(true);
     
-    // Short timeout to allow fade effect before changing image
+    // Single timeout to handle the entire transition
     setTimeout(() => {
       setCurrentPlace(place);
       setIsExpanded(false);
-      
-      // Remove transition state after a short delay to fade back in
-      setTimeout(() => {
-        setImageTransitioning(false);
-      }, 150);
-    }, 150);
+      setImageTransitioning(false);
+    }, 300); // Single longer timeout instead of nested
   };
 
   const getTitleColor = (title: string) => {
@@ -220,9 +184,6 @@ const PlacesPage = () => {
               {displayText.split('\n\n').map((paragraph, index) => (
                 <p key={index} className="mb-4 last:mb-0 text-lg leading-relaxed">
                   {paragraph}
-                  {isTyping && index === displayText.split('\n\n').length - 1 && (
-                    <span className="animate-pulse text-[#10B981]">|</span>
-                  )}
                 </p>
               ))}
             </div>
