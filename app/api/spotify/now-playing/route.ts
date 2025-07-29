@@ -76,7 +76,7 @@ async function makeSpotifyRequest(accessToken: string, url: string) {
   });
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   // Check environment variables first
   const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
   const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
@@ -101,11 +101,12 @@ export async function GET(request: Request) {
   }
 
   const cookieStore = cookies();
-  let accessToken = (await cookieStore).get('spotify_access_token')?.value;
+  let accessToken: string | undefined = (await cookieStore).get('spotify_access_token')?.value;
   
   // If no access token, try to refresh
   if (!accessToken) {
-    accessToken = await refreshSpotifyToken();
+    const refreshedToken = await refreshSpotifyToken();
+    accessToken = refreshedToken || undefined;
     
     if (!accessToken) {
       return NextResponse.json({ 
