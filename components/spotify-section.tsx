@@ -21,22 +21,36 @@ const SpotifySection = () => {
   useEffect(() => {
     const fetchCurrentSong = async () => {
       try {
-        const response = await fetch('/api/spotify/now-playing');
-        
-        if (response.status === 401) {
-          const refreshResponse = await fetch('/api/spotify/refresh');
-          if (refreshResponse.ok) {
-            const retryResponse = await fetch('/api/spotify/now-playing');
-            const data = await retryResponse.json();
-            setCurrentlyPlaying(data);
-          } 
-        } else {
-          const data = await response.json();
-          setCurrentlyPlaying(data);
-          if (data && data.songName) {
-            trackSpotifyInteraction('currently_playing_view', `${data.songName} - ${data.artist}`);
+        // Add cache-busting parameters
+        const timestamp = Date.now();
+        const response = await fetch(`/api/spotify/now-playing?t=${timestamp}`, {
+          cache: 'no-cache',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
           }
+        });
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          console.error('Invalid response format from Spotify API');
+          setCurrentlyPlaying({
+            isPlaying: false,
+            songName: "I'm not playing music right now.",
+            artist: 'Spotify paused',
+            albumArt: '/my-favicon/icon-emerald-30.webp'
+          });
+          return;
         }
+        
+        const data = await response.json();
+        setCurrentlyPlaying(data);
+        
+        if (data && data.songName && !data.error) {
+          trackSpotifyInteraction('currently_playing_view', `${data.songName} - ${data.artist}`);
+        }
+        
       } catch (error) {
         console.error('Error fetching current song:', error);
       }
