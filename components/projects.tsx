@@ -17,7 +17,6 @@ import { cameraClickReflection } from './reflections/cameraClick';
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
 import { trackProjectInteraction, trackEvent } from './google-analytics';
-import { colors, colorCombos } from '@/app/styles/colors';
 import { projectsNavLinks } from '@/lib/navigation';
 
 interface Project {
