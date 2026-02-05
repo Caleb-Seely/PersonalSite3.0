@@ -10,10 +10,40 @@ const nextConfig: NextConfig = {
           key: 'Cache-Control',
           value: 'public, max-age=3600, must-revalidate',
         },
-        // Content Security Policy for Google Analytics
+        // Content Security Policy
         {
           key: 'Content-Security-Policy',
-          value: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://region1.analytics.google.com https://stats.g.doubleclick.net; img-src 'self' data: https: https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com;",
+          value: [
+            "default-src 'self'",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
+            "style-src 'self' 'unsafe-inline'",
+            "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://region1.analytics.google.com https://stats.g.doubleclick.net https://www.strava.com https://api.spotify.com",
+            "img-src 'self' data: blob: https://i.scdn.co https://mosaic.scdn.co https://image-cdn-fa.spotifycdn.com https://www.google-analytics.com https://www.googletagmanager.com",
+            "font-src 'self'",
+            "frame-ancestors 'none'",
+            "base-uri 'self'",
+            "form-action 'self'",
+          ].join('; '),
+        },
+        // Prevent clickjacking
+        {
+          key: 'X-Frame-Options',
+          value: 'DENY',
+        },
+        // Prevent MIME type sniffing
+        {
+          key: 'X-Content-Type-Options',
+          value: 'nosniff',
+        },
+        // Control referrer information
+        {
+          key: 'Referrer-Policy',
+          value: 'strict-origin-when-cross-origin',
+        },
+        // Restrict browser features
+        {
+          key: 'Permissions-Policy',
+          value: 'camera=(), microphone=(), geolocation=()',
         },
       ],
     },

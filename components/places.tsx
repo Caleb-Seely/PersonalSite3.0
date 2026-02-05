@@ -9,6 +9,8 @@ import type { Swiper as SwiperInstance } from 'swiper';
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
 import { colors } from '@/app/styles/colors';
+import { trackEvent } from './google-analytics';
+import { placesNavLinks } from '@/lib/navigation';
 
 // Preload images constant - now properly implemented
 const IMAGE_URLS = [
@@ -18,13 +20,6 @@ const IMAGE_URLS = [
   "/img/Ha_Giang.webp",
   "/img/Flagstaff.webp"
 ];
-
-const navLinks = [
-   { href: "/", label: "Home" },
-   { href: "/pacing", label: "Pacing" },
-   { href: "/projects", label: "Projects" },
-   { href: "/misc/Caleb_Seely_Resume.pdf", label: "Resume", target: "_blank", rel: "noopener noreferrer" },
- ];
 
 interface Place {
   id: number;
@@ -115,15 +110,18 @@ const PlacesPage = () => {
   }, [currentPlace]);
 
   const handlePlaceClick = (place: Place) => {
+    // Track place selection
+    trackEvent('place_select', 'places', place.title);
+
     // Set transitioning state to trigger fade effect
     setImageTransitioning(true);
-    
+
     // Single timeout to handle the entire transition
     setTimeout(() => {
       setCurrentPlace(place);
       setIsExpanded(false);
       setImageTransitioning(false);
-    }, 300); // Single longer timeout instead of nested
+    }, 300);
   };
 
   const getTitleColor = (title: string) => {
@@ -133,7 +131,7 @@ const PlacesPage = () => {
   return (
     <div className="min-h-screen bg-black text-white ">
       
-      <NavMenu links={navLinks} />
+      <NavMenu links={placesNavLinks} />
 
       {/* Main content */}
       <div className="container mx-auto px-4 pt-12">
@@ -152,10 +150,9 @@ const PlacesPage = () => {
               src={currentPlace.image}
               alt={currentPlace.title}
               fill
-              className={`object-cover transition-all duration-300 ${
+              className={`object-cover transition-opacity transition-transform duration-300 ${
                 imageTransitioning ? 'opacity-30 scale-105' : 'opacity-100'
               }`}
-              unoptimized={true} 
               priority={true}
               placeholder="blur"
               blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQtJSAyVC08MTAxMTMwNjs7PjU1OjxKRkZKdEVDRVlZW1xfYWFXYWhpYWH/2wBDARUXFx4aHR4eHWFgOSFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWH/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
@@ -171,9 +168,19 @@ const PlacesPage = () => {
 
         {/* Description */}
         <div className="max-w-4xl mx-auto mb-6">
-          <div 
-            className="bg-gray-900 p-6 rounded-lg cursor-pointer group relative"
+          <div
+            className="bg-gray-900 p-6 rounded-lg cursor-pointer group relative hover:bg-gray-800/50 transition-colors"
             onClick={() => setIsExpanded(!isExpanded)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setIsExpanded(!isExpanded);
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-expanded={isExpanded}
+            aria-label={isExpanded ? 'Collapse description' : 'Expand description'}
             style={{ minHeight: '180px' }}
           >
             <div 
@@ -221,18 +228,27 @@ const PlacesPage = () => {
               {places.filter(p => p.id !== currentPlace.id).map((place) => (
                 <SwiperSlide key={place.id} className='p-2 overflow-visible'>
                   <div
-                    className="cursor-pointer transform transition-all duration-300 hover:scale-105 relative"
+                    className="cursor-pointer transform transition-transform duration-300 hover:scale-105 relative focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-black rounded-lg"
                     onClick={() => handlePlaceClick(place)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handlePlaceClick(place);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`View ${place.title}`}
                   >
                     <div className="relative aspect-video rounded-lg overflow-hidden z-5">
                       <Image
-                        key={`thumb-${place.id}`} // Add key for proper re-rendering 
+                        key={`thumb-${place.id}`}
                         src={place.image}
                         alt={place.title}
                         fill
                         className="w-full h-full z-10 transition-opacity duration-300"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
-                        priority={true} // Using priority instead of loading="eager"
+                        loading="lazy"
                       />
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black p-4 z-10">
                         <h3 className={`text-lg font-semibold ${getTitleColor(place.title)}`}>

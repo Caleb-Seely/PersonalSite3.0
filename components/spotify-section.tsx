@@ -14,6 +14,7 @@ interface CurrentlyPlaying {
 const SpotifySection = () => {
   const [songInput, setSongInput] = useState('');
   const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
 
@@ -53,6 +54,8 @@ const SpotifySection = () => {
         
       } catch (error) {
         console.error('Error fetching current song:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -97,12 +100,20 @@ const SpotifySection = () => {
      <div className="container mx-auto px-2 max-w-7xl">
        <div className="flex flex-col md:flex-row gap-8">
          {/* Currently Playing Section */}
-         {currentlyPlaying && (
-           <div className="flex-1 bg-gray-800 rounded-lg p-8 shadow-lg border border-gray-700">
-             <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
-               <Music className="text-emerald-500" size={24} />
-               Currently Playing
-             </h3>
+         <div className="flex-1 bg-gray-800 rounded-lg p-8 shadow-lg border border-gray-700">
+           <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
+             <Music className="text-emerald-500" size={24} />
+             Currently Playing
+           </h3>
+           {isLoading ? (
+             <div className="flex items-center gap-6 animate-pulse">
+               <div className="w-24 h-24 bg-gray-700 rounded-md"></div>
+               <div className="flex-1 space-y-3">
+                 <div className="h-5 bg-gray-700 rounded w-3/4"></div>
+                 <div className="h-4 bg-gray-700 rounded w-1/2"></div>
+               </div>
+             </div>
+           ) : currentlyPlaying ? (
              <div className="flex items-center gap-6">
                {currentlyPlaying.albumArt && (
                  <Image
@@ -110,16 +121,16 @@ const SpotifySection = () => {
                    alt="Album Art"
                    width={96}
                    height={96}
-                   className="rounded-md shadow-md"
+                   className="rounded-md shadow-md flex-shrink-0"
                  />
                )}
-               <div>
-                 <p className="font-medium text-white text-lg">{currentlyPlaying.songName}</p>
-                 <p className="text-gray-400 text-base mt-1">{currentlyPlaying.artist}</p>
+               <div className="min-w-0">
+                 <p className="font-medium text-white text-lg truncate">{currentlyPlaying.songName}</p>
+                 <p className="text-gray-400 text-base mt-1 truncate">{currentlyPlaying.artist}</p>
                </div>
              </div>
-           </div>
-         )}
+           ) : null}
+         </div>
  
          {/* Playlist Submission Section */}
          <div className="flex-1 bg-gray-800 rounded-lg p-8 shadow-lg border border-gray-700">
@@ -137,18 +148,23 @@ const SpotifySection = () => {
            </h2>
            <form onSubmit={handleSubmit} className="space-y-6">
              <div className="relative">
-               <input 
-                 type="text" 
+               <label htmlFor="song-input" className="sr-only">
+                 Enter song name or Spotify URL
+               </label>
+               <input
+                 id="song-input"
+                 type="text"
                  value={songInput}
                  onChange={(e) => setSongInput(e.target.value)}
                  placeholder="Enter song name or Spotify URL..."
                  className="w-full p-4 pr-12 rounded-lg border border-gray-700 bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none text-lg"
                  disabled={isSubmitting}
                />
-               <button 
+               <button
                  type="submit"
                  disabled={isSubmitting}
-                 className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-emerald-500 hover:text-emerald-400 disabled:opacity-50"
+                 className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-emerald-500 hover:text-emerald-400 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-gray-700 rounded"
+                 aria-label="Submit song suggestion"
                >
                  <Send size={24} />
                </button>

@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { MapPin, Clock, ArrowUp } from 'lucide-react';
+import { MapPin, Clock, ArrowUp, Activity } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import { trackStravaInteraction } from './google-analytics';
+import { formatDistance, formatTime, formatElevation } from '@/lib/utils';
 
 interface Activity {
   name: string;
@@ -50,24 +51,6 @@ const StravaWidget = () => {
     fetchLatestActivity();
   }, [router]);
 
-  const formatDistance = (meters: number) => {
-    const miles = meters / 1609.34;
-    return `${miles.toFixed(1)} mi`;
-  };
-
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    return hours > 0 
-      ? `${hours}h ${minutes}m`
-      : `${minutes}m`;
-  };
-
-  const formatElevation = (meters: number) => {
-    const feet = meters * 3.28084;
-    return `${Math.round(feet)} ft`;
-  };
-
   if (isLoading) {
     return (
       <Card className="h-full">
@@ -83,10 +66,51 @@ const StravaWidget = () => {
   }
 
   if (error || !activity) {
+    // Default placeholder metrics
+    const DefaultMetricDisplay = ({
+      Icon,
+      value,
+      label
+    }: {
+      Icon: typeof MapPin;
+      value: string;
+      label: string;
+    }) => (
+      <div className="flex flex-col items-center">
+        <Icon className="h-5 w-5 mb-1 text-sage" />
+        <span className="font-medium">{value}</span>
+        <span className="text-xs text-gray-500">{label}</span>
+      </div>
+    );
+
     return (
-      <Card className="h-full">
-        <CardContent className="p-6 flex items-center justify-center">
-          <p className="text-gray-500">No activity data available</p>
+      <Card className="h-full flex flex-col">
+        <CardHeader className="p-4 pb-0">
+          <h3 className="text-lg font-semibold">Latest Activity</h3>
+        </CardHeader>
+        <CardContent className="p-4 flex-grow flex flex-col">
+          {/* Default map from Google Maps Static API */}
+          <div className="relative w-full aspect-square max-h-64 rounded-lg overflow-hidden mb-4 bg-gray-800">
+            <Image
+              src="/api/strava/default-map"
+              alt="Default map location"
+              fill
+              className="object-cover opacity-70"
+              unoptimized
+            />
+            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+              <div className="text-center space-y-2">
+                <Activity className="h-10 w-10 text-white mx-auto" />
+                <p className="text-white text-sm font-medium">Activity unavailable</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2 text-sm mt-auto">
+            <DefaultMetricDisplay Icon={MapPin} value="0 mi" label="Distance" />
+            <DefaultMetricDisplay Icon={Clock} value="0m" label="Time" />
+            <DefaultMetricDisplay Icon={ArrowUp} value="0 ft" label="Elevation" />
+          </div>
         </CardContent>
       </Card>
     );

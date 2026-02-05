@@ -8,13 +8,7 @@ import Image from "next/image";
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
 import { colors } from '@/app/styles/colors';
-
-const navLinks = [
-   { href: "/", label: "Home" },
-   { href: "/projects", label: "Projects" },
-   { href: "/places", label: "Places" },
-   { href: "/misc/Caleb_Seely_Resume.pdf", label: "Resume", target: "_blank", rel: "noopener noreferrer" },
-];
+import { pacingNavLinks } from '@/lib/navigation';
 
 const RunningTimesDisplay = () => {
   const runningData = [
@@ -81,6 +75,9 @@ const RunningTimesDisplay = () => {
     return secondsToTimeString(interpolatedSeconds);
   };
 
+  // Easing function for smoother animation
+  const easeOutCubic = (t: number): number => 1 - Math.pow(1 - t, 3);
+
   const animateToTime = (targetTime: string, duration = 1500): void => {
     const startSeconds = timeToSeconds(displayTime || "00:00:00.00");
     const endSeconds = timeToSeconds(targetTime);
@@ -89,9 +86,10 @@ const RunningTimesDisplay = () => {
     const updateNumber = () => {
       const currentTime = Date.now();
       const elapsed = currentTime - startTimestamp;
-      const progress = Math.min(elapsed / duration, 1);
+      const linearProgress = Math.min(elapsed / duration, 1);
+      const progress = easeOutCubic(linearProgress);
 
-      if (progress < 1) {
+      if (linearProgress < 1) {
         const currentSeconds = startSeconds + (endSeconds - startSeconds) * progress;
         setDisplayTime(secondsToTimeString(currentSeconds));
         requestAnimationFrame(updateNumber);
@@ -136,7 +134,7 @@ const RunningTimesDisplay = () => {
 
   return (
     <div className="relative h-screen bg-black text-white overflow-auto">
-        <NavMenu links={navLinks} />
+        <NavMenu links={pacingNavLinks} />
 
       {/* Banner Image - added padding-top to account for fixed header */}
       <div className="relative h-48 w-full overflow-hidden pt-16">
@@ -146,7 +144,6 @@ const RunningTimesDisplay = () => {
           alt="Running Banner"
           fill
           style={{ objectFit: 'cover', objectPosition: 'center' }}
-          unoptimized={true}
           priority
           placeholder="blur"
           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQtJSAyVC08MTAxMTMwNjs7PjU1OjxKRkZKdEVDRVlZW1xfYWFXYWhpYWH/2wBDARUXFx4aHR4eHWFgOSFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWH/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
@@ -157,13 +154,13 @@ const RunningTimesDisplay = () => {
 
       <div className="max-w-4xl mx-auto p-2 space-y-4">
         {/* Header Section with fixed height */}
-        <div className="text-left min-h-[160px] flex flex-col justify-start">
-          <h1 className="text-5xl font-bold mb-4 leading-tight">
+        <div className="text-left min-h-[140px] sm:min-h-[160px] flex flex-col justify-start">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight">
             How fast can I run {currentDistance && <span className="font-bold">{getCurrentLabel()}</span>}
           </h1>
-          <div className="h-10 flex items-center"> {/* Increased height for time display */}
+          <div className="h-10 flex items-center">
             {displayTime && (
-              <p className="text-5xl font-bold">
+              <p className="text-3xl sm:text-4xl md:text-5xl font-bold">
                 <span className="font-mono font-bold text-[#8DB7F5]">
                   {formatTimeForDisplay(displayTime)}
                 </span>
@@ -219,11 +216,12 @@ const RunningTimesDisplay = () => {
             variant={currentDistance === data.meters ? "default" : "outline"}
             onClick={() => handleDistanceClick(data.meters)}
             className={`
-               px-4 py-2 whitespace-nowrap 
-               bg-gray-900 border-gray-700 
+               px-4 py-2 whitespace-nowrap
+               bg-gray-900 border-gray-700
                hover:bg-gray-900 hover:${colors.accent2}
                ${currentDistance === data.meters ? colors.accent2 : colors.text}
                mb-1
+               focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-black
             `}
             size="sm"
             >
@@ -264,7 +262,7 @@ const RunningTimesDisplay = () => {
                 fill
                 style={{ objectFit: 'contain' }}
                 className="w-full h-full"
-                unoptimized
+                loading="lazy"
             />
             </div>
         ))}

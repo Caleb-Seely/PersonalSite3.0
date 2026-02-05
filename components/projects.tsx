@@ -17,8 +17,8 @@ import { cameraClickReflection } from './reflections/cameraClick';
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
 import { trackProjectInteraction, trackEvent } from './google-analytics';
-// import { colors } from '@/app/styles/colors';
-
+import { colors, colorCombos } from '@/app/styles/colors';
+import { projectsNavLinks } from '@/lib/navigation';
 
 interface Project {
   id: string;
@@ -27,17 +27,10 @@ interface Project {
   shortDescription: string;
   longDescription: string;
   images: string[];
-  date: Date; 
+  date: Date;
   github?: string;
   live?: string;
 }
-
-const navLinks = [
-   { href: "/", label: "Home" },
-   { href: "/pacing", label: "Pacing" },
-   { href: "/places", label: "Places" },
-   { href: "/misc/Caleb_Seely_Resume.pdf", label: "Resume", target: "_blank", rel: "noopener noreferrer" },
-];
 
 const ProjectsPage = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -159,7 +152,7 @@ const ProjectsPage = () => {
      id: "messages-db",
      title: "SMS & MMS Database",
      tools: ["SQL", "Python", "JS"],
-     shortDescription: "SMS & MMS analysis tool.",
+     shortDescription: "SMS & MMS analysis tool",
      longDescription: messagesDBReflection,
      images: [],
      github: "https://github.com/Caleb-Seely/MessagesDB",
@@ -169,7 +162,7 @@ const ProjectsPage = () => {
      id: "personal-site-3",
      title: "CalebSeely.com",
      tools: ["AI", "TypeScript", "APIs"],
-     shortDescription: "A redesign of my personal website with a focus on style and utility.",
+     shortDescription: "A redesign of my personal website with a focus on style and utility",
      longDescription: personalSite3Reflection,
      images: [],
      github: "https://github.com/Caleb-Seely/PersonalSite3.0",
@@ -189,7 +182,7 @@ const ProjectsPage = () => {
       id: "cameracliick",
       title: "CameraClick Apps",
       tools: ["AI", "Kotlin", "Monkey C"],
-      shortDescription: "Native camera control, wirelessly triggered from your wrist.",
+      shortDescription: "Native camera control, wirelessly triggered from your wrist",
       longDescription: cameraClickReflection,
       images: [],
       live: "https://play.google.com/store/apps/details?id=com.garmin.android.apps.camera.click.comm",
@@ -207,9 +200,9 @@ const ProjectsPage = () => {
     : sortedProjects;
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white isolate">
 
-      <NavMenu links={navLinks} />
+      <NavMenu links={projectsNavLinks} />
 
       <InteractiveConstellation />
       
@@ -222,7 +215,7 @@ const ProjectsPage = () => {
           <h2 className="text-xl mb-4 text-[#8DB7F5]">Filter by Technology</h2>
           <div className="flex flex-wrap gap-2">
             <button
-              className={`px-4 py-2 rounded-full border transition-colors ${
+              className={`px-4 py-2 rounded-full border transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-black ${
                 selectedTech === null
                   ? 'bg-[#10B981] text-black border-[#10B981]'
                   : 'border-[#10B981] text-[#10B981] bg-black hover:bg-[#10B981] hover:text-black'
@@ -234,7 +227,7 @@ const ProjectsPage = () => {
             {allTechnologies.map((tech) => (
               <button
                 key={tech}
-                className={`px-4 py-2 rounded-full border z-15 transition-colors ${
+                className={`px-4 py-2 rounded-full border z-15 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-black ${
                   selectedTech === tech
                     ? 'bg-[#10B981] text-black border-[#10B981]'
                     : 'border-[#10B981] bg-black text-[#10B981] hover:bg-[#10B981] hover:text-black'
@@ -288,16 +281,24 @@ const ProjectsPage = () => {
 
 {/* Modal for detailed view */}
 {selectedProject && (
-  <div 
+  <div
     className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="project-modal-title"
     onClick={(e) => {
       if (e.target === e.currentTarget) {
         setSelectedProject(null);
       }
     }}
+    onKeyDown={(e) => {
+      if (e.key === 'Escape') {
+        setSelectedProject(null);
+      }
+    }}
   >
-    <div className="bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-8">
-      <h2 className="text-3xl font-bold mb-6">{selectedProject.title}</h2>
+    <div className="bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-8 relative">
+      <h2 id="project-modal-title" className="text-3xl font-bold mb-6">{selectedProject.title}</h2>
       
       {/* Display project date more prominently */}
       <div className="text-lg text-gray-400 mb-4">
@@ -314,6 +315,7 @@ const ProjectsPage = () => {
                 alt={`${selectedProject.title} screenshot ${index + 1}`}
                 width={400}
                 height={300}
+                sizes="(max-width: 768px) 100vw, 400px"
                 className="rounded-lg w-auto h-auto max-h-64 object-contain mx-auto"
               />
             </div>
@@ -368,7 +370,8 @@ const ProjectsPage = () => {
 
       <button
         onClick={() => setSelectedProject(null)}
-        className="absolute top-4 right-4 text-gray-400 hover:text-white"
+        className="absolute top-4 right-4 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded"
+        aria-label="Close project details"
       >
         ✕
       </button>

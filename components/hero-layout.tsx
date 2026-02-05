@@ -10,13 +10,7 @@ import Footer from "@/components/footer";
 import { colors} from '@/app/styles/colors';
 import ForestFireSection from './forest-fire-section';
 import { trackNavigationClick, trackDeviceType } from './google-analytics';
-
-const navLinks = [
-   { href: "/pacing", label: "Pacing" },
-   { href: "/projects", label: "Projects" },
-   { href: "/places", label: "Places" },
-   { href: "/misc/Caleb_Seely_Resume.pdf", label: "Resume", target: "_blank", rel: "noopener noreferrer" },
-];
+import { homeNavLinks } from '@/lib/navigation';
 
 const welcomeMessages = [
   "Hi, I'm Caleb",
@@ -46,7 +40,7 @@ const TypeWriter: React.FC<TypeWriterProps> = ({ message, onComplete }) => {
     if (isTyping && displayText.length < message.length) {
       timeout = setTimeout(() => {
         setDisplayText(message.substring(0, displayText.length + 1));
-      }, 100);
+      }, 80);
     } else if (isTyping && displayText.length === message.length) {
       timeout = setTimeout(() => {
         setIsTyping(false);
@@ -54,7 +48,7 @@ const TypeWriter: React.FC<TypeWriterProps> = ({ message, onComplete }) => {
     } else if (!isTyping && displayText.length > 0) {
       timeout = setTimeout(() => {
         setDisplayText(message.substring(0, displayText.length - 1));
-      }, 50);
+      }, 80);
     } else if (!isTyping && displayText.length === 0) {
       timeout = setTimeout(() => {
         setIsVisible(false);
@@ -114,7 +108,7 @@ const HeroLayout = () => {
           )}
         </div>
 
-        <NavMenu links={navLinks} />
+        <NavMenu links={homeNavLinks} />
 
       </div>
 
@@ -202,7 +196,7 @@ const HeroLayout = () => {
             onMouseEnter={handleMouseEnter}
           >
             
-            <Card className={`group relative cursor-pointer hover:shadow-xl transition-all duration-300 h-64 ${colors.secondary}`}>
+            <Card className={`group relative cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-shadow transition-transform duration-300 h-64 ${colors.secondary}`}>
               <CardContent className="p-0 h-full relative">
               <Image 
                 src={`/img/${type}.webp`}

@@ -24,9 +24,10 @@ interface Beam {
 // Adjustable configuration variables
 const TWINKLE_SPEED_FACTOR = 0.01; // Lower value = slower twinkling
 const BEAM_FREQUENCY = 800; // Higher value = less frequent beams (in ms)
-const MIN_STAR_DISTANCE = 15; // Minimum distance between stars
+const MIN_STAR_DISTANCE = 20; // Minimum distance between stars
 const BEAM_COLOR = "#FFFFFF"; // Color of the beam
 const BEAM_LENGTH = 40; // Length of beam in pixels
+const STAR_DENSITY = 8000; // Higher value = fewer stars (area per star in px²)
 
 const InteractiveConstellation = () => {
   const [stars, setStars] = useState<Star[]>([]);
@@ -41,16 +42,15 @@ const InteractiveConstellation = () => {
     const generateStars = () => {
       if (!containerRef.current) return;
       
-      const containerRect = containerRef.current.getBoundingClientRect();
-      const width = containerRect.width;
-      // Only use the top portion of the container, above the filters
-      const height = Math.min(containerRect.height, 300);
-      
+      // Use full viewport dimensions
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
       // Temporary array to check distances
       const tempStars: Star[] = [];
-      
-      // Create more stars but make them smaller
-      const maxStars = Math.floor((width * height) / 5000) + 30;
+
+      // Calculate stars based on viewport area
+      const maxStars = Math.floor((width * height) / STAR_DENSITY) + 50;
       
       // Try to create maxStars, but with minimum distance check
       let attempts = 0;
@@ -185,9 +185,9 @@ const InteractiveConstellation = () => {
   }, [hoveredStar, stars]);
   
   return (
-    <div 
+    <div
       ref={containerRef}
-      className="absolute top-0 left-0 right-0 h-52 overflow-hidden z-0"
+      className="fixed inset-0 overflow-hidden -z-10"
       style={{ pointerEvents: 'none' }}
     >
       <svg width="100%" height="100%"  style={{ position: 'absolute'}}>

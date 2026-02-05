@@ -18,9 +18,19 @@ export async function POST(request: Request) {
     const body = await request.json();
     songUrl = body.songUrl;
 
-    // Validate song URL
-    if (!songUrl) {
-      return NextResponse.json({ error: 'No song URL provided' }, { status: 400 });
+    // Validate song URL exists and is a string
+    if (!songUrl || typeof songUrl !== 'string') {
+      return NextResponse.json({ error: 'Invalid song input' }, { status: 400 });
+    }
+
+    // Limit input length to prevent abuse
+    if (songUrl.length > 500) {
+      return NextResponse.json({ error: 'Input too long' }, { status: 400 });
+    }
+
+    // If it looks like a URL, validate it's from Spotify
+    if (songUrl.startsWith('http') && !songUrl.includes('spotify.com') && !songUrl.includes('spotify:')) {
+      return NextResponse.json({ error: 'Only Spotify URLs or song names accepted' }, { status: 400 });
     }
   } catch (error) {
     console.error('Error:', error);

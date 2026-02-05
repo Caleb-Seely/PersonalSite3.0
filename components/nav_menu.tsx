@@ -21,11 +21,18 @@ const NavMenu: React.FC<NavMenuProps> = ({ links }) => {
   return (
     <>
       {/* Fixed Navigation */}
-      <div className={`absolute top-0 w-full p-4 flex justify-between items-center z-20 `}>
+      <div className={`fixed top-0 w-full p-4 flex justify-between items-center z-40 `}>
         <div className={`text-2xl font-bold ${tw.text('accent')}`}>CS</div>
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className={`z-50 ${tw.text('text')}`}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape' && isMenuOpen) {
+              setIsMenuOpen(false);
+            }
+          }}
+          className={`z-50 ${tw.text('text')} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-black rounded`}
+          aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={isMenuOpen}
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -33,7 +40,16 @@ const NavMenu: React.FC<NavMenuProps> = ({ links }) => {
 
       {/* Menu Items */}
       {isMenuOpen && (
-        <div className={`fixed top-16 right-4 ${tw.bg('primary')} ${tw.bgWithOpacity('primary', 'heavy')} z-40 rounded-lg shadow-lg p-4`}>
+        <div
+          className={`fixed top-16 right-4 ${tw.bg('primary')} ${tw.bgWithOpacity('primary', 'heavy')} z-40 rounded-lg shadow-lg p-4`}
+          role="navigation"
+          aria-label="Main navigation"
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              setIsMenuOpen(false);
+            }
+          }}
+        >
           <nav className={`${tw.text('text')} text-l space-y-1`}>
             {links.map((link) => (
               <Link
