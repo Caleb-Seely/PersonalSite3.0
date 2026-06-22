@@ -14,6 +14,7 @@ import { predictingSalesReflection } from './reflections/predictingSales';
 import { mediaArchiveReflection } from './reflections/mediaArchive';
 import { clearShotReflection } from './reflections/clearshotReflection';
 import { cameraClickReflection } from './reflections/cameraClick';
+import { teamSplitsReflection } from './reflections/teamSplitsReflection';
 import NavMenu from "../components/nav_menu";
 import Footer from "@/components/footer";
 import { trackProjectInteraction, trackEvent } from './google-analytics';
@@ -177,6 +178,16 @@ const ProjectsPage = () => {
      github: "https://github.com/Caleb-Seely/Garmin-Remote-Camera",
      date: new Date('2025-3-1')
    },
+   {
+      id: "team-splits",
+      title: "TeamSplits",
+      tools: ["AI", "TypeScript", "Firebase"],
+      shortDescription: "Real-time relay race tracker built for races like Hood to Coast",
+      longDescription: teamSplitsReflection,
+      images: [],
+      live: "https://teamsplits.com",
+      date: new Date('2026-2-08')
+    },
    {
       id: "cameracliick",
       title: "CameraClick Apps",

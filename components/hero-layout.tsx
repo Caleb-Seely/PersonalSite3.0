@@ -156,13 +156,13 @@ const HeroLayout = () => {
         </div>
         </div>
 
-        {/* Strava Widget - Clearly separated but on same line for large screens */}
+        {/* Strava Widget */}
         <div className="md:col-span-4">
-        <Card className={`h-full ${colors.primary} shadow-lg rounded-xl`}>
-           <CardContent className="p-4">
+          <Card className={`h-full ${colors.primary} shadow-lg rounded-xl`}>
+            <CardContent className="p-4">
               <StravaWidget />
-           </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
         </div>
 
      </div>

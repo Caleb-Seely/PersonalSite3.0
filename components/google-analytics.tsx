@@ -93,11 +93,52 @@ export const trackEngagement = (type: 'long_session' | 'return_visitor' | 'deep_
   trackEvent('engagement', 'user_behavior', type)
 }
 
-// Mobile vs Desktop tracking
+// Device tracking
 export const trackDeviceType = () => {
   if (typeof window === 'undefined') return
-  
-  const isMobile = window.innerWidth <= 768
-  const deviceType = isMobile ? 'mobile' : 'desktop'
-  trackEvent('device_info', 'screen_size', deviceType, window.innerWidth)
+
+  const width = window.innerWidth
+  const height = window.innerHeight
+  const category = width <= 768 ? 'mobile' : width <= 1024 ? 'tablet' : 'desktop'
+
+  const connection = (navigator as Navigator & { connection?: { effectiveType?: string; downlink?: number } }).connection
+  const ua = navigator.userAgent
+
+  // Rough OS detection from user agent
+  let os = 'unknown'
+  if (/Windows/.test(ua)) os = 'Windows'
+  else if (/Mac OS X/.test(ua) && !/iPhone|iPad/.test(ua)) os = 'macOS'
+  else if (/iPhone/.test(ua)) os = 'iOS'
+  else if (/iPad/.test(ua)) os = 'iPadOS'
+  else if (/Android/.test(ua)) os = 'Android'
+  else if (/Linux/.test(ua)) os = 'Linux'
+
+  // Rough browser detection from user agent
+  let browser = 'unknown'
+  if (/Edg\//.test(ua)) browser = 'Edge'
+  else if (/OPR\/|Opera/.test(ua)) browser = 'Opera'
+  else if (/Firefox/.test(ua)) browser = 'Firefox'
+  else if (/Safari/.test(ua) && !/Chrome/.test(ua)) browser = 'Safari'
+  else if (/Chrome/.test(ua)) browser = 'Chrome'
+
+  const shouldTrack = process.env.NODE_ENV === 'production' || process.env.NEXT_PUBLIC_GA_DEBUG
+  if (!shouldTrack) return
+
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'device_info', {
+      device_category: category,
+      viewport_width: width,
+      viewport_height: height,
+      screen_width: window.screen.width,
+      screen_height: window.screen.height,
+      pixel_ratio: window.devicePixelRatio,
+      os,
+      browser,
+      language: navigator.language,
+      touch_support: navigator.maxTouchPoints > 0,
+      dark_mode: window.matchMedia('(prefers-color-scheme: dark)').matches,
+      connection_type: connection?.effectiveType ?? 'unknown',
+      connection_downlink: connection?.downlink ?? null,
+    })
+  }
 }
