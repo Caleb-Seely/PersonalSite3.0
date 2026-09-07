@@ -20,3 +20,6 @@ tsconfig.tsbuildinfo
 .DS_Store
 nul
 secure-approach-290721-201f5d0c9b70.json
+
+# Local Netlify folder
+.netlify
